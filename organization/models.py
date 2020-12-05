@@ -14,8 +14,8 @@ class organization(models.Model):
 class mentor(models.Model):
     mentor_id = models.IntegerField(primary_key=True),
     organization_id = models.ForeignKey(organization, on_delete=models.CASCADE),
-    m_first_name = models.CharField(max_length=30),
-    m_last_name = models.CharField(max_length=30),
+    first_name = models.CharField(max_length=30),
+    last_name = models.CharField(max_length=30),
     industry = models.CharField(max_length=20)
 
 class offers_made(models.Model):
