@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
-from .algorithms import recommend_skills, 
+from .algorithms import display_top_skills, 
 
 def indexPageView(request) :
     return render(request, 'applicant/index.html')

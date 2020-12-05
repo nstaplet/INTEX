@@ -4,7 +4,7 @@ from django.http import HttpResponse
 
 
 # will retrieve the skills from the listings and put them into a sorted list to suggest which skills are most in demand by companies
-def recommend_skills(request):
+def display_top_skills(request):
 
     recommended_skills = {}
 
@@ -20,8 +20,10 @@ def recommend_skills(request):
     
     skills_occurances_sorted = sorted(skills_occurances.items(), key=lambda x: x[1], reverse=True)
 
-    context = {
-        'rec_skills': recommended_skills
-    }
+    skills_names = []
 
-    return HttpResponse('Recommend skills function')
+    for i, j in skills_occurances_sorted:
+        skill_name = skills.objects.all().get(id=i)
+        skills_names.append(skill_name)
+
+    return skills_names
