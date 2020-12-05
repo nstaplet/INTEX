@@ -13,21 +13,18 @@ class organization(models.Model):
 
 class mentor(models.Model):
     mentor_id = models.IntegerField(primary_key=True),
-    organization_id = models.ForeignKey(
-        organization, on_delete=models.CASCADE),
+    organization_id = models.ForeignKey(organization, on_delete=models.CASCADE),
     m_first_name = models.CharField(max_length=30),
     m_last_name = models.CharField(max_length=30),
     industry = models.CharField(max_length=20)
 
 class offers_made(models.Model):
     offer_id = models.IntegerField(primary_key=True),
-    applicant_id = models.ForeignKey(
-        applicant, on_delete=models.CASCADE),
+    applicant_id = models.ForeignKey(applicant, on_delete=models.CASCADE),
     status = models.CharField(max_length=30),
     city = models.CharField(max_length=30),
     job_title = models.CharField(max_length=70),
-    organization_id = models.ForeignKey(
-        organization, on_delete=models.CASCADE),
+    organization_id = models.ForeignKey(organization, on_delete=models.CASCADE),
     contracts = models.CharField(max_length=30),
     matching_skills = models.IntegerField(max_length=30)
 
@@ -45,8 +42,7 @@ class listing(models.Model):
     status = models.CharField(max_length=30),
     city = models.CharField(max_length=30),
     job_title = models.CharField(max_length=70),
-    organization_id = models.ForeignKey(
-        organization, on_delete=models.CASCADE),
+    organization_id = models.ForeignKey(organization, on_delete=models.CASCADE),
     contracts = models.CharField(max_length=30),
     total_skills = models.IntegerField(max_length=10),
     compensation = models.DecimalField(max_digits=7, decimal_places=2, null= True),
