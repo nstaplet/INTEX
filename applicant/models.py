@@ -3,6 +3,7 @@ from organization.models import skill, mentor, organization
 
 # Create your models here.
 class applicant(models.Model):
+    id = models.IntegerField(primary_key=True)
     email = models.EmailField(max_length=100, unique=True)
     username = models.CharField(max_length=25)
     first_name = models.CharField(max_length=25)
@@ -12,12 +13,14 @@ class applicant(models.Model):
     skills = models.ManyToManyField("organization.skill")
 
 class offers_review(models.Model):
+    review_id = models.IntegerField(primary_key=True)
     applicant_id = models.ForeignKey(applicant, on_delete=models.CASCADE)
     organization_id = models.ForeignKey(organization, on_delete=models.CASCADE)
     compensation = models.DecimalField(max_digits=8, decimal_places=2)
     satisfaction = models.IntegerField()
 
 class message(models.Model):
+    message_id = models.IntegerField(primary_key=True)
     applicant_id = models.ForeignKey(applicant, on_delete=models.CASCADE)
     mentor_id = models.ForeignKey(mentor, on_delete=models.CASCADE)
     content = models.CharField(max_length=300)
