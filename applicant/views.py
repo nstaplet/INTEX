@@ -23,3 +23,8 @@ def applicantwelcome(request) :
 
     #else:
     #    return render(request, 'applicant/applicantlogin.html')
+
+def applicant_dash(request):
+    
+
+    return render(request, 'applicant/applicantdashboard.html')
