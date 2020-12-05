@@ -80,7 +80,7 @@ WSGI_APPLICATION = 'bcr.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': '',
+        'NAME': 'bcrdb',
         'USER': 'postgres',
         'PASSWORD': getpass(),
         'HOST': 'localhost'
