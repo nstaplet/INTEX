@@ -22,7 +22,7 @@ class mentor(models.Model):
 class offers_made(models.Model):
     offer_id = models.IntegerField(primary_key=True),
     applicant_id = models.ForeignKey(
-        applicant.applicant, on_delete=models.CASCADE),
+        applicant.id, on_delete=models.CASCADE),
     status = models.CharField(max_length=30),
     city = models.CharField(max_length=30),
     job_title = models.CharField(max_length=70),
