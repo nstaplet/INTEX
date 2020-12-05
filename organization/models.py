@@ -29,7 +29,7 @@ class offers_made(models.Model):
     organization_id = models.ForeignKey(
         organization, on_delete=models.CASCADE),
     contracts = models.CharField(max_length=30),
-    matching_skills = models.IntegerField(max_length=30)
+    matching_skills = models.IntegerField()
 
 class skill(models.Model):
     skill_id = models.IntegerField(primary_key=True),
@@ -37,8 +37,8 @@ class skill(models.Model):
 
 class listing_skills(models.Model):
     listing_id = models.IntegerField(primary_key=True),
-    skill_id = models.IntegerField(max_length=50),
-    skill_value = models.IntegerField(max_length=50)
+    skill_id = models.IntegerField(),
+    skill_value = models.IntegerField()
 
 class listing(models.Model):
     listing_id = models.IntegerField(primary_key=True),
@@ -48,6 +48,6 @@ class listing(models.Model):
     organization_id = models.ForeignKey(
         organization, on_delete=models.CASCADE),
     contracts = models.CharField(max_length=30),
-    total_skills = models.IntegerField(max_length=10),
+    total_skills = models.IntegerField(),
     compensation = models.DecimalField(max_digits=7, decimal_places=2, null= True),
     relocation = models.BooleanField(default=False)

@@ -2,15 +2,22 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
 from .algorithms import display_top_skills, get_applicant_skills
+from organization.models import skill
 
 def indexPageView(request) :
     return render(request, 'applicant/index.html')
 
-def applicantlogin(request) :
+def applicantloginPage(request) :
     return render(request, 'applicant/applicantlogin.html')
 
-def applicantsignup(request) :
-    return render(request, 'applicant/applicantsignup.html')
+def applicantsignupPage(request) :
+    data = skill.objects.all().order_by('skill_name')
+    
+    context = {
+        'skills' : data
+    }
+
+    return render(request, 'applicant/applicantsignup.html', context)
 
 def applicantwelcome(request) :
 
@@ -36,3 +43,7 @@ def applicant_dash(request):
     }
 
     return render(request, 'applicant/applicantdashboard.html', context)
+
+
+def createApplicant(request):
+    return render(request, 'applicant/applicantdashboard.html')
