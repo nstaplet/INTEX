@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
-from .algorithms import display_top_skills, 
+from .algorithms import display_top_skills, get_applicant_skills
 
 def indexPageView(request) :
     return render(request, 'applicant/index.html')
@@ -26,6 +26,13 @@ def applicantwelcome(request) :
     #    return render(request, 'applicant/applicantlogin.html')
 
 def applicant_dash(request):
-    
 
-    return render(request, 'applicant/applicantdashboard.html')
+    top_skills = set(display_top_skills())
+    applicant_skills = get_applicant_skills(request.user.id)
+
+    context = {
+        'top_skills': top_skills,
+        'applicant_skills': applicant_skills,
+    }
+
+    return render(request, 'applicant/applicantdashboard.html', context)
