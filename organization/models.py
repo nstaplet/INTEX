@@ -1,6 +1,6 @@
 from django.db import models
 # Need to wait for the applicant app models 
-from applicant.models import applicant 
+from person.models import applicant
 
 # Create your models here.
 class organization(models.Model):
@@ -8,7 +8,7 @@ class organization(models.Model):
     company_name = models.CharField(max_length=30),
     company_email = models.CharField(max_length=70),
     company_address = models.CharField(max_length=30),
-    size = models.CharField(max_length=10),    
+    size = models.CharField(max_length=10),
     sectors = models.CharField(max_length=10)
 
 class mentor(models.Model):
@@ -22,7 +22,7 @@ class mentor(models.Model):
 class offers_made(models.Model):
     offer_id = models.IntegerField(primary_key=True),
     applicant_id = models.ForeignKey(
-        applicant.id, on_delete=models.CASCADE),
+        applicant, on_delete=models.CASCADE),
     status = models.CharField(max_length=30),
     city = models.CharField(max_length=30),
     job_title = models.CharField(max_length=70),
