@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+    <h1>Organization Login</h1>
+
+    <form method="POST" action="{% url 'organizationwelcome' %}">
+        <div>
+            <div>
+                <label for="username">Username</label>
+                <input type="text" name="username" id="username" required>
+            </div>
+            <div>
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" required>
+            </div>
+            <div>
+                <button type="submit">Login</button>
+            </div>
+            <div>
+                <button type="button" onclick="location.href='{% url 'organizationsignup' %}'">Sign up</button>
+            </div>
+        </div>
+        {% csrf_token %}
+    </form>
+
+{% endblock %}

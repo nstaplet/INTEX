@@ -1,11 +1,16 @@
 {% extends 'base.html'%}
 {%load static%}
 {%block content%}
-        <!-- Masthead-->
-        <header class="masthead">
-            <div class="container">
-                <div class="masthead-subheading">This will be the index.html</div>
-                
+        <div>
+            <h1>Wecome to the Black Cyber Recruiter!</h1>
+            <br><br>
+            <p>Because the workforce needs more color!</p>
+            <div>
+            <button type="button" onclick="location.href='{% url 'applicantlogin' %}'">I am looking for a job!</button>
             </div>
-        </header>
+            <div>
+                <button type="button" onclick="location.href='{% url 'organizationlogin' %}'">I am an organization looking to hire!</button>
+            </div>
+
+        </div>
 {% endblock %}
