@@ -1,0 +1,44 @@
+.btn-main {
+    border: 0px solid #000;
+    overflow: hidden;
+    background: #000;
+    color: #fff;
+}
+
+bt-main:hover {
+    transform: scale(1.05);
+}
+
+btn-main:hover:after {
+    left: 170px;
+}
+
+btn-main:hover:before {
+    left: 170px;
+}
+
+btn-main:after {
+    content: '';
+    left: -70px;
+    bottom: -40px;
+    position: absolute;
+    width: 60px;
+    height: 200px;
+    background: rgba(255, 255, 255, 0.2);
+    z-index: 0;
+    transform: rotate(25deg);
+    transition: all 0.4s ease-out;
+}
+
+btn-main:before {
+    content: '';
+    left: -70px;
+    bottom: -40px;
+    position: absolute;
+    width: 60px;
+    height: 200px;
+    background: rgba(255, 255, 255, 0.35);
+    z-index: 1;
+    transform: rotate(25deg);
+    transition: all 0.3s ease-out;
+}
