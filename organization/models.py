@@ -37,7 +37,8 @@ class skill(models.Model):
 
 class listing_skills(models.Model):
     listing_id = models.IntegerField(primary_key=True),
-    skill_id = models.IntegerField(max_length=50)
+    skill_id = models.IntegerField(max_length=50),
+    skill_value = models.IntegerField(max_length=50)
 
 class listing(models.Model):
     listing_id = models.IntegerField(primary_key=True),
