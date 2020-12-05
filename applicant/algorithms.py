@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-# from .models import skills, 
+from .models import applicant, message, offers_review
+# from organization.models import 
 
 
 # will retrieve the skills from the listings and put them into a sorted list to suggest which skills are most in demand by companies
