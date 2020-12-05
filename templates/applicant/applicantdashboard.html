@@ -2,8 +2,16 @@
 {% load static %}
 {% block content %}
 
+    {% comment %} Mostly psuedo code, will update {% endcomment %}
 
+    <div>
+        <h1>{{applicant.first_name}} {{applicant.last_name}}</h1>
+    </div>
 
-
+    <div>
+        {% for skill in rec_skills %}
+            <p>{{skill.0}}: 
+        {% endfor %}
+    </div>
 
 {% endblock %}
