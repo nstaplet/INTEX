@@ -10,7 +10,7 @@ class applicant(models.Model):
     last_name = models.CharField(max_length=25)
     email_opt_in = models.BooleanField(default=True)
     city = models.CharField(max_length=25)
-    skills = models.ManyToManyField("organization.skill")
+    skills = models.ManyToManyField(skill)
 
 class offers_review(models.Model):
     review_id = models.IntegerField(primary_key=True)
