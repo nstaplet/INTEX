@@ -6,19 +6,19 @@ class organization(models.Model):
     organization_id = models.IntegerField(primary_key=True ,default=0)
     company_name = models.CharField(max_length=30, blank=True)
     company_email = models.CharField(max_length=70, blank=True)
-    company_address = models.CharField(max_length=30, blank=True)
+    company_address = models.CharField(max_length=70, blank=True)
     size = models.CharField(max_length=10, blank=True)
     sectors = models.CharField(max_length=10, blank=True)
 
 class mentor(models.Model):
-    mentor_id = models.IntegerField(primary_key=True, default=0),
+    mentor_id = models.IntegerField(primary_key=True, default=0)
     organization_id = models.ForeignKey(organization, on_delete=models.CASCADE, default=0)
     first_name = models.CharField(max_length=30, blank=True)
     last_name = models.CharField(max_length=30, blank=True)
     industry = models.CharField(max_length=20, blank=True)
 
 class offers_made(models.Model):
-    offer_id = models.IntegerField(primary_key=True, default=0),
+    offer_id = models.IntegerField(primary_key=True, default=0)
     applicant_id = models.ForeignKey(applicant, on_delete=models.CASCADE, default=0)
     status = models.CharField(max_length=30, blank=True)
     city = models.CharField(max_length=30, blank=True)
