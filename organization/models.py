@@ -12,14 +12,14 @@ class organization(models.Model):
 
 class mentor(models.Model):
     mentor_id = models.IntegerField(primary_key=True)
-    organization_id = models.ForeignKey(organization, on_delete=models.CASCADE, default=0)
+    organization = models.ForeignKey(organization, on_delete=models.CASCADE, default=0)
     first_name = models.CharField(max_length=30, blank=True)
     last_name = models.CharField(max_length=30, blank=True)
     industry = models.CharField(max_length=20, blank=True)
 
 class offers_made(models.Model):
     offer_id = models.IntegerField(primary_key=True)
-    applicant_id = models.ForeignKey(applicant, on_delete=models.CASCADE, default=0)
+    applicant = models.ForeignKey(applicant, on_delete=models.CASCADE, default=0)
     status = models.CharField(max_length=30, blank=True)
     city = models.CharField(max_length=30, blank=True)
     job_title = models.CharField(max_length=70, blank=True)
