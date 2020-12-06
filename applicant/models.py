@@ -17,6 +17,8 @@ class message(models.Model):
     mentor = models.ForeignKey(mentor, on_delete=models.CASCADE)
     content = models.CharField(max_length=300)
     timesent = models.DateTimeField(auto_now=True, auto_now_add=False)
+    sender_applicant = models.BooleanField(default=True)
+
 class applicant_skills(models.Model):
     applicant = models.ForeignKey(applicant, on_delete=models.CASCADE)
     skill = models.ForeignKey(skill, on_delete=models.CASCADE)

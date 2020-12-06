@@ -91,4 +91,4 @@ def createApplicant(request):
             'skills' : skillListNames
         }
 
-        return render(request, 'applicant/applicantdashboard.html', context)
+        return render(request, 'applicant/applicantwelcome.html', context)
