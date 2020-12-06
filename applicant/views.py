@@ -14,7 +14,7 @@ def applicantloginPage(request) :
     return render(request, 'applicant/applicantlogin.html')
 
 def applicantsignupPage(request) :
-    data = skill.objects.all().order_by('skill_name')
+    data = applicant.objects.all()
     
     context = {
         'skills' : data
@@ -55,8 +55,8 @@ def createApplicant(request):
     username = request.POST['username']
     password = request.POST['password']
     city = request.POST['city']
-    email_opt_in = request.POST['email_opt_in']
-    skills = request.POST['skills']
+    email_opt_in = request.POST.get('email_opt_in', False)
+    skills = request.POST['skillsinput']
 
     if (applicant.objects.filter(email__exact=email).exists()):
         messages.info(request, 'That email has already been claimed. Please try again.')
@@ -69,16 +69,26 @@ def createApplicant(request):
         # password=password
         )
         skills = skills.split()
-        for skillitem in skills:
-            applicant_skills.objects.create(
-                applicant_id=applicant.objects.filter(email__exact=email).values_list('id', flat=True)[0],
-                skill_id=skill.objects.filter(skill_name__iexact=skillitem).values_list('skill_id', flat=True)[0]
-            )
+        try:
+            for skillitem in skills:
+                applicant_skills.objects.create(
+                    applicant_id=applicant.objects.filter(email__exact=email).values_list('id', flat=True)[0],
+                    skill_id=skill.objects.filter(skill_name__iexact=skillitem).values_list('skill_id', flat=True)[0]
+                )
+        except IndexError:
+            messages.info(request, 'That skill is not currently in use.')
+            return render(request, 'applicant/applicantsignup.html')
             
-    data=applicant.objects.filter(email__exact=email)
+        applicantdata = applicant.objects.filter(email__exact=email)
+        skilldata = applicant_skills.objects.filter(applicant_id__exact=applicantdata.id)
+        skillListNames = []
 
-    context = {
-        'applicant' : data
-    }
+        for skillitem in skilldata:
+            skillListNames.append( skill.objects.filter(skill_id__exact=skillitem.skill_id).values_list('skill_name', flat=True)[0] )
 
-    return render(request, 'applicant/applicantdashboard.html', context)
+        context = {
+            'applicant' : applicantdata,
+            'skills' : skillListNames
+        }
+
+        return render(request, 'applicant/applicantdashboard.html', context)

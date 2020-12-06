@@ -9,6 +9,14 @@
     </div>
 
     <div>
+        <p>You have submitted the following skills: {{skills}}
+        {% for skill in skills %}
+            skill
+        {% endfor %}
+        </p>
+    </div>
+
+    <div>
         {% for skill in rec_skills %}
             <p>{{skill.0}}: 
         {% endfor %}
