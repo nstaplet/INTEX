@@ -43,6 +43,7 @@ class listing(models.Model):
     job_title = models.CharField(max_length=70, blank=True)
     organization_id = models.ForeignKey(organization, on_delete=models.CASCADE, default=0)
     contracts = models.CharField(max_length=30, blank=True)
+    description = models.CharField(max_length=2000, blank=True)
     total_skills = models.IntegerField(default=0)
     compensation = models.DecimalField(max_digits=7, decimal_places=2, null= True, default=0)
     relocation = models.BooleanField(default=False)
