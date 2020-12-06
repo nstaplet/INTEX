@@ -78,7 +78,7 @@ def createApplicant(request):
     data=applicant.objects.filter(email__exact=email)
 
     context = {
-        'applicantdata' : data
+        'applicant' : data
     }
 
     return render(request, 'applicant/applicantdashboard.html', context)
