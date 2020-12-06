@@ -1,6 +1,18 @@
 {% extends 'base.html'%}
 {%load static%}
 {%block content%}
+
+        {% if messages %}
+                {% for message in messages %}
+                        {% if message.tags %}
+                                <script>
+                                        alert("{{ message }}");
+                                </script>
+                        {% endif %}
+                {% endfor %}
+        {% endif %}
+
+
         <h1>Sign up page for applicants</h1>
         <br>
 
@@ -25,17 +37,17 @@
                 <input type="text" name='city' id='city'>
                 <br><br>
 
-                <label for='skills'>Skills:</label>
-                <input list='applicantskills' name='skills' id='skills'>
+                <label for='skillsinput'>Skills:</label>
+                <input list='applicantskills' name='skillsinput' id='skillsinput'>
                         <datalist id='applicantskills'>
                                 {% for skillitem in skills %}
-                                        <option value ='skill_name'>
+                                        <option value = {{ skillitem.skill_name }}>
                                 {% endfor %}
                         </datalist>
                 <br><br>
 
                 <label for='email_opt_in'>Would you like to receive a weekly email with great matches for companies?</label>
-                <input type="checkbox" name='email_opt_in' id='email_opt_in'>
+                <input type="checkbox" name='email_opt_in' id='email_opt_in' value='True'>
                 <br><br>
 
                 <button type="submit">Register</button>
