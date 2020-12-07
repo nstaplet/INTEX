@@ -74,7 +74,7 @@ def applicantLogin(request) :
             'applicant' : data
         }
         return render(request, 'applicant/applicantwelcome.html', context)
-        
+
     else:
        return render(request, 'applicant/applicantlogin.html')
 
@@ -96,6 +96,7 @@ def applicant_dash(request):
     }
 
     return render(request, 'applicant/applicantdashboard.html', context)
+    
 
 def createApplicant(request):
     first_name = request.POST['first_name']
