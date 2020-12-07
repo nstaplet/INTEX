@@ -2,8 +2,6 @@
 {%load static%}
 {%block content%}
 
-    <h1>Welcome page for applicants</h1>
-
     <div>
         {% for app in applicant %}
             <h1>Welcome, {{app.first_name}} {{app.last_name}}</h1>
@@ -26,7 +24,7 @@
             {% csrf_token %}
             <input type='hidden' value={{app.applicant_id}} name='applicant_id'>
 
-            <button type="submit">Update Your Skills</button>
+            <button type="submit">Add a Skill</button>
         </form>
 
         <form name="viewoffers" method="post" action="{% url 'applicantoffers' %}">
