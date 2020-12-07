@@ -1,5 +1,6 @@
 body{
     font-family: 'Roboto', sans-serif;
+    background-color: rgb(189, 171, 189);
 }
 
 main{
@@ -9,7 +10,7 @@ main{
 
 #background{
     width: 100%;
-    height: 700px;
+    height: 650px;
     background-image: url("https://images.unsplash.com/photo-1573497491208-6b1acb260507?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=3150&q=80");
     background-position: top;
     background-size: cover;
@@ -20,11 +21,35 @@ main{
 
 h1{
     font-size: 3rem;
-    margin-bottom: 0;
+    color:#c0d43c;
+    margin-bottom: 20px;
 }
 
 .class{
     width: 20%;
     margin: 20px;
     display: inline-block;
+}
+
+.welcome_intro{
+    color: thistle;
+}
+
+#wel_bt{
+    margin-top: 50px;
+    margin-left: 750px;
+    background: none;
+    color:#ffa260;
+    border: 3px solid;
+    padding: 1em 2em;
+    font-size: 1em;
+    transition: color 0.25s, border-color 0.25s, box-shadow 0.25s, transform 0.25s;
+}
+
+#wel_bt:hover{
+    border-color: #f1ff5c;
+    color: white;
+    box-shadow: 0 0.5em 0.5em -0.4em #f1ff5c;
+    transform: translateY(-0.25em);
+    cursor: pointer;
 }
