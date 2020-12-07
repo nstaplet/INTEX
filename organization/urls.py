@@ -8,5 +8,4 @@ urlpatterns = [
     path('organizationlogin/', organizationlogin, name='organizationlogin'),
     path('organizationsignup/', organizationsignup, name='organizationsignup'),
     path('createOrganization/', createOrganization, name='createOrganization')
-    
 ]

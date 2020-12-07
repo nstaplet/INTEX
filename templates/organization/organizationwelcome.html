@@ -35,17 +35,7 @@
                         </div>
                         <br>
                         <br>
-                        <div class="welcome_intro">
-                                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rerum molestiae blanditiis
-                                inventore culpa? Ut, mollitia! Non ipsum, incidunt dolorem adipisci, animi ullam alias
-                                quisquam dolores, ut modi nemo. Asperiores, molestiae?
-                                Aliquid totam explicabo tenetur nisi, eum labore repellat obcaecati dicta reiciendis
-                                iure recusandae illum adipisci exercitationem temporibus dolor voluptatum deserunt!
-                                Necessitatibus placeat maxime possimus commodi provident pariatur consequatur eum earum.
-                                Perspiciatis illum delectus dolor repellat officiis ullam et porro, minus dolorem
-                                ratione odit libero provident voluptate non, qui voluptas enim eum doloribus placeat
-                                exercitationem excepturi vitae, assumenda praesentium id! Quos?
-                        </div>
+
                         <div class="btcontainer">
                                 <div class="center">
                                         <div id="btwrapper">
@@ -53,9 +43,45 @@
                                         </div>
                                 </div>
                         </div>
-
-
                 </div>
+
+                <form name="organizationwelcome" method="post" action="{% url 'organizationwelcome' %}">
+                        {% csrf_token %}
+                        <label for='status'>Job status:</label>
+                        <input type="text" name='status' id='status'>
+                        <br><br>
+                        <label for='city'>City:</label>
+                        <input type="text" name='city' id='city'>
+                        <br><br>
+                        <label for='job_title'>Job Title</label>
+                        <input type="text" name='job_title' id='job_title'>
+                        <br><br>
+                        <label for='contracts'>Contract type:</label>
+                        <select name="contracts" id="contracts">
+                                <option value="default" disabled selected>Select one</option>
+                                <option value="3 month">3 month</option>
+                                <option value="6 month">6 month</option>
+                                <option value="1 year">1 year</option>
+                                <option value="Part-Time">Part-Time</option>
+                                <option value="Full-Time">Full-Time</option>
+                        </select>
+                        <br><br>
+                        <p>Relocation: Y/N</p>
+                        <label for='relocation'>Yes</label>
+                        <input type="radio" name='relocation' id='relocation'>
+                        <label for='relocation'>No</label>
+                        <input type="radio" name='relocation' id='relocation'>
+                        <br><br>
+                        <br><br>
+                        <label for='description'>Job description:</label>
+                        <textarea type="textarea" name='description' id='description' rows="7" , cols="20">
+                                Job requirements...
+                        </textarea>
+
+
+                        <br><br>
+                        <button type="submit">Register</button>
+                </form>
 
                 <div class="panel">
                         <div class="type-select">

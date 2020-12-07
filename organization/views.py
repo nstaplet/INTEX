@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+
+# models
 from django.contrib.auth import authenticate, login
 from .models import organization, skill, listing, listing_skills, mentor, offers_made
 from django.contrib import messages
