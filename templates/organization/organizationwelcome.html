@@ -1,5 +1,41 @@
 {% extends 'base.html'%}
-{%load static%}
-{%block content%}
-        <h1>Welcome page for organizations</h1>
-{% endblock %}
+{% load static %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/welcome.css' %}">
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;400&display=swap" rel="stylesheet">
+{% endblock styles %}
+
+{% block content %}
+
+<body>
+        <main>
+                <section id="background">
+                        <h1>background Img</h1>
+                </section>
+                <section class="intro">
+                        <h1>Welcome page for organizations</h1>
+                        <span class="welcome_intro">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam
+                                fugit illo odio beatae commodi. Fuga facilis praesentium laboriosam dignissimos,
+                                consequuntur ea enim quia nihil nam voluptatem officiis mollitia quos incidunt!
+                                Cumque fugit laborum, nostrum ipsam iure enim temporibus porro tempore id officia
+                                dignissimos quibusdam. Inventore officiis id blanditiis explicabo facilis maxime, dolor
+                                cupiditate mollitia quae expedita dolorum asperiores recusandae animi.
+                                Quae debitis cum odit odio atque voluptas et quos soluta obcaecati hic, autem eos
+                                voluptates reiciendis nobis nihil earum praesentium incidunt ad explicabo sequi
+                                corrupti! Quaerat vel dolore reprehenderit officia.
+                                Esse incidunt non quidem nostrum consectetur molestiae modi magnam alias explicabo
+                                recusandae vero voluptas, perferendis ea consequuntur debitis sequi iure aliquid. Nemo,
+                                molestias at magni laudantium distinctio molestiae alias tempora?
+                                Sed inventore ab autem quidem hic aliquid, enim alias aliquam similique officia vero est
+                                assumenda amet, consequatur reiciendis! Quasi, ullam in accusantium omnis necessitatibus
+                                libero quia ut voluptatem odit magnam.
+                        </span>
+                        <div>
+                                <button id="wel_bt">Learn more</button>
+                        </div>
+                </section>
+        </main>
+</body>
+{% endblock content %}
