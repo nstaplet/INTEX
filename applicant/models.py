@@ -23,3 +23,4 @@ class applicant_skills(models.Model):
     id = models.AutoField(primary_key=True)
     applicant = models.ForeignKey(applicant, on_delete=models.CASCADE)
     skill = models.ForeignKey(skill, on_delete=models.CASCADE)
+    skill_value = models.IntegerField(default=1)

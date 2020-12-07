@@ -46,6 +46,7 @@ def applicantloginPageView(request) :
 def applicantsignupPage(request) :
     return render(request, 'applicant/applicantsignup.html')
 
+
 def applicantLogin(request) :
 
     username = request.POST['username']
@@ -73,15 +74,17 @@ def applicantLogin(request) :
             'applicant' : data
         }
         return render(request, 'applicant/applicantwelcome.html', context)
+
     else:
        return render(request, 'applicant/applicantlogin.html')
+
+
 
 def applicant_dash(request):
 
     top_skills = display_top_skills()
-    # applicant_skills = get_applicant_skills(request.user.id)
 
-    applicant_skills_list = get_applicant_skills(2)
+    applicant_skills_list = get_applicant_skills(2)  # request.user.id
 
     for s in applicant_skills_list:
         if s in top_skills:
@@ -93,6 +96,7 @@ def applicant_dash(request):
     }
 
     return render(request, 'applicant/applicantdashboard.html', context)
+    
 
 def createApplicant(request):
     first_name = request.POST['first_name']
