@@ -46,6 +46,7 @@ def applicantloginPageView(request) :
 def applicantsignupPage(request) :
     return render(request, 'applicant/applicantsignup.html')
 
+
 def applicantLogin(request) :
 
     username = request.POST['username']
@@ -73,8 +74,11 @@ def applicantLogin(request) :
             'applicant' : data
         }
         return render(request, 'applicant/applicantwelcome.html', context)
+        
     else:
        return render(request, 'applicant/applicantlogin.html')
+
+
 
 def applicant_dash(request):
 
