@@ -19,14 +19,17 @@ def display_top_skills():
         else:
             skills_occurances[row.skill_id] = 0
     
+    # turns the items into a sorted list based off of occurance : sort descending
     skills_occurances_sorted = sorted(skills_occurances.items(), key=lambda x: x[1], reverse=True)
 
     skills_names = []
 
+    # puts those skill names into a list since we only have the id
     for i, j in skills_occurances_sorted:
-        skill_row = skill.objects.all().get(id=i)
+        skill_row = skill.objects.all().get(skill_id=i)
         skills_names.append(skill_row.skill_name)
 
+    # returns the skill names
     return skills_names
 
 
@@ -34,6 +37,8 @@ def get_applicant_skills(userid):
     oApplicant = applicant.objects.get(id=userid)
     list_skills = oApplicant.skills
 
-    return set(list_skills)
+    print(set(list_skills))
+
+    # return set(list_skills)
 
 
