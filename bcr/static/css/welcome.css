@@ -1,10 +1,14 @@
-
-*{
-    font-family: 'Roboto', sans-serif;
-}
+/* html {
+    background: url("https://images.unsplash.com/photo-1573497491208-6b1acb260507?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=3150&q=80") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+} */
 
 body{
-    background-color:#222;
+    font-family: 'Roboto', sans-serif;
+    background-color:#151b29;
 }
 
 main{
@@ -13,20 +17,25 @@ main{
 }
 
 #background{
-    width: 100%;
+    max-width: 100%;
     height: 650px;
     background-image: url("https://images.unsplash.com/photo-1573497491208-6b1acb260507?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=3150&q=80");
     background-position: top;
     background-size: cover;
-    /* background-color: green; */
+    background-repeat: no-repeat;
     border: 2px solid white;
+    border-radius: 10px;
     margin: 0 auto;
 }
 
 h1{
     font-size: 3rem;
     color:#fff;
-    margin-bottom: 20px;
+    margin-bottom: 20px;   
+}
+
+h2{
+    text-align: center;
 }
 
 .class{
@@ -39,9 +48,17 @@ h1{
     color: thistle;
 }
 
+#btwrapper{
+    margin-top: 0 auto;
+    text-align: center;
+    align-items: center;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
 #wel_bt{
-    margin-top: 50px;
-    margin-left: 750px;
+    margin-top: 15px;
     background: none;
     color:#ffa260;
     border: 3px solid;
@@ -49,6 +66,7 @@ h1{
     font-size: 1em;
     border-radius: 10px;
     transition: color 0.25s, border-color 0.25s, box-shadow 0.25s, transform 0.25s;
+    text-transform: uppercase;
 }
 
 #wel_bt:hover{
