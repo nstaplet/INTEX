@@ -19,11 +19,11 @@
     </div>
 
     {% for app in applicant %}
-        <form name="updateskills" method="post" action="{% url 'applicantoffers' %}">
+        <form name="updateskillsview" method="post" action="{% url 'updateskillspage' %}">
             {% csrf_token %}
             <input type='hidden' value={{app.applicant_id}} name='applicant_id'>
 
-            <button type="submit">View your Offers</button>
+            <button type="submit">Update Your Skills</button>
         </form>
 
         <form name="viewoffers" method="post" action="{% url 'applicantoffers' %}">

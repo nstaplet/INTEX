@@ -9,3 +9,6 @@ class applicant(models.Model):
     last_name = models.CharField(max_length=25)
     email_opt_in = models.BooleanField(default=True)
     city = models.CharField(max_length=25)
+
+    def __str__(self):
+        return (f'{self.first_name} {self.last_name}')

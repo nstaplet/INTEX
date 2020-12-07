@@ -1,15 +1,17 @@
 from django.urls import path
 from .views import indexPageView
-from .views import applicantloginPage
-from .views import applicantsignupPage, applicantwelcome, applicant_dash, createApplicant, offersPageView
+from .views import applicantloginPageView
+from .views import applicantsignupPage, applicantLogin, applicant_dash, createApplicant, offersPageView, updateSkills, updateSkillsPageView
 
 
 urlpatterns = [
     path('', indexPageView, name='index'),
-    path('applicantlogin/', applicantloginPage, name='applicantlogin'),
+    path('applicantlogin/', applicantloginPageView, name='applicantlogin'),
     path('applicantsignup/', applicantsignupPage, name='applicantsignup'),
-    path('applicantwelcome/', applicantwelcome, name='applicantwelcome'),
-    path('dashboard', applicant_dash, name='dashboard'),
+    path('applicantwelcome/', applicantLogin, name='applicantLogin'),
+    path('dashboard/', applicant_dash, name='dashboard'),
     path('createapplicant', createApplicant, name='createApplicant'),
-    path('applicantoffers', offersPageView, name='applicantoffers'),
+    path('applicantoffers/', offersPageView, name='applicantoffers'),
+    path('updateskills', updateSkills, name='updateskills'),
+    path('updateskillspage/', updateSkillsPageView, name='updateskillspage'),
 ]

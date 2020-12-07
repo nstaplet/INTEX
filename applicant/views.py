@@ -6,36 +6,33 @@ from organization.models import skill, offers_made
 from person.models import applicant
 from django.contrib import messages
 from .models import applicant_skills
+from django.contrib.auth.models import User
 
 def indexPageView(request) :
     return render(request, 'applicant/index.html')
 
-def applicantloginPage(request) :
+def applicantloginPageView(request) :
     return render(request, 'applicant/applicantlogin.html')
 
 def applicantsignupPage(request) :
     return render(request, 'applicant/applicantsignup.html')
 
-def applicantwelcome(request) :
+def applicantLogin(request) :
 
-    #username = request.POST['username']
-    #password = request.POST['password']
+    username = request.POST['username']
+    password = request.POST['password']
 
-    #user = authenticate(username = username, password = password)
+    user = authenticate(username = username, password = password)
 
-    
+    if user is not None:
+        data = applicant.objects.filter(username__exact=username)
+        context = {
+            'applicant' : data
+        }
+        return render(request, 'applicant/applicantwelcome.html', context)
+    else:
+       return render(request, 'applicant/applicantlogin.html')
 
-    #if user is not None:
-        # data = applicant.objects.filter(username__exact=username)
-        # context = {
-            # 'applicant' : data
-        # }
-        return render(request, 'applicant/applicantwelcome.html'
-        # , context
-        )
-
-    #else:
-    #    return render(request, 'applicant/applicantlogin.html')
 
 def applicant_dash(request):
 
@@ -87,9 +84,8 @@ def createApplicant(request):
         return render(request, 'applicant/applicantsignup.html', context)
 
     else:
-        applicant.objects.create(first_name=first_name, last_name=last_name, email=email, username=username, city=city, email_opt_in=email_opt_in,
-        # password=password
-        )
+        applicant.objects.create(first_name=first_name, last_name=last_name, email=email, username=username, city=city, email_opt_in=email_opt_in)
+        User.objects.create_user(username=username, email=email, password=password)
         
                         
             # return render(request, 'applicant/applicantsignup.html')
