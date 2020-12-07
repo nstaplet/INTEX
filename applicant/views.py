@@ -38,8 +38,10 @@ def applicantLogin(request) :
 
 def applicant_dash(request):
 
-    top_skills = set(display_top_skills())
+    top_skills = display_top_skills()
     # applicant_skills = get_applicant_skills(request.user.id)
+
+    # applicant_skills = get_applicant_skills(2)
 
     context = {
         'top_skills': top_skills,
