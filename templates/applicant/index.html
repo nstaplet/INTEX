@@ -1,6 +1,11 @@
 {% extends 'base.html'%}
-{%load static%}
-{%block content%}
+{% load compress %}
+{% load static%}
+{% block content%}
+
+{% compress css %}
+    <link type='text/x-scss' href="{%static 'xcss/test.scss' %}" rel='stylesheet'>
+{% endcompress %}
         <div>
             <h1>Wecome to the Black Cyber Recruiter!</h1>
             <br><br>
@@ -13,6 +18,8 @@
             <div>
                 <a href="{% url 'organizationlogin' %}">I am an organization looking to hire!</a>
             </div>
+
+            <a href='#' class='btn'>Button</a>
 
         </div>
 {% endblock %}
