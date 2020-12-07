@@ -13,7 +13,10 @@
    <div>
         <p>You have submitted the following skills:
             {% for skill in skills %}
+                <br>
                 {{ skill }}
+            {% empty %}
+                <p>Go add some skills!</p>
             {% endfor %}
         </p>
     </div>

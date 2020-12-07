@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
 from .algorithms import display_top_skills, get_applicant_skills
-from organization.models import skill, offers_made
+from organization.models import skill, offers_made, organization
 from person.models import applicant
 from django.contrib import messages
 from .models import applicant_skills
@@ -109,13 +109,17 @@ def createApplicant(request):
 
 
 def updateSkillsPageView(request):
-    data = skill.objects.all()
+    appID = request.POST['applicant_id']
+
+    data = skill.objects.all().distinct()
     editdata = []
     for skill_name in data:
         editdata.append(skill_name.skill_name[6:len(skill_name.skill_name)])
     context = {
         'skills' : editdata
     }
+
+    return render(request, 'applicant/updateskills.html', context)
 
 
 def updateSkills(request):
@@ -145,7 +149,16 @@ def updateSkills(request):
 
 
 def offersPageView(request):
-    appID = applicant.objects.filter()
-    data = offers_made.objects.filter()
+    appID = request.POST['applicant_id']
+    organizationdata = organization.objects.all()
+
+    offers_madedata = offers_made.objects.filter(applicant_id__exact=appID)
+    context = {
+        'allOffers' : offers_madedata,
+        'allOrganizations' : organizationdata
+    }
+
+# context needs to be all offers_made objects that have this applicants primary key as a foreign key
+    return render(request, 'applicant/applicantoffers.html', context)
 
 
