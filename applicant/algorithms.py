@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import applicant, message, offers_review
+from .models import message, offers_review, applicant_skills
+from person.models import applicant
 from organization.models import listing_skills, skill
 
 
@@ -34,8 +35,9 @@ def display_top_skills():
 
 
 def get_applicant_skills(userid):
-    oApplicant = applicant.objects.get(id=userid)
-    list_skills = oApplicant.skills
+    oApplicant = applicant.objects.get(applicant_id=userid)
+
+    list_skills = applicant_skills.objects.all()
 
     print(set(list_skills))
 

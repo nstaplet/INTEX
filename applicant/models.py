@@ -20,5 +20,6 @@ class message(models.Model):
     sender_applicant = models.BooleanField(default=True)
 
 class applicant_skills(models.Model):
-    applicant_id = models.ForeignKey(applicant, on_delete=models.CASCADE)
-    skill_id = models.ForeignKey(skill, on_delete=models.CASCADE)
+    id = models.AutoField(primary_key=True)
+    applicant = models.ForeignKey(applicant, on_delete=models.CASCADE)
+    skill = models.ForeignKey(skill, on_delete=models.CASCADE)
