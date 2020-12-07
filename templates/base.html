@@ -2,69 +2,11 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    {% if title %}
-    <title>Black Cyber Recruiter - {{ title }}</title>
-    {% else %}
-    <title>Black Cyber Recruiter</title>
-    {% endif %}
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <link rel='stylesheet' href={% static 'css/base.css' %}>
+<style>
+</style>
+{% block styles %}
 
-    {% block styles %}
-
-    {% endblock %}
-
-    <style>
-        .btn-main {
-            border: 0px solid #000;
-            overflow: hidden;
-            background: #000;
-            color: #fff;
-        }
-
-        bt-main:hover {
-            transform: scale(1.05);
-        }
-
-        btn-main:hover:after {
-            left: 170px;
-        }
-
-        btn-main:hover:before {
-            left: 170px;
-        }
-
-        btn-main:after {
-            content: '';
-            left: -70px;
-            bottom: -40px;
-            position: absolute;
-            width: 60px;
-            height: 200px;
-            background: rgba(255, 255, 255, 0.2);
-            z-index: 1;
-            transform: rotate(25deg);
-            transition: all 0.4s ease-out;
-        }
-
-        btn-main:before {
-            content: '';
-            left: -70px;
-            bottom: -40px;
-            position: absolute;
-            width: 60px;
-            height: 200px;
-            background: rgba(255, 255, 255, 0.35);
-            z-index: 1;
-            transform: rotate(25deg);
-            transition: all 0.3s ease-out;
-        }
-    </style>
+{% endblock %}
 </head>
 ​
 
@@ -72,19 +14,17 @@
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" href="#">Black Cyber Recruiter</a>
+                <a class="navbar-brand" href="{% url 'index' %}">Black Cyber Recruiter</a>
             </div>
             <ul class="nav navbar-nav">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Page 1</a></li>
-                <li><a href="#">Page 2</a></li>
-                <li><a href="#">Page 3</a></li>
+                <li><a href="{% url 'index' %}">Home</a></li>
+                <li><a href="{% url 'applicantlogin' %}">Applicant Login</a></li>
+                <li><a href="{% url 'organizationlogin' %}">Organization Login</a></li>
+                {% comment %} <li><a href="#">Page 3</a></li> {% endcomment %}
             </ul>
         </div>
     </nav>
-    <!-- <div>
-        <button class='btn-main'>Button</button>
-    </div> -->
+
     {%block content%}
     {% endblock %}
 

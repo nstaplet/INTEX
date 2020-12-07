@@ -1,0 +1,14 @@
+{% extends 'base.html'%}
+{%load static%}
+{%block content%}
+        
+    <form name="updateSkills" method="post" action="{% url 'updateSkills' %}">
+        <label for='skillsinput'>Skills:</label>
+        <input list='applicantskills' name='skillsinput' id='skillsinput'>
+                <datalist id='applicantskills'>
+                    {% for skillitem in skills %}
+                        <option value = {{ skillitem }}>
+                    {% endfor %}
+                </datalist>
+        <br><br>
+{% endblock %}

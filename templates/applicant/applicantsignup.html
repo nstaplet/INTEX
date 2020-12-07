@@ -37,19 +37,11 @@
                 <input type="text" name='city' id='city'>
                 <br><br>
 
-                <label for='skillsinput'>Skills:</label>
-                <input list='applicantskills' name='skillsinput' id='skillsinput'>
-                        <datalist id='applicantskills'>
-                                {% for skillitem in skills %}
-                                        <option value = {{ skillitem.skill_name }}>
-                                {% endfor %}
-                        </datalist>
-                <br><br>
-
                 <label for='email_opt_in'>Would you like to receive a weekly email with great matches for companies?</label>
                 <input type="checkbox" name='email_opt_in' id='email_opt_in' value='True'>
                 <br><br>
 
                 <button type="submit">Register</button>
         </form>
+        
 {% endblock %}
