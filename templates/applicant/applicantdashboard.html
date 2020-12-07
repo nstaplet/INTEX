@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load filters %}
 {% load static %}
 {% block content %}
 
@@ -10,9 +11,17 @@
 
 
     <div>
-        {% for skill in rec_skills %}
-            <p>{{skill.0}}: 
+        <h2>Top Skills in Demand</h2>
+        {% for skill in top_skills %} 
+            <p>{{skill|skill}}</p>
         {% endfor %}
+    </div>
+    <div>
+        <h2>Your Skills</h2>
+        {% for skill in applicant_skills %} 
+            <p>{{skill|skill}}</p>
+        {% endfor %}
+        <button type='button' class='btn'>Add Skill</button>
     </div>
 
 {% endblock %}

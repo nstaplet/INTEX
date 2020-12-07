@@ -36,10 +36,17 @@ def display_top_skills():
 
 def get_applicant_skills(userid):
     oApplicant = applicant.objects.get(applicant_id=userid)
+    print(userid)
+    print(oApplicant.applicant_id)
 
-    list_skills = applicant_skills.objects.all()
+    list_skills = applicant_skills.objects.all().filter(applicant_id=oApplicant.applicant_id)
+    list_skills_ = []
 
-    print(set(list_skills))
+    for skill_obj in list_skills:
+        skill_name_ = skill.objects.all().get(skill_id=skill_obj.skill_id)
+        list_skills_.append(skill_name_.skill_name)
+
+    return list_skills_
 
     # return set(list_skills)
 
