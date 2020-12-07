@@ -42,3 +42,10 @@ btn-main:before {
     transform: rotate(25deg);
     transition: all 0.3s ease-out;
 }
+
+
+ul,li {
+    display: inline;
+    margin: 0;
+    padding: 0;
+}
