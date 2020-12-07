@@ -38,7 +38,7 @@ def indexPageView(request) :
     #     'listings': listings,
     # }
 
-    return render(request, 'applicant/index.html', context)
+    return render(request, 'applicant/index.html')
 
 def applicantloginPageView(request) :
     return render(request, 'applicant/applicantlogin.html')
