@@ -127,7 +127,7 @@ def createApplicant(request):
         skillListNames = []
 
         for skillitem in skilldata:
-            skillListNames.append( skill.objects.filter(skill_id__exact=skillitem.skill).values_list('skill_name', flat=True)[0] )
+            skillListNames.append(skill.objects.filter(skill_id__exact=skillitem.skill).values_list('skill_name', flat=True)[0] )
 
         context = {
             'applicant' : applicantdata,
