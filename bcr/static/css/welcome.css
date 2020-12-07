@@ -1,10 +1,6 @@
-
-*{
-    font-family: 'Roboto', sans-serif;
-}
-
 body{
-    background-color:#222;
+    font-family: 'Roboto', sans-serif;
+    background-color:#151b29;
 }
 
 main{
@@ -20,13 +16,14 @@ main{
     background-size: cover;
     /* background-color: green; */
     border: 2px solid white;
+    border-radius: 10px;
     margin: 0 auto;
 }
 
 h1{
     font-size: 3rem;
     color:#fff;
-    margin-bottom: 20px;
+    margin-bottom: 20px;   
 }
 
 .class{
@@ -39,9 +36,18 @@ h1{
     color: thistle;
 }
 
+#btwrapper{
+    margin-top: 0 auto;
+    text-align: center;
+    align-items: center;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
 #wel_bt{
-    margin-top: 50px;
-    margin-left: 750px;
+    text-transform: uppercase;
+    margin-top: 15px;
     background: none;
     color:#ffa260;
     border: 3px solid;
