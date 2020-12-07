@@ -55,13 +55,26 @@ def applicantLogin(request) :
 
     if user is not None:
         data = applicant.objects.filter(username__exact=username)
+        
+        appInfo = applicant.objects.filter(username__exact=username).values_list('applicant_id', flat=True)[0]
+        skilldata = applicant_skills.objects.filter(applicant__exact=appInfo)
+        skillListNames = []
+        skillListNamesEdited = []
+
+        for skillitem in skilldata:
+            skillListNames.append( skill.objects.filter(skill_id__exact=skillitem.skill_id).values_list('skill_name', flat=True)[0] )
+        for skillname in skillListNames:
+            skillname = skillname[6:len(skillname)]
+            skillname = skillname.capitalize()
+            skillListNamesEdited.append(skillname)
+
         context = {
+            'skills' : skillListNamesEdited,
             'applicant' : data
         }
         return render(request, 'applicant/applicantwelcome.html', context)
     else:
        return render(request, 'applicant/applicantlogin.html')
-
 
 def applicant_dash(request):
 
@@ -79,7 +92,6 @@ def applicant_dash(request):
     }
 
     return render(request, 'applicant/applicantdashboard.html', context)
-
 
 def createApplicant(request):
     first_name = request.POST['first_name']
@@ -139,35 +151,35 @@ def createApplicant(request):
 
         return render(request, 'applicant/applicantwelcome.html', context)
 
-
 def updateSkillsPageView(request):
     appID = request.POST['applicant_id']
 
-    data = skill.objects.all().distinct()
+    data = skill.objects.all().distinct('skill_name')
     editdata = []
     for skill_name in data:
         editdata.append(skill_name.skill_name[6:len(skill_name.skill_name)])
     context = {
-        'skills' : editdata
+        'skills' : editdata,
+        'appID' : int(appID)
     }
 
     return render(request, 'applicant/updateskills.html', context)
 
-
 def updateSkills(request):
     skills = request.POST['skillsinput']
+    appID = request.POST['applicant_id']
 
     skills = skills.split()
     try:
         for skillitem in skills:
             skillitem = 'skill_' + skillitem
             applicant_skills.objects.create(
-                applicant=applicant.objects.get(email__exact=email),
-                skill=skill.objects.get(skill_name__iexact=skillitem)
+                skill=skill.objects.get(skill_name__iexact=skillitem),
+                applicant=applicant.objects.get(applicant_id__exact=appID)
             )
+    # If the skill does not exist yet, reroute to the same page
     except IndexError:
         messages.info(request, 'That skill is not currently in use.')
-
         data = skill.objects.all()
         editdata = []
         for skill_name in data:
@@ -175,10 +187,28 @@ def updateSkills(request):
         context = {
             'skills' : editdata
         }
+        return render(request, 'applicant/updateskills.html', context)
 
-        return render(request, 'applicant/applicantsignup.html', context)
 
+    # applicantdataid = applicant.objects.filter(email__exact=email).values_list('applicant_id', flat=True)[0]
+    applicantdata = applicant.objects.filter(applicant_id__exact=appID)
+    skilldata = applicant_skills.objects.filter(applicant__exact=appID)
+    skillListNames = []
+    skillListNamesEdited = []
 
+    for skillitem in skilldata:
+        skillListNames.append( skill.objects.filter(skill_id__exact=skillitem.skill_id).values_list('skill_name', flat=True)[0] )
+    for skillname in skillListNames:
+        skillname = skillname[6:len(skillname)]
+        skillname = skillname.capitalize()
+        skillListNamesEdited.append(skillname)
+
+    context = {
+        'skills' : skillListNamesEdited,
+        'applicant' : applicantdata
+    }
+
+    return render(request, 'applicant/applicantwelcome.html', context)
 
 def offersPageView(request):
     appID = request.POST['applicant_id']
@@ -190,7 +220,5 @@ def offersPageView(request):
         'allOrganizations' : organizationdata
     }
 
-# context needs to be all offers_made objects that have this applicants primary key as a foreign key
+    # context needs to be all offers_made objects that have this applicants primary key as a foreign key
     return render(request, 'applicant/applicantoffers.html', context)
-
-
