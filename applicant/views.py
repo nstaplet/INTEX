@@ -68,11 +68,15 @@ def applicant_dash(request):
     top_skills = display_top_skills()
     # applicant_skills = get_applicant_skills(request.user.id)
 
-    # applicant_skills = get_applicant_skills(2)
+    applicant_skills_list = get_applicant_skills(2)
+
+    for s in applicant_skills_list:
+        if s in top_skills:
+            top_skills.remove(s)
 
     context = {
-        'top_skills': top_skills,
-        'applicant_skills': applicant_skills,
+        'top_skills': top_skills[0:5],
+        'applicant_skills': applicant_skills_list,
     }
 
     return render(request, 'applicant/applicantdashboard.html', context)

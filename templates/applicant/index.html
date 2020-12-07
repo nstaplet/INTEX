@@ -2,10 +2,10 @@
 {% load compress %}
 {% load static%}
 {% block content%}
-
+{% comment %} 
 {% compress css %}
     <link type='text/x-scss' href="{%static 'xcss/test.scss' %}" rel='stylesheet'>
-{% endcompress %}
+{% endcompress %} {% endcomment %}
         <div>
             <h1>Wecome to the Black Cyber Recruiter!</h1>
             <br><br>
