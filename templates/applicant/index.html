@@ -1,25 +1,21 @@
 {% extends 'base.html'%}
-{% load compress %}
 {% load static%}
 {% block content%}
 
-{% compress css %}
-    <link type='text/x-scss' href="{%static 'xcss/test.scss' %}" rel='stylesheet'>
-{% endcompress %}
-        <div>
-            <h1>Wecome to the Black Cyber Recruiter!</h1>
-            <br><br>
-            <p>Providing Black individuals with better opportunities</p>
+<div>
+    <h1>Wecome to the Black Cyber Recruiter!</h1>
+    <br><br>
+    <p>Providing Black individuals with better opportunities</p>
 
-            <div>
-            <a href="{% url 'applicantlogin' %}">I am looking for a job!</a>
-            </div>
+    <div>
+        <a href="{% url 'applicantlogin' %}">I am looking for a job!</a>
+    </div>
 
-            <div>
-                <a href="{% url 'organizationlogin' %}">I am an organization looking to hire!</a>
-            </div>
+    <div>
+        <a href="{% url 'organizationlogin' %}">I am an organization looking to hire!</a>
+    </div>
 
-            <a href='#' class='btn'>Button</a>
+    <a href='#' class='btn'>Button</a>
 
-        </div>
+</div>
 {% endblock %}

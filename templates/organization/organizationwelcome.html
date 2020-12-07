@@ -1,6 +1,5 @@
 {% extends 'base.html'%}
 {% load static %}
-
 {% block styles %}
 <link rel="stylesheet" href="{% static 'css/welcome.css' %}">
 <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -45,51 +44,65 @@
                         </div>
                 </div>
 
-                <form name="organizationwelcome" method="post" action="{% url 'organizationwelcome' %}">
-                        {% csrf_token %}
-                        <label for='status'>Job status:</label>
-                        <input type="text" name='status' id='status'>
-                        <br><br>
-                        <label for='city'>City:</label>
-                        <input type="text" name='city' id='city'>
-                        <br><br>
-                        <label for='job_title'>Job Title</label>
-                        <input type="text" name='job_title' id='job_title'>
-                        <br><br>
-                        <label for='contracts'>Contract type:</label>
-                        <select name="contracts" id="contracts">
-                                <option value="default" disabled selected>Select one</option>
-                                <option value="3 month">3 month</option>
-                                <option value="6 month">6 month</option>
-                                <option value="1 year">1 year</option>
-                                <option value="Part-Time">Part-Time</option>
-                                <option value="Full-Time">Full-Time</option>
-                        </select>
-                        <br><br>
-                        <p>Relocation: Y/N</p>
-                        <label for='relocation'>Yes</label>
-                        <input type="radio" name='relocation' id='relocation'>
-                        <label for='relocation'>No</label>
-                        <input type="radio" name='relocation' id='relocation'>
-                        <br><br>
-                        <br><br>
-                        <label for='description'>Job description:</label>
-                        <textarea type="textarea" name='description' id='description' rows="7" , cols="20">
-                                Job requirements...
-                        </textarea>
+                <div class="panel">
+                        <div>
+                                <form name="organizationwelcome" method="post" action="{% url 'organizationwelcome' %}">
+                                        {% csrf_token %}
+                                        <h3>Create a job listing</h3>
+                                        <hr>
+                                        <br>
+                                        <label for='status'>Job status:</label>
+                                        <input type="text" name='status' id='status'>
+                                        <br><br>
+                                        <label for='city'>City:</label>
+                                        <input type="text" name='city' id='city'>
+                                        <br><br>
+                                        <label for='job_title'>Job Title</label>
+                                        <input type="text" name='job_title' id='job_title'>
+                                        <br><br>
+                                        <label for='contracts'>Contract type:</label>
+                                        <select name="contracts" id="contracts">
+                                                <option value="default" disabled selected>Select one</option>
+                                                <option value="3 month">3 month</option>
+                                                <option value="6 month">6 month</option>
+                                                <option value="1 year">1 year</option>
+                                                <option value="Part-Time">Part-Time</option>
+                                                <option value="Full-Time">Full-Time</option>
+                                        </select>
+                                        <br><br>
 
+                                        <div>
+                                                <span>Relocation: Y/N</span>
+                                        </div>
 
-                        <br><br>
-                        <button type="submit">Register</button>
-                </form>
+                                        <label for='relocation'>Yes</label>
+                                        <input type="radio" name='relocation' id='relocation'>
+                                        <label for='relocation'>No</label>
+                                        <input type="radio" name='relocation' id='relocation'>
+                                        <br><br>
+                                        <div>
+                                                <label for='description'>Job description:</label>
+                                        </div>
+                                        <textarea type="textarea" name='description' id='description' rows="15" ,
+                                                cols="60"></textarea>
+                                        <br><br>
+                                        <button type="submit">Register</button>
+                                </form>
+                        </div>
+                        <hr>
+                        <div>
+                                <p>Current job listing</p>
+                        </div>
+                </div>
 
                 <div class="panel">
                         <div class="type-select">
                                 <img src="https://images.unsplash.com/photo-1573164713619-24c711fe7878?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2250&q=80"
                                         alt="applicant" class="cus-type-img">
-                                <h2 class="cus-type-header">I am looking for a job</h2>
+                                <h2 class="cus-type-header">Mentor sign-up</h2>
                                 <a href="#" class="signup-button">sign-up</a>
                         </div>
+                        <hr>
                         <div class="type-select">
                                 <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2250&q=80"
                                         alt="applicant" class="cus-type-img">
