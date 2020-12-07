@@ -1,5 +1,38 @@
 {% extends 'base.html'%}
 {%load static%}
 {%block content%}
-        <h1>Welcome page for applicants</h1>
+
+    <h1>Welcome page for applicants</h1>
+
+    <div>
+        {% for app in applicant %}
+            <h1>Welcome, {{app.first_name}} {{app.last_name}}</h1>
+        {% endfor %}
+    </div>
+
+   <div>
+        <p>You have submitted the following skills:
+            {% for skill in skills %}
+                {{ skill }}
+            {% endfor %}
+        </p>
+    </div>
+
+    {% for app in applicant %}
+        <form name="updateskills" method="post" action="{% url 'applicantoffers' %}">
+            {% csrf_token %}
+            <input type='hidden' value={{app.applicant_id}} name='applicant_id'>
+
+            <button type="submit">View your Offers</button>
+        </form>
+
+        <form name="viewoffers" method="post" action="{% url 'applicantoffers' %}">
+            {% csrf_token %}
+            <input type='hidden' value={{app.applicant_id}} name='applicant_id'>
+
+            <button type="submit">View your Offers</button>
+        </form>
+    {% endfor %}
+
+
 {% endblock %}

@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import indexPageView
 from .views import applicantloginPage
-from .views import applicantsignupPage, applicantwelcome, applicant_dash, createApplicant
+from .views import applicantsignupPage, applicantwelcome, applicant_dash, createApplicant, offersPageView
 
 
 urlpatterns = [
@@ -10,5 +10,6 @@ urlpatterns = [
     path('applicantsignup/', applicantsignupPage, name='applicantsignup'),
     path('applicantwelcome/', applicantwelcome, name='applicantwelcome'),
     path('dashboard', applicant_dash, name='dashboard'),
-    path('createapplicant', createApplicant, name='createApplicant')
+    path('createapplicant', createApplicant, name='createApplicant'),
+    path('applicantoffers', offersPageView, name='applicantoffers'),
 ]
