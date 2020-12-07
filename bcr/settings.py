@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'applicant.apps.ApplicantConfig',
     'organization.apps.OrganizationConfig',
     'person.apps.PersonConfig',
+    # 'compressor',
 ]
 
 MIDDLEWARE = [
@@ -132,3 +133,13 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'bcr/static')
 ]            
+
+# STATICFILES_FINDERS = (
+#     'django.contrib.staticfiles.finders.FileSystemFinder',
+#     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+#     'compressor.finders.CompressorFinder',
+# )
+
+# COMPRESS_PRECOMPILERS = (
+#     ('text/x-scss', 'django_libsass.SassCompiler'),
+# )

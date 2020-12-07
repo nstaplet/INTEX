@@ -1,16 +1,43 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
-from .algorithms import display_top_skills, get_applicant_skills
-from organization.models import skill, offers_made, organization
+
+# get the models
+from organization.models import skill, offers_made, organization, mentor, listing_skills, listing
+from .models import applicant_skills, message
 from person.models import applicant
+
+# get other fucntions
+from .algorithms import display_top_skills, get_applicant_skills
 from django.contrib import messages
-from .models import applicant_skills
 from django.contrib.auth.models import User
 
 
 
 def indexPageView(request) :
+
+    # applicants = applicant.objects.all()
+    # organizations = organization.objects.all()
+    # skills = skill.objects.all()
+    # offers = offers_made.objects.all()
+    # applicant_skills_lst = applicant_skills.objects.all()
+    # messages = message.objects.all()
+    # mentors = mentor.objects.all()
+    # listing_skills_lst = listing_skills.objects.all()
+    # listings = listing.objects.all()
+
+    # context = {
+    #     'applicants': applicants,
+    #     'organizations': organizations,
+    #     'skills': skills,
+    #     'offers': offers,
+    #     'applicant_skills': applicant_skills_lst,
+    #     'messages': messages,
+    #     'mentors': mentors,
+    #     'listings_skills': listing_skills_lst,
+    #     'listings': listings,
+    # }
+
     return render(request, 'applicant/index.html')
 
 def applicantloginPageView(request) :
@@ -54,11 +81,15 @@ def applicant_dash(request):
     top_skills = display_top_skills()
     # applicant_skills = get_applicant_skills(request.user.id)
 
-    # applicant_skills = get_applicant_skills(2)
+    applicant_skills_list = get_applicant_skills(2)
+
+    for s in applicant_skills_list:
+        if s in top_skills:
+            top_skills.remove(s)
 
     context = {
-        'top_skills': top_skills,
-        'applicant_skills': applicant_skills,
+        'top_skills': top_skills[0:5],
+        'applicant_skills': applicant_skills_list,
     }
 
     return render(request, 'applicant/applicantdashboard.html', context)
@@ -112,7 +143,7 @@ def createApplicant(request):
         skillListNames = []
 
         for skillitem in skilldata:
-            skillListNames.append( skill.objects.filter(skill_id__exact=skillitem.skill).values_list('skill_name', flat=True)[0] )
+            skillListNames.append(skill.objects.filter(skill_id__exact=skillitem.skill).values_list('skill_name', flat=True)[0] )
 
         context = {
             'applicant' : applicantdata,
