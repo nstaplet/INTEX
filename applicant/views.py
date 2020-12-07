@@ -92,11 +92,11 @@ def createApplicant(request):
         
         applicantdata = applicant.objects.filter(username__exact=username)
         applicantdataid = applicant.objects.filter(email__exact=email).values_list('applicant_id', flat=True)[0]
-        skilldata = applicant_skills.objects.filter(applicant_id__exact=applicantdataid)
+        skilldata = applicant_skills.objects.filter(applicant__exact=applicantdataid)
         skillListNames = []
 
         for skillitem in skilldata:
-            skillListNames.append( skill.objects.filter(skill_id__exact=skillitem.skill_id).values_list('skill_name', flat=True)[0] )
+            skillListNames.append( skill.objects.filter(skill_id__exact=skillitem.skill).values_list('skill_name', flat=True)[0] )
 
         context = {
             'applicant' : applicantdata,
@@ -128,8 +128,8 @@ def updateSkills(request):
         for skillitem in skills:
             skillitem = 'skill_' + skillitem
             applicant_skills.objects.create(
-                applicant_id=applicant.objects.get(email__exact=email),
-                skill_id=skill.objects.get(skill_name__iexact=skillitem)
+                applicant=applicant.objects.get(email__exact=email),
+                skill=skill.objects.get(skill_name__iexact=skillitem)
             )
     except IndexError:
         messages.info(request, 'That skill is not currently in use.')
@@ -150,7 +150,7 @@ def offersPageView(request):
     appID = request.POST['applicant_id']
     organizationdata = organization.objects.all()
 
-    offers_madedata = offers_made.objects.filter(applicant_id__exact=appID)
+    offers_madedata = offers_made.objects.filter(applicant__exact=appID)
     context = {
         'allOffers' : offers_madedata,
         'allOrganizations' : organizationdata
