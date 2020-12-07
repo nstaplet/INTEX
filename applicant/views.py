@@ -1,17 +1,44 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
-from .algorithms import display_top_skills, get_applicant_skills
-from organization.models import skill, offers_made, organization
+
+# get the models
+from organization.models import skill, offers_made, organization, mentor, listing_skills, listing
+from .models import applicant_skills, message
 from person.models import applicant
+
+# get other fucntions
+from .algorithms import display_top_skills, get_applicant_skills
 from django.contrib import messages
-from .models import applicant_skills
 from django.contrib.auth.models import User
 
 
 
 def indexPageView(request) :
-    return render(request, 'applicant/index.html')
+
+    # applicants = applicant.objects.all()
+    # organizations = organization.objects.all()
+    # skills = skill.objects.all()
+    # offers = offers_made.objects.all()
+    # applicant_skills_lst = applicant_skills.objects.all()
+    # messages = message.objects.all()
+    # mentors = mentor.objects.all()
+    # listing_skills_lst = listing_skills.objects.all()
+    # listings = listing.objects.all()
+
+    # context = {
+    #     'applicants': applicants,
+    #     'organizations': organizations,
+    #     'skills': skills,
+    #     'offers': offers,
+    #     'applicant_skills': applicant_skills_lst,
+    #     'messages': messages,
+    #     'mentors': mentors,
+    #     'listings_skills': listing_skills_lst,
+    #     'listings': listings,
+    # }
+
+    return render(request, 'applicant/index.html', context)
 
 def applicantloginPageView(request) :
     return render(request, 'applicant/applicantlogin.html')
