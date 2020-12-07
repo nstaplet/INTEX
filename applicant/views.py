@@ -66,9 +66,8 @@ def applicantLogin(request) :
 def applicant_dash(request):
 
     top_skills = display_top_skills()
-    # applicant_skills = get_applicant_skills(request.user.id)
 
-    applicant_skills_list = get_applicant_skills(2)
+    applicant_skills_list = get_applicant_skills(2)  # request.user.id
 
     for s in applicant_skills_list:
         if s in top_skills:
