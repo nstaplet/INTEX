@@ -1,0 +1,25 @@
+{% extends 'base.html'%}
+{%load static%}
+{%block content%}
+
+    <table>
+        <tr>
+            <th>Organization</th>
+            <th>Job Title</th>
+            <th>City</th>
+            <th>Status</th>
+        </tr>
+            {% for offer in allOffers %}
+                <tr>
+                    <td>{{offer.organization_id}}</td>
+                    <td>{{offer.job_title}}</td>
+                    <td>{{offer.city}}</td>
+                    <td>{{offer.status}}</td>
+                </tr>
+            {% empty %}
+                <br>
+                <p>We're sorry, it looks like you haven't received an offer yet.</p>
+            {% endfor %}
+    </table
+
+{% endblock %}
