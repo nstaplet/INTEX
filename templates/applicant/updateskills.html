@@ -3,13 +3,18 @@
 {%block content%}
         
     <form name="updateSkills" method="post" action="{% url 'updateskills' %}">
+        {% csrf_token %}
         <label for='skillsinput'>Skills:</label>
         <input list='applicantskills' name='skillsinput' id='skillsinput'>
             <datalist id='applicantskills'>
                 {% for skillitem in skills %}
-                    <option value = {{ skillitem }}>
+                    <option value = {{skillitem}}>
                 {% endfor %}
             </datalist>
+
+        <input type='hidden' value={{appID}} name='applicant_id'>
+
+        <button type="submit">Update</button>
     </form>
         <br><br>
 {% endblock %}
