@@ -5,6 +5,7 @@
     <form name="updateskillsview" method="post" action="{% url 'createmessage' %}">
         {% csrf_token %}
         <input type='hidden' value={{appID}} name='app-id'>
+        <input type='hidden' value='True' name='sender'>
 
         <label for='recipient'>Recipient:</label>
         <input type='text' name='recipient' required>
