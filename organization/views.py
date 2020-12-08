@@ -90,5 +90,5 @@ def createJobListing(request):
 
 def companyLogout(request):
     logout(request)
-    messages.info(request, "Logged out successfully!")
+    messages.info(request, "You have logged out successfully!")
     return redirect("index")

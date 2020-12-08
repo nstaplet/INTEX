@@ -1,6 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 
 # get the models
 from organization.models import skill, offers_made, organization, mentor, listing_skills, listing
@@ -81,7 +81,6 @@ def applicantLogin(request) :
 
     else:
        return render(request, 'applicant/applicantlogin.html')
-
 
 
 def applicant_dash(request):
@@ -284,3 +283,8 @@ def createMessage(request):
         }
 
         return render(request, 'applicant/messages.html', context)
+
+def applicantLogout(request):
+    logout(request)
+    messages.info(request, "You have logged out successfully!")
+    return redirect("index")

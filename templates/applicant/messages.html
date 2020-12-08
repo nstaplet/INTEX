@@ -2,63 +2,61 @@
 {%load static%}
 {%block content%}
 
-    {% if messages %}
-        {% for message in messages %}
-            {% if message.tags %}
-                <script>
-                    alert("{{ message }}");
-                </script>
-            {% endif %}
-        {% endfor %}
-    {% endif %}
+{% if messages %}
+{% for message in messages %}
+{% if message.tags %}
+<script>
+    alert("{{ message }}");
+</script>
+{% endif %}
+{% endfor %}
+{% endif %}
 
-    <form name="updateskillsview" method="post" action="{% url 'createmessage' %}">
-        {% csrf_token %}
-        <input type='hidden' value={{appID}} name='app-id'>
-        <input type='hidden' value=True name='sender'>
+<form name="updateskillsview" method="post" action="{% url 'createmessage' %}">
+    {% csrf_token %}
+    <input type='hidden' value={{appID}} name='app-id'>
+    <input type='hidden' value=True name='sender'>
 
-        <label for='recipient'>Recipient:</label>
-        <input type='text' name='recipient' required>
-        <br><br>
-        <label for='content'>Message:</label>
-        <textarea type='text' name='content' required style="width: 500px; height: 200px;"></textarea>
-        <br><br>
-        <button type="submit">Send Message</button>
-    </form>
+    <label for='recipient'>Recipient:</label>
+    <input type='text' name='recipient' required>
+    <br><br>
+    <label for='content'>Message:</label>
+    <textarea type='text' name='content' required style="width: 500px; height: 200px;"></textarea>
+    <br><br>
+    <button type="submit">Send Message</button>
+</form>
 
+<br>
+<table>
+    <tr>
+        <th></th>
+        <th>Sender</th>
+        <th>Organization</th>
+        <th>Time Sent</th>
+        <th>Status</th>
+    </tr>
+    {% for message in allMessages %}
+    <tr>
+        <td>
+            <form name="updateskillsview" method="post" action="{% url 'singlemessageview' %}">
+                {% csrf_token %}
+                <input type='hidden' value={{message.message_id}} name='message-id'>
+
+                <button type="submit">View Message</button>
+            </form>
+        </td>
+        <td>{{message.mentor.first_name}} {{message.mentor.last_name}}</td>
+        <td>{{message.mentor.organization.company_name}}</td>
+        <td>{{message.timesent}}</td>
+        {% if message.sender_applicant == True %}
+        <td>Sent</td>
+        {% else %}
+        <td>Received</td>
+        {% endif %}
+
+    </tr>
+    {% empty %}
     <br>
-    <table>
-        <tr>
-            <th></th>
-            <th>Sender</th>
-            <th>Organization</th>
-            <th>Time Sent</th>
-            <th>Status</th>
-        </tr>
-            {% for message in allMessages %}
-                <tr>
-                    <td>
-                        <form name="updateskillsview" method="post" action="{% url 'singlemessageview' %}">
-                            {% csrf_token %}
-                            <input type='hidden' value={{message.message_id}} name='message-id'>
-
-                            <button type="submit">View Message</button>
-                        </form>
-                    </td>
-                    <td>{{message.mentor.first_name}} {{message.mentor.last_name}}</td>
-                    <td>{{message.mentor.organization.company_name}}</td>
-                    <td>{{message.timesent}}</td>
-                    {% if message.sender_applicant == True %}
-                        <td>Sent</td>
-                    {% else %}
-                        <td>Received</td>
-                    {% endif %}
-
-                </tr>
-            {% empty %}
-                <br>
-                <p>We're sorry, it looks like you haven't received any messages yet.</p>
-            {% endfor %}
-    </table
-
-{% endblock %}
+    <p>We're sorry, it looks like you haven't received any messages yet.</p>
+    {% endfor %}
+</table {% endblock %}

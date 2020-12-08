@@ -1,46 +1,57 @@
 {% extends 'base.html'%}
 {%load static%}
 {%block content%}
-
-    <div>
-        {% for app in applicant %}
-            <h1>Welcome, {{app.first_name}} {{app.last_name}}</h1>
-        {% endfor %}
-    </div>
-
-   <div>
-        <p>You have submitted the following skills:
-            {% for skill in skills %}
-                <br>
-                {{ skill }}
-            {% empty %}
-                <p>Go add some skills!</p>
-            {% endfor %}
-        </p>
-    </div>
-
+<!-- {% if messages %}
+{% for message in messages %}
+{% if message.tags %}
+<script>
+    alert("{{ message }}");
+</script>
+{% endif %}
+{% endfor %}
+{% endif %} -->
+<div>
+    <a href="{% url 'applicantLogout' %}">Logout</a>
+</div>
+<div>
     {% for app in applicant %}
-        <form name="updateskillsview" method="post" action="{% url 'updateskillspage' %}">
-            {% csrf_token %}
-            <input type='hidden' value={{app.applicant_id}} name='applicant_id'>
-
-            <button type="submit">Add a Skill</button>
-        </form>
-
-        <form name="viewoffers" method="post" action="{% url 'applicantoffers' %}">
-            {% csrf_token %}
-            <input type='hidden' value={{app.applicant_id}} name='applicant_id'>
-
-            <button type="submit">View your Offers</button>
-        </form>
-
-        <form name="viewmessages" method="post" action="{% url 'messagespageview' %}">
-            {% csrf_token %}
-            <input type='hidden' value={{app.applicant_id}} name='applicant_id'>
-
-            <button type="submit">Messages</button>
-        </form>
+    <h1>Welcome, {{app.first_name}} {{app.last_name}}</h1>
     {% endfor %}
+</div>
+
+<div>
+    <p>You have submitted the following skills:
+        {% for skill in skills %}
+        <br>
+        {{ skill }}
+        {% empty %}
+    <p>Go add some skills!</p>
+    {% endfor %}
+    </p>
+</div>
+
+{% for app in applicant %}
+<form name="updateskillsview" method="post" action="{% url 'updateskillspage' %}">
+    {% csrf_token %}
+    <input type='hidden' value={{app.applicant_id}} name='applicant_id'>
+
+    <button type="submit">Add a Skill</button>
+</form>
+
+<form name="viewoffers" method="post" action="{% url 'applicantoffers' %}">
+    {% csrf_token %}
+    <input type='hidden' value={{app.applicant_id}} name='applicant_id'>
+
+    <button type="submit">View your Offers</button>
+</form>
+
+<form name="viewmessages" method="post" action="{% url 'messagespageview' %}">
+    {% csrf_token %}
+    <input type='hidden' value={{app.applicant_id}} name='applicant_id'>
+
+    <button type="submit">Messages</button>
+</form>
+{% endfor %}
 
 
 {% endblock %}
