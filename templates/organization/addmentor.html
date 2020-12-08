@@ -4,4 +4,24 @@
 
     {% comment %} form with mentor information inputs {% endcomment %}
 
+    <form name="creatementor" method="post" action="{% url 'creatementor' %}">
+        {% csrf_token %}
+        {% for org in orgID %}
+            <input type='hidden' value={{org.organization_id}} name='orgID'>
+        {% endfor %}
+
+        <label for='first-name'>First Name:</label>
+        <input type='text' name='first-name' required>
+        <br><br>
+        <label for='last-name'>Last Name:</label>
+        <input type='text' name='last-name' required>
+        <br><br>
+        <label for='industry-name'>Industry:</label>
+        <input type='text' name='industry-name' required>
+        <br><br>
+
+        <button type="submit">Create</button>
+    </form>
+
+
 {% endblock %}

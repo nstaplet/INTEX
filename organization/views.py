@@ -161,4 +161,31 @@ def viewApplicant(request, id):
 # mentor stuff
 def mentorAddPageView(request):
     # pass organization id, nothing else should be necessary
+    orgID = request.POST['orgID']
+
+    context = {
+        'orgID' : orgID
+    }
+
+    return render(request, 'organization/addmentor.html', context)
+
+def createMentor(request):
+    # create mentor object, reroute to organizationwelcome and pass orgInfo
+    orgID = request.POST['orgID']
+    fName = request.POST['first-name']
+    lName = request.POST['last-name']
+    indName = request.POST['industry-name']
+
+    orgObject = organization.objects.get(organization_id=orgID)
+
+    mentor.objects.create(organization=orgObject, first_name=fName, last_name=lName, industry=indName)
+
+
+    data = organization.objects.filter(company_id__exact=orgID)
+    context = {'orgInfo': data}
+    return render(request, 'organization/organizationwelcome.html', context)
+
+def viewMentors(request):
     pass
+
+
