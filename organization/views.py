@@ -5,6 +5,7 @@ from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
 from .models import organization, skill, listing, listing_skills, mentor, offers_made
 from django.contrib import messages
+from django.contrib.auth.models import User
 
 def organizationWelcomePageView(request) :
 
@@ -14,7 +15,7 @@ def organizationWelcomePageView(request) :
     #user = authenticate(username = username, password = password)
 
     #if user is not None:
-        return render(request, 'organization/organizationwelcome.html')
+    return render(request, 'organization/organizationwelcome.html')
 
     #else:
     #    return render(request, 'organization/organizationlogin.html')
@@ -32,6 +33,22 @@ def createOrganization(request):
     company_address = request.POST['company_address']
     size = request.POST['company_size']
     sectors = request.POST['company_sector']
+    
+    if (organization.objects.filter(company_name__exact=company_name).exists()):
+        messages.info(request, 'That company name has already been claimed. Please try again.')
+        return render(request, 'organization/organizationsignup.html')
+
+
+    elif (organization.objects.filter(company_email__exact=company_email).exists()):
+        messages.info(request, 'That company email has already been claimed. Please try again.')
+        return render(request, 'organization/organizationsignup.html')
+
+    else:
+        organization.objects.create(company_name = company_name, company_email = company_email, company_address = company_address, size=size, sectors = sectors)
+        User.objects.create_user(username=company_email, password = company_password)
+        data = organization.objects.filter(company_email__exact=company_email)
+        context = {'orgInfo': data}
+        return render(request, 'organization/organizationwelcome.html', context)
     # if request.method == 'POST':
     # new_company = organization()
 
@@ -42,25 +59,7 @@ def createOrganization(request):
     # new_company.size = request.POST.get['company_size']
     # new_company.sectors = request.POST.get['company_sector']
     
-    new_company.save()
-
-
-    if (organization.objects.filter(company_name__exact=company_name).exists()):
-        messages.info(request, 'That company name has already been claimed. Please try again.')
-    
-        return render(request, 'organization/organizationsignup.html')
-
-
-    elif (organization.objects.filter(company_email__exact=company_email).exists()):
-        messages.info(request, 'That company email has already been claimed. Please try again.')
-    
-        return render(request, 'organization/organizationsignup.html')
-
-    else:
-        organization.objects.create(company_name = company_name, company_email = company_email, company_address = company_address, size=size, sectors = sectors)
-    User.objects.create_user(company_email=company_email, company_password = company_password)
-    
-    return render(request, 'organization/organizationwelcome.html')
+    # new_company.save()
 
 def companyLogin(request):
     username = request.POST['company_email']
@@ -70,7 +69,43 @@ def companyLogin(request):
 
     if user is not None:
         data = organization.objects.filter(company_email__exact=username)
-        return render(request, 'organization/organizationwelcome.html')
+        context = {'orgInfo': data}
+        return render(request, 'organization/organizationwelcome.html', context)
     
     else:
         return render(request, 'organization/organizationlogin.html')
+    
+def createJobListing(request):
+    status = request.POST['status']
+    city = request.POST['city']
+    job_title = request.POST['job_title']
+    contracts = request.POST['contracts']
+    relocation = request.POST['relocation']
+    description = request.POST['description']
+    compensation = request.POST['compensation']
+    organization_int = request.POST['orgID']
+    organization_int = int(organization_int)
+
+
+    if (listing.objects.filter(job_title__exact=job_title).exists()):
+        messages.info(request, 'You have already posted a listing with job title ' + job_title + '.')
+        return render(request,'organization/organizationwelcome.html')
+    
+    else:
+        listing.objects.create(
+            status = status, 
+            city = city, 
+            job_title = job_title, 
+            contracts = contracts,
+            relocation = relocation,
+            compensation = compensation, 
+            description = description,
+            
+            organization = organization.objects.get(organization_id__exact = organization_int)
+            
+        )
+
+        data = listing.objects.filter(organization__exact=organization_int)
+        context = {'ListingInfo': data}
+        return render(request, 'organization/organizationwelcome.html', context)
+

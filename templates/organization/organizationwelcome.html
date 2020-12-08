@@ -46,19 +46,26 @@
 
                 <div class="panel">
                         <div>
-                                <form name="organizationwelcome" method="post" action="{% url 'organizationwelcome' %}">
+                                <form name="organizationwelcome" method="post" action="{% url 'createJobListing' %}">
                                         {% csrf_token %}
                                         <h3>Create a job listing</h3>
                                         <hr>
                                         <br>
+                                        <input type="hidden" name='orgID' id='orgID' value="{% for x in orgInfo %}
+                                                {{x.organization_id}}
+                                                {% endfor%}
+                                                ">
                                         <label for='status'>Job status:</label>
-                                        <input type="text" name='status' id='status'>
+                                        <input type="text" name='status' id='status' required>
                                         <br><br>
                                         <label for='city'>City:</label>
-                                        <input type="text" name='city' id='city'>
+                                        <input type="text" name='city' id='city' required>
                                         <br><br>
                                         <label for='job_title'>Job Title</label>
-                                        <input type="text" name='job_title' id='job_title'>
+                                        <input type="text" name='job_title' id='job_title' required>
+                                        <br><br>
+                                        <label for='compensation'>Compensation: (Optional)</label>
+                                        <input type="number" step="0.01" min="0" name='compensation' id='compensation'>
                                         <br><br>
                                         <label for='contracts'>Contract type:</label>
                                         <select name="contracts" id="contracts">
@@ -76,9 +83,9 @@
                                         </div>
 
                                         <label for='relocation'>Yes</label>
-                                        <input type="radio" name='relocation' id='relocation'>
+                                        <input type="radio" name='relocation' id='relocation' value="True">
                                         <label for='relocation'>No</label>
-                                        <input type="radio" name='relocation' id='relocation'>
+                                        <input type="radio" name='relocation' id='relocation' value="False">
                                         <br><br>
                                         <div>
                                                 <label for='description'>Job description:</label>
@@ -92,6 +99,18 @@
                         <hr>
                         <div>
                                 <p>Current job listing</p>
+                                <div class="listing-item">
+                                        {% for item in ListingInfo%}
+                                        {{ item.status}}
+                                        {{ item.city}}
+                                        {{ item.job_title}}
+                                        {{ item.contracts}}
+                                        {{ item.relocation}}
+                                        {{ item.compensation}}
+                                        {{ item.description}}
+                                        {{ item.organization_id}}
+                                        {% endfor %}
+                                </div>
                         </div>
                 </div>
 

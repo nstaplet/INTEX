@@ -122,7 +122,6 @@ def createApplicant(request):
         applicant.objects.create(first_name=first_name, last_name=last_name, email=email, username=username, city=city, email_opt_in=email_opt_in)
         User.objects.create_user(username=username, email=email, password=password)
         
-                        
             # return render(request, 'applicant/applicantsignup.html')
         
         applicantdata = applicant.objects.filter(username__exact=username)
