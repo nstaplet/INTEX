@@ -17,10 +17,16 @@
                 <a class="navbar-brand" href="{% url 'index' %}">Black Cyber Recruiter</a>
             </div>
             <ul class="nav navbar-nav">
-                <li><a href="{% url 'index' %}">Home</a></li>
-                <li><a href="{% url 'applicantlogin' %}">Applicant Login</a></li>
-                <li><a href="{% url 'organizationlogin' %}">Organization Login</a></li>
+                {% if user %}
+                    <li><a href="{% url 'organizationwelcome/' %}">Home</a></li>
+                    <li><a href="{% url 'organizationwelcome' %}">Home</a></li>
+                    <li><a href="{% url 'companyLogout/' %}">Logout</a></li>
+                {% else %}
                 {% comment %} <li><a href="#">Page 3</a></li> {% endcomment %}
+                    <li><a href="{% url 'index' %}">Home</a></li>
+                    <li><a href="{% url 'applicantlogin' %}">Applicant Login</a></li>
+                    <li><a href="{% url 'companyLogin/' %}">Organization Login</a></li>
+                {% endif %}
             </ul>
         </div>
     </nav>

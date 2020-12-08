@@ -15,16 +15,17 @@ from django.contrib.auth.models import User
 from .algorithms import recommend_users
 
 def organizationWelcomePageView(request) :
-    if request.session['username']:
-        applicants = applicant.objects.all()
+    # print(request.session['username'])
+    # if request.session['username']:
+    applicants = applicant.objects.all()
 
-        context = {
-            'applicants': applicants,
-            'title': 'Organization Homepage',
-            'user': request.session['username'],
-        }
+    context = {
+        'applicants': applicants,
+        'title': 'Organization Homepage',
+        'user': request.session['username'],
+    }
 
-        return render(request, 'organization/organizationwelcome.html', context)
+    return render(request, 'organization/organizationwelcome.html', context)
 
 
 def organizationlogin(request) :
@@ -36,12 +37,12 @@ def organizationsignup(request) :
 
 
 def createOrganization(request):
-    company_name = request.POST['company_name']
-    company_email = request.POST['company_email']
-    company_password = request.POST['company_password']
-    company_address = request.POST['company_address']
-    size = request.POST['company_size']
-    sectors = request.POST['company_sector']
+    company_name = request.POST.get('company_name')
+    company_email = request.POST.get('company_email')
+    company_password = request.POST.get('company_password')
+    company_address = request.POST.get('company_address')
+    size = request.POST.get('company_size')
+    sectors = request.POST.get('company_sector')
 
     if (organization.objects.filter(company_name__exact=company_name).exists()):
         messages.info(request, 'That company name has already been claimed. Please try again.')
@@ -62,8 +63,8 @@ def createOrganization(request):
 
 
 def companyLogin(request):
-    username = request.POST['company_email']
-    password = request.POST['company_password']
+    username = request.POST.get('company_email')
+    password = request.POST.get('company_password')
 
     user = authenticate(username = username, password = password)
 
@@ -78,15 +79,18 @@ def companyLogin(request):
     
 
 def createJobListing(request):
-    status = request.POST['status']
-    city = request.POST['city']
-    job_title = request.POST['job_title']
-    contracts = request.POST['contracts']
-    relocation = request.POST['relocation']
-    description = request.POST['description']
-    compensation = request.POST['compensation']
-    organization_int = request.POST['orgID']
-    organization_int = int(organization_int)
+    try:
+        status = request.POST.get('status')
+        city = request.POST.get('city')
+        job_title = request.POST.get('job_title')
+        contracts = request.POST.get('contracts')
+        relocation = request.POST.get('relocation')
+        description = request.POST.get('description')
+        compensation = request.POST.get('compensation')
+        organization_int = request.POST.get('orgID')
+        organization_int = int(organization_int)
+    except Exception:
+        print('error')
 
     listing.objects.create(
         status = status, 
@@ -96,8 +100,7 @@ def createJobListing(request):
         relocation = relocation,
         compensation = compensation, 
         description = description,
-        
-        organization = organization.objects.get(organization_id__exact = organization_int)     
+        organization = organization.objects.all().get(organization_id__exact = organization_int)     
     )
 
     data = listing.objects.filter(organization__exact=organization_int)
