@@ -51,5 +51,40 @@ def get_applicant_skills(userid):
     # return set(list_skills)
 
 
-def recommend_listings(request, id):
-    pass
+def recommend_listings(organization, listing):
+    import urllib.request
+    import json 
+
+
+    data =  {
+
+            "Inputs": {
+
+                    "input1":
+                    {
+                        "ColumnNames": ["organization_id", "id"],
+                        "Values": [ [organization, listing], ]
+                    },        },
+                "GlobalParameters": {
+    }
+        }
+
+    body = str.encode(json.dumps(data))
+
+    url = 'https://ussouthcentral.services.azureml.net/workspaces/50d1b4f10dc9438fb84cc79ea8615275/services/cc206f6d21ff4d9890b6e33363d184a4/execute?api-version=2.0&details=true'
+    api_key = '6KBCycFC/bQXVHOM6Ae+RgOQJy6K3gnGO/dj8uKclPh3JkJR+D7VJmOcSjF0bxkGtNU+3U6CItnoiNlnqpA06w==' # Replace this with the API key for the web service
+    headers = {'Content-Type':'application/json', 'Authorization':('Bearer '+ api_key)}
+
+    req = urllib.request.Request(url, body, headers) 
+
+    response = urllib.request.urlopen(req)
+
+    result = response.read()
+    result = json.loads(result)
+
+    itemsResults = result['Results']['output1']['value']['Values'][0]
+
+    # for i in range(len(itemsResults)):
+    #     print(f'Applicant #{i + 1}: {itemsResults[i]}')
+
+    return itemsResults 

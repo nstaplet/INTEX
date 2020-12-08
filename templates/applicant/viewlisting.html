@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{% load filters %}
+
+    <div class='container'>
+        <div class='info-listing'>
+            <div>
+                <h2>{{listing.job_title}}</h2>
+            </div>
+            <div>
+                <p>{{org.company_name}}</p>
+            </div>
+            <div>
+                {% if listing.city %}
+                    <p>Based in {{listing.city}}</p>
+                {% else %}
+                    <p>Residence Unavailable</p>
+                {% endif %}
+                <p>{{listing.relocation}}</p>
+            </div>
+            <div>
+                <p>Contract: {{listing.contracts}}</p>
+            </div>
+            <div>
+                <p>{{listing.compensation}}</p>
+            </div>
+            <div>
+                <p>{{listing.description}}</p>
+            </div>
+            <div>
+                <table>
+                    <tr>
+                        <th>Needed Skills</th>
+                        <th>Experience</th>
+                    </tr>
+                    {% for skill in skill_set %}
+                        <tr>
+                        {% if skill.1 < 3 %}
+                            <td>{{skill.0|skill}}</td><td>Novice</td>
+                        {% elif skill.1 >= 3 and skill.1 < 6 %}
+                            <td>{{skill.0|skill}}</td><td>Proficient</td>
+                        {% else %}
+                            <td>{{skill.0|skill}}</td><td>Expert</td>
+                        {% endif %}
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+        <div class='recommender'>
+            <div>
+                <h2>You should also view:</h2>
+                {% for listing in listings_rec %}
+                    <div>
+                        <a href="{% url 'viewlisting' org_id=listing.organization_id list_id=listing.listing_id %}">{{listing.job_title}} {{listing.compensation}}</a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
