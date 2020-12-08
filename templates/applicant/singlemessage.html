@@ -4,7 +4,7 @@
 
     {% for message in messageobject %}
         <div>
-            <p>{{message.mentor_id}} | {{message.timesent}}</p>
+            <p>{{message.mentor.first_name}} {{message.mentor.last_name}} | {{message.timesent}}</p>
             <br>
             <p>{{message.content}}</p>
         </div>
