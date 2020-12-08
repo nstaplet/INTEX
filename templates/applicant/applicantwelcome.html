@@ -33,6 +33,13 @@
 
             <button type="submit">View your Offers</button>
         </form>
+
+        <form name="viewmessages" method="post" action="{% url 'messagespageview' %}">
+            {% csrf_token %}
+            <input type='hidden' value={{app.applicant_id}} name='applicant_id'>
+
+            <button type="submit">Messages</button>
+        </form>
     {% endfor %}
 
 
