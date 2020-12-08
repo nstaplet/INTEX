@@ -5,9 +5,9 @@ from .views import organizationsignup, createOrganization, companyLogin, createJ
 from .views import organizationsignup, createOrganization, companyLogin, createJobListing, companyLogout, mentorAddPageView
 
 urlpatterns = [
-    path('organizationwelcome/', organizationWelcomePageView, name='organizationwelcome'),
+    path('organizationwelcome', organizationWelcomePageView, name='organizationwelcome'),
     # Added for creat new listing
-    path('organizationwelcome', createJobListing, name='createJobListing'),
+    path('createlisting', createJobListing, name='createJobListing'),
     path('organizationlogin/', organizationlogin, name='organizationlogin'),
     path('organizationsignup/', organizationsignup, name='organizationsignup'),
     path('createOrganization/', createOrganization, name='createOrganization'),

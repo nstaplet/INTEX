@@ -119,9 +119,10 @@ def viewApplicant(request, id):
     print(request.session['username'])
         
     try:
-        items = recommend_users(5, id)
+        items = recommend_users(89, id)
         print(id)
         for item in items:
+            print(item)
             rec_applicants.append(applicant.objects.all().get(applicant_id=item))
             # rec_applicants.append(applicant.objects.all().get(applicant_id=int(item))) if the above line needs a data conversion
     except Exception:
