@@ -36,7 +36,6 @@ def createOrganization(request):
     company_address = request.POST['company_address']
     size = request.POST['company_size']
     sectors = request.POST['company_sector']
-<<<<<<< HEAD
     # if request.method == 'POST':
     # new_company = organization()
 
@@ -49,9 +48,7 @@ def createOrganization(request):
 
     # new_company.save() <- !!! I think this was supposed to be commented out. It's technically an undefined variable
 
-=======
     
->>>>>>> 9e8adc5d521cc4dab919208ee97fa869922280d9
     if (organization.objects.filter(company_name__exact=company_name).exists()):
         messages.info(request, 'That company name has already been claimed. Please try again.')
         return render(request, 'organization/organizationsignup.html')
@@ -63,9 +60,7 @@ def createOrganization(request):
 
     else:
         organization.objects.create(company_name = company_name, company_email = company_email, company_address = company_address, size=size, sectors = sectors)
-<<<<<<< HEAD
         User.objects.create_user(company_email=company_email, company_password = company_password)
-=======
         User.objects.create_user(username=company_email, password = company_password)
         data = organization.objects.filter(company_email__exact=company_email)
         context = {'orgInfo': data}
@@ -79,7 +74,6 @@ def createOrganization(request):
     # new_company.company_password = request.POST.get['company_password']
     # new_company.size = request.POST.get['company_size']
     # new_company.sectors = request.POST.get['company_sector']
->>>>>>> 9e8adc5d521cc4dab919208ee97fa869922280d9
     
     # new_company.save()
 
