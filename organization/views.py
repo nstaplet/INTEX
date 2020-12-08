@@ -171,4 +171,3 @@ def mentorAddPageView(request):
 def createMentor(request):
     # create mentor object, reroute to organizationwelcome and pass orgInfo
     pass
-    pass
