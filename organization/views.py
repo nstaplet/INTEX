@@ -41,7 +41,8 @@ def createOrganization(request):
         User.objects.create_user(username=company_email, password = company_password)
         data = organization.objects.filter(company_email__exact=company_email)
         context = {'orgInfo': data}
-        return render(request, 'organization/organizationwelcome.html', context)
+        # messages.success(request, f'Account created for {company_name}!')
+        return render(request, 'organization/organizationlogin.html', context)
 
 
 
