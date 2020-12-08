@@ -13,9 +13,8 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 
 
-
+# looking for a job / looking to hire - general index page
 def indexPageView(request) :
-
     # applicants = applicant.objects.all()
     # organizations = organization.objects.all()
     # skills = skill.objects.all()
@@ -37,12 +36,17 @@ def indexPageView(request) :
     #     'listings_skills': listing_skills_lst,
     #     'listings': listings,
     # }
-    print(request.session['currentUser'])
+
+    
+    # request.session['username'] = 'tate'
+
+    # print(request.session['username'])
 
     return render(request, 'applicant/index.html')
 
 
 def applicantloginPageView(request) :
+    # print(request.session['username'])
     return render(request, 'applicant/applicantlogin.html')
 
 
@@ -148,6 +152,7 @@ def createApplicant(request):
 
         return render(request, 'applicant/applicantwelcome.html', context)
 
+
 def updateSkillsPageView(request):
     if not request.session['currentUser'] is None:
         appID = request.POST['applicant_id']
@@ -162,6 +167,7 @@ def updateSkillsPageView(request):
         }
 
         return render(request, 'applicant/updateskills.html', context)
+
 
 def updateSkills(request):
     if not request.session['currentUser'] is None:
@@ -209,6 +215,7 @@ def updateSkills(request):
 
         return render(request, 'applicant/applicantwelcome.html', context)
 
+
 def offersPageView(request):
     appID = request.POST['applicant_id']
     organizationdata = organization.objects.all()
@@ -246,6 +253,7 @@ def singleMessageView(request):
     }
 
     return render(request, 'applicant/singlemessage.html', context)
+
 
 def createMessage(request):
     # appID = request.POST['app-id']
