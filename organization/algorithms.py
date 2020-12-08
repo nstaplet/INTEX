@@ -5,12 +5,12 @@ from person.models import applicant
 from organization.models import listing_skills, skill
 
 
-def recommend_users(request):
-    import urllib
+def recommend_users(organization, user):
+    import urllib.request
     import json 
 
-    organization = request.user.id
-    applicant_id = request.GET['applicant']
+    # organization = request.user.id
+    # applicant_id = request.GET['applicant']
 
     data =  {
 
@@ -18,8 +18,8 @@ def recommend_users(request):
 
                     "input1":
                     {
-                        "ColumnNames": ["reviewerID", "asin"],
-                        "Values": [ [ organization, applicant_id ] ]
+                        "ColumnNames": ["organization_id", "user_id"],
+                        "Values": [ [ organization, user] ]
                     },        },
                 "GlobalParameters": {
     }
@@ -40,7 +40,7 @@ def recommend_users(request):
 
     itemsResults = result['Results']['output1']['value']['Values'][0]
 
-    for i in range(len(itemsResults)):
-        print(f'Applicant #{i + 1}: {itemsResults[i]}')
+    # for i in range(len(itemsResults)):
+    #     print(f'Applicant #{i + 1}: {itemsResults[i]}')
 
     return itemsResults
