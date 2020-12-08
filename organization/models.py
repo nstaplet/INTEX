@@ -52,7 +52,7 @@ class listing(models.Model):
     contracts = models.CharField(max_length=30, blank=True)
     description = models.TextField(blank=True)
     total_skills = models.IntegerField(default=0)
-    compensation = models.DecimalField(max_digits=7, decimal_places=2, null= True, default=0)
+    compensation = models.DecimalField(max_digits=7, decimal_places=2, null= True, blank=True, default=0)
     relocation = models.BooleanField(default=False)
 
     def __str__(self):

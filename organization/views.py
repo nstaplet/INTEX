@@ -8,7 +8,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 
 # outside functions
-from .algorithms import recommend_users
+# from .algorithms import recommend_users
 
 def organizationWelcomePageView(request) :
     return render(request, 'organization/organizationwelcome.html')
@@ -54,6 +54,7 @@ def companyLogin(request):
         return render(request, 'organization/organizationwelcome.html', context)
     
     else:
+        messages.info(request, 'You username or password is incorrect, please try again!')
         return render(request, 'organization/organizationlogin.html')
     
 def createJobListing(request):
@@ -66,26 +67,20 @@ def createJobListing(request):
     compensation = request.POST['compensation']
     organization_int = request.POST['orgID']
     organization_int = int(organization_int)
-
-
-    if (listing.objects.filter(job_title__exact=job_title).exists()):
-        messages.info(request, 'You have already posted a listing with job title ' + job_title + '.')
-        return render(request,'organization/organizationwelcome.html')
     
-    else:
-        listing.objects.create(
-            status = status, 
-            city = city, 
-            job_title = job_title, 
-            contracts = contracts,
-            relocation = relocation,
-            compensation = compensation, 
-            description = description,
-            
-            organization = organization.objects.get(organization_id__exact = organization_int)     
-        )
+    listing.objects.create(
+        status = status, 
+        city = city, 
+        job_title = job_title, 
+        contracts = contracts,
+        relocation = relocation,
+        compensation = compensation, 
+        description = description,
+        
+        organization = organization.objects.get(organization_id__exact = organization_int)     
+    )
 
-        data = listing.objects.filter(organization__exact=organization_int)
-        context = {'ListingInfo': data}
-        return render(request, 'organization/organizationwelcome.html', context)
+    data = listing.objects.filter(organization__exact=organization_int)
+    context = {'ListingInfo': data}
+    return render(request, 'organization/organizationwelcome.html', context)
 
