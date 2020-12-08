@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import message, offers_review, applicant_skills
+from applicant.models import offers_review, applicant_skills
 from person.models import applicant
 from organization.models import listing_skills, skill
 
