@@ -3,9 +3,9 @@
 {% block content%}
 
 <div>
-    <h1>Wecome to the Black Cyber Recruiter!</h1>
+    <h1>Welcome to the Black Cyber Recruiter!</h1>
     <br><br>
-    <p>Providing Black individuals with better opportunities</p>
+    <p>Providing individuals of diverse backgrounds with better opportunities.</p>
 
     <div>
         <a href="{% url 'applicantlogin' %}">I am looking for a job!</a>
@@ -15,7 +15,7 @@
         <a href="{% url 'organizationlogin' %}">I am an organization looking to hire!</a>
     </div>
 
-    <a href='#' class='btn'>Button</a>
+    {% comment %} <a href='#' class='btn'>Button</a> {% endcomment %}
 
 </div>
 {% endblock %}
