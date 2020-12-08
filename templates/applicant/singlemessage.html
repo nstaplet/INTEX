@@ -4,7 +4,12 @@
 
     {% for message in messageobject %}
         <div>
-            <p>{{message.mentor.first_name}} {{message.mentor.last_name}} | {{message.timesent}}</p>
+            <p>{{message.mentor.first_name}} {{message.mentor.last_name}} | {{message.timesent}} | 
+                    {% if message.sender_applicant == True %}
+                        Sent
+                    {% else %}
+                        Received
+                    {% endif %}</p>
             <br>
             <p>{{message.content}}</p>
         </div>
