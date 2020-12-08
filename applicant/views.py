@@ -236,3 +236,6 @@ def singleMessageView(request):
     }
 
     return render(request, 'applicant/singlemessage.html', context)
+
+def createMessage(request):
+    pass
