@@ -1,9 +1,7 @@
 from django.urls import path
 from .views import organizationWelcomePageView
 from .views import organizationlogin
-from .views import organizationsignup, createOrganization, companyLogin, createJobListing, companyLogout, mentorAddPageView, createMentor
-from .views import organizationsignup, createOrganization, companyLogin, createJobListing, companyLogout, viewApplicant
-from .views import organizationsignup, createOrganization, companyLogin, createJobListing, companyLogout, mentorAddPageView
+from .views import organizationsignup, createOrganization, companyLogin, createJobListing, companyLogout, mentorAddPageView, createMentor, viewApplicant
 
 urlpatterns = [
     path('organizationwelcome/', organizationWelcomePageView, name='organizationwelcome'),
