@@ -11,17 +11,7 @@ from django.contrib.auth.models import User
 from .algorithms import recommend_users
 
 def organizationWelcomePageView(request) :
-
-    #username = request.POST['username']
-    #password = request.POST['password']
-
-    #user = authenticate(username = username, password = password)
-
-    #if user is not None:
     return render(request, 'organization/organizationwelcome.html')
-
-    #else:
-    #    return render(request, 'organization/organizationlogin.html')
 
 def organizationlogin(request) :
     return render(request, 'organization/organizationlogin.html')
@@ -36,23 +26,10 @@ def createOrganization(request):
     company_address = request.POST['company_address']
     size = request.POST['company_size']
     sectors = request.POST['company_sector']
-    # if request.method == 'POST':
-    # new_company = organization()
 
-    # new_company.company_name = request.POST.get['company_name']
-    # new_company.company_email = request.POST.get['company_email']
-    # new_company.company_address = request.POST.get['company_address']
-    # new_company.company_password = request.POST.get['company_password']
-    # new_company.size = request.POST.get['company_size']
-    # new_company.sectors = request.POST.get['company_sector']
-
-    # new_company.save() <- !!! I think this was supposed to be commented out. It's technically an undefined variable
-
-    
     if (organization.objects.filter(company_name__exact=company_name).exists()):
         messages.info(request, 'That company name has already been claimed. Please try again.')
         return render(request, 'organization/organizationsignup.html')
-
 
     elif (organization.objects.filter(company_email__exact=company_email).exists()):
         messages.info(request, 'That company email has already been claimed. Please try again.')
@@ -60,22 +37,10 @@ def createOrganization(request):
 
     else:
         organization.objects.create(company_name = company_name, company_email = company_email, company_address = company_address, size=size, sectors = sectors)
-        User.objects.create_user(company_email=company_email, company_password = company_password)
         User.objects.create_user(username=company_email, password = company_password)
         data = organization.objects.filter(company_email__exact=company_email)
         context = {'orgInfo': data}
         return render(request, 'organization/organizationwelcome.html', context)
-    # if request.method == 'POST':
-    # new_company = organization()
-
-    # new_company.company_name = request.POST.get['company_name']
-    # new_company.company_email = request.POST.get['company_email']
-    # new_company.company_address = request.POST.get['company_address']
-    # new_company.company_password = request.POST.get['company_password']
-    # new_company.size = request.POST.get['company_size']
-    # new_company.sectors = request.POST.get['company_sector']
-    
-    # new_company.save()
 
 def companyLogin(request):
     username = request.POST['company_email']
@@ -117,8 +82,7 @@ def createJobListing(request):
             compensation = compensation, 
             description = description,
             
-            organization = organization.objects.get(organization_id__exact = organization_int)
-            
+            organization = organization.objects.get(organization_id__exact = organization_int)     
         )
 
         data = listing.objects.filter(organization__exact=organization_int)
