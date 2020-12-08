@@ -113,4 +113,14 @@ def companyLogout(request):
 # mentor stuff
 def mentorAddPageView(request):
     # pass organization id, nothing else should be necessary
+    orgID = request.POST['orgID']
+
+    context = {
+        'orgID' : orgID
+    }
+
+    return render(request, 'organization/addmentor.html', context)
+
+def createMentor(request):
+    # create mentor object, reroute to organizationwelcome and pass orgInfo
     pass

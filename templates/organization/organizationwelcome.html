@@ -125,7 +125,7 @@
                                 <form name="mentoraddpage" method="post" action="{% url 'mentoraddpageview' %}">
                                     {% csrf_token %}
                                     {% for org in orgInfo %}
-                                        <input type='hidden' value={{org.organization_id}} name='ordID'>
+                                        <input type='hidden' value={{org.organization_id}} name='orgID'>
                                     {% endfor %}
                                     <button type="submit" class="signup-button">create</button>
                                 </form>

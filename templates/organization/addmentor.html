@@ -4,4 +4,13 @@
 
     {% comment %} form with mentor information inputs {% endcomment %}
 
+    <form name="mentoraddpage" method="post" action="{% url 'creatementor' %}">
+        {% csrf_token %}
+        {% for org in orgInfo %}
+            <input type='hidden' value={{org.organization_id}} name='orgID'>
+        {% endfor %}
+        <button type="submit" class="signup-button">Create</button>
+    </form>
+
+
 {% endblock %}
