@@ -33,6 +33,10 @@
 
             <button type="submit">View your Offers</button>
         </form>
+
+        <form name="viewmessages" method="post" action="{% url 'applicantoffers' %}">
+            {% csrf_token %}
+        </form>
     {% endfor %}
 
 
