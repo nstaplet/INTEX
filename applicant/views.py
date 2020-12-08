@@ -213,12 +213,12 @@ def offersPageView(request):
 
 
 def messagesPageView(request):
-    appID = request.POST['applicant_id']
+    appID = int(request.POST['applicant_id'])
     # pull all data from the messages table that has this applicant's ID
     messagedata = message.objects.filter(applicant_id__exact=appID)
 
     context = {
-        'appID' : int(appID),
+        'appID' : appID,
         'allMessages' : messagedata
     }
 

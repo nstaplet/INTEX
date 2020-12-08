@@ -19,9 +19,9 @@
                             <button type="submit">View Message</button>
                         </form>
                     </td>
-                    <td>{{message.mentor_id}}</td>
-                    <td>{{offer.job_title}}</td>
-                    <td>{{offer.city}}</td>
+                    <td>{{message.mentor.first_name}} {{message.mentor.last_name}}</td>
+                    <td>{{message.mentor.organization.company_name}}</td>
+                    <td>{{message.timesent}}</td>
                 </tr>
             {% empty %}
                 <br>
