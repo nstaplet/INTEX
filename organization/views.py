@@ -6,6 +6,9 @@ from django.contrib.auth import authenticate, login
 from .models import organization, skill, listing, listing_skills, mentor, offers_made
 from django.contrib import messages
 
+# outside functions
+from .algorithms import recommend_users
+
 def organizationWelcomePageView(request) :
 
     #username = request.POST['username']
@@ -41,9 +44,8 @@ def createOrganization(request):
     # new_company.company_password = request.POST.get['company_password']
     # new_company.size = request.POST.get['company_size']
     # new_company.sectors = request.POST.get['company_sector']
-    
-    new_company.save()
 
+    # new_company.save() <- !!! I think this was supposed to be commented out. It's technically an undefined variable
 
     if (organization.objects.filter(company_name__exact=company_name).exists()):
         messages.info(request, 'That company name has already been claimed. Please try again.')
@@ -58,7 +60,7 @@ def createOrganization(request):
 
     else:
         organization.objects.create(company_name = company_name, company_email = company_email, company_address = company_address, size=size, sectors = sectors)
-    User.objects.create_user(company_email=company_email, company_password = company_password)
+        User.objects.create_user(company_email=company_email, company_password = company_password)
     
     return render(request, 'organization/organizationwelcome.html')
 
