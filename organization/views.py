@@ -186,6 +186,13 @@ def createMentor(request):
     return render(request, 'organization/organizationwelcome.html', context)
 
 def viewMentors(request):
-    pass
+    orgID = request.POST['orgID']
+    
+    mentorData = mentor.objects.filter(organization=orgID)
+    context = {
+        'mentors' : mentorData,
+        'orgID' : orgID
+    }
+    return render(request, 'organization/viewmentors.html', context)
 
 
