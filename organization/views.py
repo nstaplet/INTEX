@@ -15,13 +15,25 @@ from django.contrib.auth.models import User
 from .algorithms import recommend_users
 
 def organizationWelcomePageView(request) :
-    return render(request, 'organization/organizationwelcome.html')
+    if request.session['username']:
+        applicants = applicant.objects.all()
+
+        context = {
+            'applicants': applicants,
+            'title': 'Organization Homepage',
+            'user': request.session['username'],
+        }
+
+        return render(request, 'organization/organizationwelcome.html', context)
+
 
 def organizationlogin(request) :
     return render(request, 'organization/organizationlogin.html')
 
+
 def organizationsignup(request) :
     return render(request, 'organization/organizationsignup.html')
+
 
 def createOrganization(request):
     company_name = request.POST['company_name']
@@ -64,6 +76,7 @@ def companyLogin(request):
         messages.info(request, 'You username or password is incorrect, please try again!')
         return render(request, 'organization/organizationlogin.html')
     
+
 def createJobListing(request):
     status = request.POST['status']
     city = request.POST['city']
@@ -90,6 +103,7 @@ def createJobListing(request):
     data = listing.objects.filter(organization__exact=organization_int)
     context = {'ListingInfo': data}
     return render(request, 'organization/organizationwelcome.html', context)
+
 
 def companyLogout(request):
     logout(request)
