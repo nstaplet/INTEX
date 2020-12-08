@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import organizationWelcomePageView
 from .views import organizationlogin
-from .views import organizationsignup, createOrganization, companyLogin, createJobListing, companyLogout
+from .views import organizationsignup, createOrganization, companyLogin, createJobListing, companyLogout, mentorAddPageView
 
 urlpatterns = [
     path('organizationwelcome/', organizationWelcomePageView, name='organizationwelcome'),
@@ -12,5 +12,5 @@ urlpatterns = [
     path('createOrganization/', createOrganization, name='createOrganization'),
     path('companyLogin/', companyLogin, name='companyLogin'),
     path('companyLogout/', companyLogout, name='companyLogout'),
-
+    path('mentorAdd/', mentorAddPageView, name='mentoraddpageview'),
 ]

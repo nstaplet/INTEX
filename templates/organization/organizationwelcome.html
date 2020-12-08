@@ -120,14 +120,21 @@
                         <div class="type-select">
                                 <img src="https://images.unsplash.com/photo-1573164713619-24c711fe7878?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2250&q=80"
                                         alt="applicant" class="cus-type-img">
-                                <h2 class="cus-type-header">Mentor sign-up</h2>
-                                <a href="#" class="signup-button">sign-up</a>
+                                <h2 class="cus-type-header">Add a Mentor</h2>
+                                {% comment %} <a href="{% url mentoraddpageview %}" class="signup-button">create</a> {% endcomment %}
+                                <form name="mentoraddpage" method="post" action="{% url 'mentoraddpageview' %}">
+                                    {% csrf_token %}
+                                    {% for org in orgInfo %}
+                                        <input type='hidden' value={{org.organization_id}} name='ordID'>
+                                    {% endfor %}
+                                    <button type="submit" class="signup-button">create</button>
+                                </form>
                         </div>
                         <hr>
                         <div class="type-select">
                                 <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2250&q=80"
                                         alt="applicant" class="cus-type-img">
-                                <h2 class="cus-type-header">I am hiring</h2>
+                                <h2 class="cus-type-header">View Mentors</h2>
                                 <a href="#" class="signup-button">sign-up</a>
                         </div>
                 </div>

@@ -92,3 +92,25 @@ def companyLogout(request):
     logout(request)
     messages.info(request, "You have logged out successfully!")
     return redirect("index")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# mentor stuff
+def mentorAddPageView(request):
+    # pass organization id, nothing else should be necessary
+    pass
