@@ -3,6 +3,7 @@ from django.http import HttpResponse
 
 # models
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.forms import UserCreationForm
 from .models import organization, skill, listing, listing_skills, mentor, offers_made
 from django.contrib import messages
 from django.contrib.auth.models import User
@@ -40,7 +41,10 @@ def createOrganization(request):
         User.objects.create_user(username=company_email, password = company_password)
         data = organization.objects.filter(company_email__exact=company_email)
         context = {'orgInfo': data}
-        return render(request, 'organization/organizationwelcome.html', context)
+        # messages.success(request, f'Account created for {company_name}!')
+        return render(request, 'organization/organizationlogin.html', context)
+
+
 
 def companyLogin(request):
     username = request.POST['company_email']
@@ -67,7 +71,7 @@ def createJobListing(request):
     compensation = request.POST['compensation']
     organization_int = request.POST['orgID']
     organization_int = int(organization_int)
-    
+
     listing.objects.create(
         status = status, 
         city = city, 

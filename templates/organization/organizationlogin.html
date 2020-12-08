@@ -5,23 +5,29 @@
 <h1>Organization Login</h1>
 
 <form method="POST" action="{% url 'companyLogin' %}">
+    {% csrf_token %}
     <div>
         <div>
             <label for="company_email">Company Email:</label>
             <input type="text" name="company_email" id="company_email" required>
         </div>
         <div>
-            <label for="company_password">Password</label>
+            <label for="company_password">Password:</label>
             <input type="password" name="company_password" id="company_password" required>
         </div>
+        <br>
         <div>
             <button type="submit">Login</button>
         </div>
+        <br>
+        <div>Don't have an account yet? Sign up today!</div>
         <div>
+            <br>
             <button type="button" onclick="location.href='{% url 'organizationsignup' %}'">Sign up</button>
         </div>
     </div>
-    {% csrf_token %}
 </form>
+
+<br><br><br><br><br><br><br><br><br>
 
 {% endblock %}
