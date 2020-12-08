@@ -61,7 +61,6 @@ def createOrganization(request):
         return render(request, 'organization/organizationlogin.html', context)
 
 
-
 def companyLogin(request):
     username = request.POST.get('company_email')
     password = request.POST.get('company_password')
@@ -100,13 +99,40 @@ def createJobListing(request):
         relocation = relocation,
         compensation = compensation, 
         description = description,
-        organization = organization.objects.all().get(organization_id__exact = organization_int)     
+        organization = organization.objects.get(organization_id__exact = organization_int)     
     )
 
     data = listing.objects.filter(organization__exact=organization_int)
     context = {'ListingInfo': data}
     return render(request, 'organization/organizationwelcome.html', context)
 
+def go_create_skills(request):
+    return render(request, 'organization/AddListingSkills.html')
+
+def create_skills(request):
+    skillname = request.POST['skillname']
+
+    if skill.objects.filter(skill_name__iexact = skillname).exists():
+        skillob = skill.objects.get(skill_name__iexact = skillname)
+        skill_id = skillob.skill_id 
+
+        # listingob = listing.objects.get(organization__iexact = organization, job_title__iexact = job_title)
+
+        ilstingob = listing.objects.get(organization__iexact = organization, job_title__iexact = job_title)
+
+    listing_id = listingob.listing_id
+    skill_value = request.POST['skill_value']
+
+    listing_skills.objects.create(
+        skill_id = skillob,
+        listing_id = listing_id,
+        skill_value = skill_value
+    )
+
+    data = listing_skills.objects.filter(skill_id__exact=skill_id, listing_id__exact=listing_id, skill_value__exact=skill_value)
+    context = {'listing_skills_Info': data}
+
+    return render(request, 'organization/organizationwelcome.html', context)
 
 def companyLogout(request):
     logout(request)
@@ -186,6 +212,13 @@ def createMentor(request):
     return render(request, 'organization/organizationwelcome.html', context)
 
 def viewMentors(request):
-    pass
+    orgID = request.POST['orgID']
+    
+    mentorData = mentor.objects.filter(organization=orgID)
+    context = {
+        'mentors' : mentorData,
+        'orgID' : orgID
+    }
+    return render(request, 'organization/viewmentors.html', context)
 
 

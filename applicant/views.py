@@ -328,5 +328,5 @@ def createMessage(request):
 
 def applicantLogout(request):
     logout(request)
-    messages.info(request, "You have logged out successfully!")
+    # messages.info(request, "You have logged out successfully!")
     return redirect("index")
