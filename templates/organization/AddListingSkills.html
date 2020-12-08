@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<h1>Organization Login</h1>
+
+<form method="POST" action="{% url 'create_skills' %}">
+    {% csrf_token %}
+
+    {% for item in ListingInfo%}
+    
+    <p>Choose job title: {{ item.job_title}}</p>
+    {% endfor %}
+    <div>
+        <label for=" skillname">Skill Name: </label>
+        <input type="text" name="skillname" id="skillname">
+    </div>
+    <br>
+    <label for=" skill_value">Skill Value:</label>
+    <select name="skill_value" id="skill_value">
+        <option value="default" disabled selected>Select Skill Value 1 ~
+            10</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+        <option value="9">9</option>
+        <option value="10">10</option>
+    </select>
+    <span>
+        <button type="submit">Add Skill</button>
+    </span>
+</form>
+<br><br><br><br><br>
+<br><br><br><br><br>
+<br><br><br><br><br>
+{% endblock %}

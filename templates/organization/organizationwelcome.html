@@ -53,6 +53,13 @@
                                         <h3>Create a job listing</h3>
                                         <hr>
                                         <br>
+
+                                        # organization FK
+                                        <input type="hidden" name='orgID' id='orgID' value="{% for x in orgInfo %}
+                                                {{x.organization_id}}
+                                                {% endfor%}
+                                                ">
+
                                         <input type="hidden" name='orgID' id='orgID' value="{% for x in orgInfo %}
                                                 {{x.organization_id}}
                                                 {% endfor%}
@@ -95,22 +102,36 @@
                                         <textarea type="textarea" name='description' id='description' rows="15" ,
                                                 cols="60"></textarea>
                                         <br><br>
-                                        <button type="submit">Register</button>
+                                        <button type=" submit">Register</button>
                                 </form>
+                                <br>
+                                <hr>
+                                <h3>Add a desire skill for this job listing</h3>
+                                <button><a style="text-decoration: none;"
+                                                href="{% url 'go_create_skills' %}">Go</a></button>
+
                         </div>
                         <hr>
                         <div>
-                                <p>Current job listing</p>
+                                <p>Current job listing: </p>
                                 <div class="listing-item">
                                         {% for item in ListingInfo%}
-                                        {{ item.status}}
-                                        {{ item.city}}
-                                        {{ item.job_title}}
-                                        {{ item.contracts}}
-                                        {{ item.relocation}}
-                                        {{ item.compensation}}
-                                        {{ item.description}}
-                                        {{ item.organization_id}}
+                                        <p>Job status: {{ item.status}}</p>
+                                        <p>Location: {{ item.city}}</p>
+                                        <p>Job Title:{{ item.job_title}}</p>
+                                        <p>Contract Type: {{ item.contracts}}</p>
+                                        <p>Relocation: {{ item.relocation}}</p>
+                                        <p>Compensation: {{ item.compensation}}</p>
+                                        <p>Job description: {{ item.description}}</p>
+                                        <!--                                         
+                                        {{ item.organization_id}} -->
+                                        {% endfor %}
+                                </div>
+                                <p>Listed skills: </p>
+                                <div class="listing-skill">
+                                        {% for item in listing_skills_Info%}
+                                        <p>Skill Name: {{ item.skillob.skill_name}}</p>
+                                        <p>Skill Value: {{ item.skill_value}}</p>
                                         {% endfor %}
                                 </div>
                         </div>

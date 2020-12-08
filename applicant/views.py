@@ -255,44 +255,44 @@ def singleMessageView(request):
 
 
 def createMessage(request):
-    # appID = request.POST['app-id']
-    # appID = int(appID)
-    # appSender = request.POST.get('sender')
-    # recipient = request.POST['recipient']
-    # msgContent = request.POST['content']
+    appID = request.POST['app-id']
+    appID = int(appID)
+    appSender = request.POST.get('sender')
+    recipient = request.POST['recipient']
+    msgContent = request.POST['content']
 
-    # recipientNames = recipient.split()
+    recipientNames = recipient.split()
     
 
-    # # If recipient doesn't exist, redirect to same page with a message saying so. Refill content field so that it doesn't have to be retyped
-    # if mentor.objects.filter(first_name__iexact=recipientNames[0], last_name__iexact=recipientNames[1]).exists():
-    #     mentorObject = mentor.objects.get(first_name__iexact=recipientNames[0], last_name__iexact=recipientNames[1])
-    #     appObject = applicant.objects.get(applicant_id__exact=appID)
-    #     message.objects.create(mentor=mentorObject, applicant=appObject, content=msgContent, sender_applicant=appSender)
+    # If recipient doesn't exist, redirect to same page with a message saying so. Refill content field so that it doesn't have to be retyped
+    if mentor.objects.filter(first_name__iexact=recipientNames[0], last_name__iexact=recipientNames[1]).exists():
+        mentorObject = mentor.objects.get(first_name__iexact=recipientNames[0], last_name__iexact=recipientNames[1])
+        appObject = applicant.objects.get(applicant_id__exact=appID)
+        message.objects.create(mentor=mentorObject, applicant=appObject, content=msgContent, sender_applicant=appSender)
 
-    #     messagedata = message.objects.filter(applicant_id__exact=appID).order_by('-timesent')
+        messagedata = message.objects.filter(applicant_id__exact=appID).order_by('-timesent')
 
-    #     context = {
-    #         'appID' : appID,
-    #         'allMessages' : messagedata
-    #     }
+        context = {
+            'appID' : appID,
+            'allMessages' : messagedata
+        }
 
-    #     return render(request, 'applicant/messages.html', context)
+        return render(request, 'applicant/messages.html', context)
 
-    # else:
-    #     messages.info(request, 'Sorry, we have no record of that mentor. Please try again.')
-    #     # redirect to all messages page
-    #     messagedata = message.objects.filter(applicant_id__exact=appID).order_by('-timesent')
-    #     # refill message content with current content
+    else:
+        messages.info(request, 'Sorry, we have no record of that mentor. Please try again.')
+        # redirect to all messages page
+        messagedata = message.objects.filter(applicant_id__exact=appID).order_by('-timesent')
+        # refill message content with current content
 
-    #     context = {
-    #         'appID' : appID,
-    #         'allMessages' : messagedata
-    #     }
+        context = {
+            'appID' : appID,
+            'allMessages' : messagedata
+        }
 
         return render(request, 'applicant/messages.html', context)
 
 def applicantLogout(request):
     logout(request)
-    messages.info(request, "You have logged out successfully!")
+    # messages.info(request, "You have logged out successfully!")
     return redirect("index")
