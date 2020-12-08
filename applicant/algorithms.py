@@ -52,4 +52,4 @@ def get_applicant_skills(userid):
 
 
 def recommend_listings(request, id):
-    
+    pass
