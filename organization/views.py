@@ -26,32 +26,51 @@ def organizationsignup(request) :
     return render(request, 'organization/organizationsignup.html')
 
 def createOrganization(request):
+    company_name = request.POST['company_name']
+    company_email = request.POST['company_email']
+    company_password = request.POST['company_password']
+    company_address = request.POST['company_address']
+    size = request.POST['company_size']
+    sectors = request.POST['company_sector']
     # if request.method == 'POST':
-    new_company = organization()
+    # new_company = organization()
 
-    new_company.company_name = request.POST.get['company_name']
-    new_company.company_email = request.POST.get['company_email']
-    new_company.company_address = request.POST.get['company_address']
-    # company_password = request.POST['password']
-    new_company.size = request.POST.get['company_size']
-    new_company.sectors = request.POST.get['company_sector']
+    # new_company.company_name = request.POST.get['company_name']
+    # new_company.company_email = request.POST.get['company_email']
+    # new_company.company_address = request.POST.get['company_address']
+    # new_company.company_password = request.POST.get['company_password']
+    # new_company.size = request.POST.get['company_size']
+    # new_company.sectors = request.POST.get['company_sector']
     
     new_company.save()
 
 
-    if (organization.objects.filter(company_name__exact=new_company.company_name).exists()):
+    if (organization.objects.filter(company_name__exact=company_name).exists()):
         messages.info(request, 'That company name has already been claimed. Please try again.')
     
         return render(request, 'organization/organizationsignup.html')
 
 
-    elif (organization.objects.filter(company_email__exact=new_company.company_email).exists()):
+    elif (organization.objects.filter(company_email__exact=company_email).exists()):
         messages.info(request, 'That company email has already been claimed. Please try again.')
     
-    return render(request, 'organization/organizationsignup.html')
+        return render(request, 'organization/organizationsignup.html')
 
-        # else:
-        #     applicant.objects.create(first_name=first_name, last_name=last_name, email=email, username=username, city=city, email_opt_in=email_opt_in)
-        #     User.objects.create_user(username=username, email=email, password=password)
-
+    else:
+        organization.objects.create(company_name = company_name, company_email = company_email, company_address = company_address, size=size, sectors = sectors)
+    User.objects.create_user(company_email=company_email, company_password = company_password)
+    
     return render(request, 'organization/organizationwelcome.html')
+
+def companyLogin(request):
+    username = request.POST['company_email']
+    password = request.POST['company_password']
+
+    user = authenticate(username = username, password = password)
+
+    if user is not None:
+        data = organization.objects.filter(company_email__exact=username)
+        return render(request, 'organization/organizationwelcome.html')
+    
+    else:
+        return render(request, 'organization/organizationlogin.html')
