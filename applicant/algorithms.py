@@ -51,3 +51,5 @@ def get_applicant_skills(userid):
     # return set(list_skills)
 
 
+def recommend_listings(request, id):
+    pass

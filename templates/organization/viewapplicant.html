@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{% load filters %}
+
+    <div class='container'>
+        <div class='info-applicant'>
+            <div>
+                <p>{{applicant.first_name}} {{applicant.last_name}}</p>
+            </div>
+            <div>
+                {% if applicant.city %}
+                    <p>Lives in {{applicant.city}}</p>
+                {% else %}
+                    <p>Residence Unavailable</p>
+                {% endif %}
+            </div>
+            <div>
+                <p>Contact at {{applicant.email}}</p>
+            </div>
+            <div>
+                <table>
+                    <tr>
+                        <th>Skills</th>
+                        <th>Experience</th>
+                    </tr>
+                    {% for skill in skill_set %}
+                        <tr>
+                        {% if skill.1 < 3 %}
+                            <td>{{skill.0|skill}}</td><td>Novice</td>
+                        {% elif skill.1 >= 3 and skill.1 < 6 %}
+                            <td>{{skill.0|skill}}</td><td>Proficient</td>
+                        {% else %}
+                            <td>{{skill.0|skill}}</td><td>Expert</td>
+                        {% endif %}
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+        <div class='recommender'>
+            <div>
+                <h2>You should also view:</h2>
+                {% for user in rec_users %}
+                    <div>
+                        <a href="{% url 'viewapplicant' id=user.applicant_id %}">{{user.first_name}} {{user.last_name}}</a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
