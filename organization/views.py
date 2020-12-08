@@ -5,20 +5,35 @@ from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
 # from django.contrib.auth.forms import UserCreationForm
 from .models import organization, skill, listing, listing_skills, mentor, offers_made
+from person.models import applicant
+from applicant.models import applicant_skills
+
 from django.contrib import messages
 from django.contrib.auth.models import User
 
 # outside functions
-# from .algorithms import recommend_users
+from .algorithms import recommend_users
 
 def organizationWelcomePageView(request) :
-    return render(request, 'organization/organizationwelcome.html')
+    if request.session['username']:
+        applicants = applicant.objects.all()
+
+        context = {
+            'applicants': applicants,
+            'title': 'Organization Homepage',
+            'user': request.session['username'],
+        }
+
+        return render(request, 'organization/organizationwelcome.html', context)
+
 
 def organizationlogin(request) :
     return render(request, 'organization/organizationlogin.html')
 
+
 def organizationsignup(request) :
     return render(request, 'organization/organizationsignup.html')
+
 
 def createOrganization(request):
     company_name = request.POST['company_name']
@@ -61,6 +76,7 @@ def companyLogin(request):
         messages.info(request, 'You username or password is incorrect, please try again!')
         return render(request, 'organization/organizationlogin.html')
     
+
 def createJobListing(request):
     status = request.POST['status']
     city = request.POST['city']
@@ -88,12 +104,40 @@ def createJobListing(request):
     context = {'ListingInfo': data}
     return render(request, 'organization/organizationwelcome.html', context)
 
+
 def companyLogout(request):
     logout(request)
     messages.info(request, "You have logged out successfully!")
     return redirect("index")
 
 
+def viewApplicant(request, id):
+    rec_applicants = []
+    print(request.session['username'])
+        
+    try:
+        items = recommend_users(5, id)
+        print(id)
+        for item in items:
+            rec_applicants.append(applicant.objects.all().get(applicant_id=item))
+            # rec_applicants.append(applicant.objects.all().get(applicant_id=int(item))) if the above line needs a data conversion
+    except Exception:
+        print('Could not retrieve recommended users')
+
+    curr_applicant = applicant.objects.all().get(applicant_id=id)
+    skill_ids = applicant_skills.objects.all().filter(applicant_id=curr_applicant.applicant_id)
+    skill_names = []
+
+    for item in skill_ids:
+        skill_names.append([skill.objects.all().get(skill_id=item.skill_id), item.skill_value])
+
+    context = {
+        'rec_users': rec_applicants,
+        'applicant': curr_applicant,
+        'skill_set': skill_names,
+    }
+    
+    return render(request, 'organization/viewapplicant.html', context)
 
 
 
@@ -123,4 +167,5 @@ def mentorAddPageView(request):
 
 def createMentor(request):
     # create mentor object, reroute to organizationwelcome and pass orgInfo
+    pass
     pass
