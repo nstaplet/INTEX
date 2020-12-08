@@ -1,0 +1,14 @@
+{% extends 'base.html'%}
+{%load static%}
+{%block content%}
+
+    {% for message in messageobject %}
+        <div>
+            <p>{{message.mentor_id}} | {{message.timesent}}</p>
+            <br>
+            <p>{{message.content}}</p>
+        </div>
+    {% endfor %}
+    
+
+{% endblock %}

@@ -111,28 +111,12 @@ def createApplicant(request):
     if (applicant.objects.filter(email__exact=email).exists()):
         messages.info(request, 'That email has already been claimed. Please try again.')
 
-        data = skill.objects.all()
-        editdata = []
-        for skill_name in data:
-            editdata.append(skill_name.skill_name[6:len(skill_name.skill_name)])
-        context = {
-            'skills' : editdata
-        }
-
-        return render(request, 'applicant/applicantsignup.html', context)
+        return render(request, 'applicant/applicantsignup.html')
 
     elif (applicant.objects.filter(username__exact=email).exists()):
         messages.info(request, 'That username has already been claimed. Please try again.')
 
-        data = skill.objects.all()
-        editdata = []
-        for skill_name in data:
-            editdata.append(skill_name.skill_name[6:len(skill_name.skill_name)])
-        context = {
-            'skills' : editdata
-        }
-
-        return render(request, 'applicant/applicantsignup.html', context)
+        return render(request, 'applicant/applicantsignup.html')
 
     else:
         applicant.objects.create(first_name=first_name, last_name=last_name, email=email, username=username, city=city, email_opt_in=email_opt_in)
@@ -227,3 +211,28 @@ def offersPageView(request):
 
     # context needs to be all offers_made objects that have this applicants primary key as a foreign key
     return render(request, 'applicant/applicantoffers.html', context)
+
+
+def messagesPageView(request):
+    appID = request.POST['applicant_id']
+    # pull all data from the messages table that has this applicant's ID
+    messagedata = message.objects.filter(applicant_id__exact=appID)
+
+    context = {
+        'appID' : int(appID),
+        'allMessages' : messagedata
+    }
+
+    return render(request, 'applicant/messages.html', context)
+
+
+def singleMessageView(request):
+    messageID = request.POST['message-id']
+    messageID = int(messageID)
+
+    singleMessageData = message.objects.filter(message_id__exact=messageID)
+    context = {
+        'messageobject' : singleMessageData
+    }
+
+    return render(request, 'applicant/singlemessage.html', context)
