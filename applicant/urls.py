@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import indexPageView
 from .views import applicantloginPageView
-from .views import applicantsignupPage, applicantLogin, applicant_dash, createApplicant, offersPageView, updateSkills, updateSkillsPageView, messagesPageView, singleMessageView
+from .views import applicantsignupPage, applicantLogin, applicant_dash, createApplicant, offersPageView, updateSkills, updateSkillsPageView, messagesPageView, singleMessageView, createMessage
 
 
 urlpatterns = [
@@ -16,4 +16,5 @@ urlpatterns = [
     path('updateskillspage/', updateSkillsPageView, name='updateskillspage'),
     path('messages/', messagesPageView, name='messagespageview'),
     path('message/', singleMessageView, name='singlemessageview'),
+    path('createmessage', createMessage, name='createmessage')
 ]
