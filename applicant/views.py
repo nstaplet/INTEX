@@ -13,9 +13,8 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 
 
-
+# looking for a job / looking to hire - general index page
 def indexPageView(request) :
-
     # applicants = applicant.objects.all()
     # organizations = organization.objects.all()
     # skills = skill.objects.all()
@@ -38,10 +37,16 @@ def indexPageView(request) :
     #     'listings': listings,
     # }
 
+    
+    # request.session['username'] = 'tate'
+
+    # print(request.session['username'])
+
     return render(request, 'applicant/index.html')
 
 
 def applicantloginPageView(request) :
+    # print(request.session['username'])
     return render(request, 'applicant/applicantlogin.html')
 
 
@@ -146,6 +151,7 @@ def createApplicant(request):
 
         return render(request, 'applicant/applicantwelcome.html', context)
 
+
 def updateSkillsPageView(request):
     if not request.session['currentUser'] is None:
         appID = request.POST['applicant_id']
@@ -160,6 +166,7 @@ def updateSkillsPageView(request):
         }
 
         return render(request, 'applicant/updateskills.html', context)
+
 
 def updateSkills(request):
     if not request.session['currentUser'] is None:
@@ -207,6 +214,7 @@ def updateSkills(request):
 
         return render(request, 'applicant/applicantwelcome.html', context)
 
+
 def offersPageView(request):
     appID = request.POST['applicant_id']
     organizationdata = organization.objects.all()
@@ -224,7 +232,7 @@ def offersPageView(request):
 def messagesPageView(request):
     appID = int(request.POST['applicant_id'])
     # pull all data from the messages table that has this applicant's ID
-    messagedata = message.objects.filter(applicant_id__exact=appID).order_by('-timesent')
+    messagedata = message.objects.filter(applicant_id__exact=appID)
 
     context = {
         'appID' : appID,
@@ -247,40 +255,40 @@ def singleMessageView(request):
 
 
 def createMessage(request):
-    appID = request.POST['app-id']
-    appID = int(appID)
-    appSender = request.POST.get('sender')
-    recipient = request.POST['recipient']
-    msgContent = request.POST['content']
+    # appID = request.POST['app-id']
+    # appID = int(appID)
+    # appSender = request.POST.get('sender')
+    # recipient = request.POST['recipient']
+    # msgContent = request.POST['content']
 
-    recipientNames = recipient.split()
+    # recipientNames = recipient.split()
     
 
-    # If recipient doesn't exist, redirect to same page with a message saying so. Refill content field so that it doesn't have to be retyped
-    if mentor.objects.filter(first_name__iexact=recipientNames[0], last_name__iexact=recipientNames[1]).exists():
-        mentorObject = mentor.objects.get(first_name__iexact=recipientNames[0], last_name__iexact=recipientNames[1])
-        appObject = applicant.objects.get(applicant_id__exact=appID)
-        message.objects.create(mentor=mentorObject, applicant=appObject, content=msgContent, sender_applicant=appSender)
+    # # If recipient doesn't exist, redirect to same page with a message saying so. Refill content field so that it doesn't have to be retyped
+    # if mentor.objects.filter(first_name__iexact=recipientNames[0], last_name__iexact=recipientNames[1]).exists():
+    #     mentorObject = mentor.objects.get(first_name__iexact=recipientNames[0], last_name__iexact=recipientNames[1])
+    #     appObject = applicant.objects.get(applicant_id__exact=appID)
+    #     message.objects.create(mentor=mentorObject, applicant=appObject, content=msgContent, sender_applicant=appSender)
 
-        messagedata = message.objects.filter(applicant_id__exact=appID).order_by('-timesent')
+    #     messagedata = message.objects.filter(applicant_id__exact=appID).order_by('-timesent')
 
-        context = {
-            'appID' : appID,
-            'allMessages' : messagedata
-        }
+    #     context = {
+    #         'appID' : appID,
+    #         'allMessages' : messagedata
+    #     }
 
-        return render(request, 'applicant/messages.html', context)
+    #     return render(request, 'applicant/messages.html', context)
 
-    else:
-        messages.info(request, 'Sorry, we have no record of that mentor. Please try again.')
-        # redirect to all messages page
-        messagedata = message.objects.filter(applicant_id__exact=appID).order_by('-timesent')
-        # refill message content with current content
+    # else:
+    #     messages.info(request, 'Sorry, we have no record of that mentor. Please try again.')
+    #     # redirect to all messages page
+    #     messagedata = message.objects.filter(applicant_id__exact=appID).order_by('-timesent')
+    #     # refill message content with current content
 
-        context = {
-            'appID' : appID,
-            'allMessages' : messagedata
-        }
+    #     context = {
+    #         'appID' : appID,
+    #         'allMessages' : messagedata
+    #     }
 
         return render(request, 'applicant/messages.html', context)
 
