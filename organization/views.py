@@ -124,3 +124,23 @@ def viewApplicant(request, id):
     }
     
     return render(request, 'organization/viewapplicant.html', context)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# mentor stuff
+def mentorAddPageView(request):
+    # pass organization id, nothing else should be necessary
+    pass
