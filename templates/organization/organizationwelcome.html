@@ -46,14 +46,14 @@
 
                 <div class="panel">
                         <div>
-                                <form name="organizationwelcome" method="post" action="{% url 'createJobListing' %}">
+                                <form name="organizationwelcome" method="POST" action="{% url 'createJobListing' %}">
                                         {% csrf_token %}
                                         <h3>Create a job listing</h3>
                                         <hr>
                                         <br>
                                         <input type="hidden" name='orgID' id='orgID' value="{% for x in orgInfo %}
                                                 {{x.organization_id}}
-                                                {% endfor%}QqQ
+                                                {% endfor%}
                                                 ">
                                         <label for='status'>Job status:</label>
                                         <input type="text" name='status' id='status' required>

@@ -3,6 +3,7 @@ from django.http import HttpResponse
 
 # models
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.forms import UserCreationForm
 from .models import organization, skill, listing, listing_skills, mentor, offers_made
 from django.contrib import messages
 from django.contrib.auth.models import User
@@ -42,6 +43,8 @@ def createOrganization(request):
         context = {'orgInfo': data}
         return render(request, 'organization/organizationwelcome.html', context)
 
+
+
 def companyLogin(request):
     username = request.POST['company_email']
     password = request.POST['company_password']
@@ -67,7 +70,7 @@ def createJobListing(request):
     compensation = request.POST['compensation']
     organization_int = request.POST['orgID']
     organization_int = int(organization_int)
-    
+
     listing.objects.create(
         status = status, 
         city = city, 
