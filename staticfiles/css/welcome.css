@@ -1,0 +1,125 @@
+/* html {
+    background: url("https://images.unsplash.com/photo-1573497491208-6b1acb260507?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=3150&q=80") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+} */
+
+body{
+    font-family: 'Roboto', sans-serif;
+    background-color:#151b29;
+}
+
+main{
+    width: 65%;
+    margin: 0 auto; 
+}
+
+
+#background{
+    max-width: 100%;
+    height: 650px;
+    background-image: url("https://images.unsplash.com/photo-1573497491208-6b1acb260507?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=3150&q=80");
+    background-position: top;
+    background-size: cover;
+    background-repeat: no-repeat;
+    border: 2px solid white;
+    border-radius: 10px;
+    margin: 0 auto;
+}
+
+h1{
+    font-size: 3rem;
+    color:#fff;
+    margin-bottom: 20px;   
+}
+
+h2{
+    text-align: center;
+}
+
+.class{
+    width: 20%;
+    margin: 20px;
+    display: inline-block;
+}
+
+.welcome_intro{
+    color: thistle;
+}
+
+form{
+    color: #151b29;
+    right: none;
+}
+
+#btwrapper{
+    margin-top: 0 auto;
+    text-align: center;
+    align-items: center;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+#wel_bt{
+    margin-top: 15px;
+    background: none;
+    color:#ffa260;
+    border: 3px solid;
+    padding: 1em 2em;
+    font-size: 1em;
+    border-radius: 10px;
+    transition: color 0.25s, border-color 0.25s, box-shadow 0.25s, transform 0.25s;
+    text-transform: uppercase;
+}
+
+#wel_bt:hover{
+    border-color: #f1ff5c;
+    color: white;
+    box-shadow: 0 0.5em 0.5em -0.4em #f1ff5c;
+    transform: translateY(-0.25em);
+    cursor: pointer;
+}
+
+.panel{
+    background-color: rgb(218, 218, 218);
+    border-radius: 10px;
+    margin-top: 20px;
+    padding: 35px 25px;
+    width: 100%;
+    max-width: 1600px;
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+
+.type-select{
+    padding:0;
+}
+
+.type-select img{
+    width: 50%;
+    height: 240px;
+    background-position:center;
+    border-radius: 20px;
+    border: 1px solid white;
+}
+
+.signup-button{
+    text-transform: uppercase;
+    text-decoration: none;
+    border:burlywood solid 2px;
+    border-radius: 10px;
+    padding: 10px 15px;
+    transition: color 0.25s, border-color 0.25s, box-shadow 0.25s, transform 0.25s;
+}
+
+.signup-button:hover{
+    background-color: wheat;
+    cursor: pointer;
+}
+
