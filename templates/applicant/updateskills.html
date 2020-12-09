@@ -49,6 +49,9 @@
     .container-main {
         margin-top: 120px;
     }
+    #btnRemoveSkill {
+        display:none;
+    }
     .inputskill {
         margin-top: 20px;
         margin-bottom: 20px;
@@ -165,7 +168,7 @@
                 {% for i in '0123456789'|make_list %}
                     {% if i != '0' %}
                         <div class='hidden inputskill fade-in' id='skillinputdiv{{i}}'>
-                            <label for='skillsinput{{i}}'>Skills:</label>
+                            <label for='skillsinput{{i}}'>Skill:</label>
                             <input list='applicantskills' name='skillsinput{{i}}' id='skillsinput{{i}}'>
                                 <datalist id='applicantskills'>
                                     {% for skillitem in skills %}
@@ -191,7 +194,7 @@
                         </div>
                     {% else %}
                         <div class='inputskill fade-in' id='skillinputdiv{{i}}'>
-                            <label for='skillsinput{{i}}'>Skills:</label>
+                            <label for='skillsinput{{i}}'>Skill:</label>
                             <input list='applicantskills' name='skillsinput{{i}}' id='skillsinput{{i}}'>
                                 <datalist id='applicantskills'>
                                     {% for skillitem in skills %}
@@ -220,13 +223,13 @@
                 <div class='addremove-container'>
                     <div class='addremove'>
                         <button type='button' class='link-btn' onclick='addAnotherSkill()'>Add Another Skill</button>
-                        <button type='button' class='link-btn' onclick='removeSkill()'>Remove Skill</button>
+                        <button type='button' class='link-btn' onclick='removeSkill()' id='btnRemoveSkill'>Remove Skill</button>
                     </div>
                 </div>
                 <div class='submitcancel-container'>
                     <div class='submitcancel'>
                         <button type="submit" class='link-btn'>Enter Skills</button>
-                        <button type='button' class='link-btn' id='cancel'>Cancel</button>
+                        <button type='button' class='link-btn' id='cancel' onclick="location.href='{% url 'applicantwelcome' %}'">Cancel</button>
                     </div>
                 </div>
             </form>

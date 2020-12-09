@@ -109,7 +109,7 @@
             <h1>Welcome, {{applicant.first_name}} {{applicant.last_name}}</h1>
         </div>
         <div class='listings-container'>
-            {% for listing in listings %}
+            {% for listing in listings|slice:":10" %}
                 <div class='ind-listing'>
                     <div>
                         <h1 class='listing-link' style='margin: 5px;'>{{listing.job_title}}</h1>
@@ -125,7 +125,7 @@
                             <p>Contract type: {{listing.contracts}}</p>
                         </div>
                         <div class='link'>
-                            <button type='button' class='link-btn' onclick="location.href={% url 'viewlisting' org_id=listing.organization_id list_id=listing.listing_id %}">View Details</button>
+                            <button type='button' class='link-btn' onclick="location.href='{% url 'viewlisting' org_id=listing.organization_id list_id=listing.listing_id %}'">View Details</button>
                         </div>
                     </div>
                 </div>

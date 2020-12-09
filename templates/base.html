@@ -154,7 +154,11 @@
             <img src={% static 'img/bcrlogo.jpg' %} style='height:80px;'>
             <div class='brand-container'>
                 {% if user %}
-                    <a class="brand" href="{% url 'organizationwelcome' %}">Black Cyber Recruiter</a>
+                    {% if type == 'applicant' %}
+                        <a class="brand" href="{% url 'applicantwelcome' %}">Black Cyber Recruiter</a>
+                    {% else %}
+                        <a class="brand" href="{% url 'organizationwelcome' %}">Black Cyber Recruiter</a>
+                    {% endif %}
                 {% else %}
                     <a class="brand" href="{% url 'index' %}">Black Cyber Recruiter</a>
                 {% endif %}
