@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from .models import organization, skill, listing, listing_skills, mentor, offers_made
 from person.models import applicant
-from applicant.models import applicant_skills
+from applicant.models import applicant_skills, message
 
 from django.contrib import messages
 from django.contrib.auth.models import User
