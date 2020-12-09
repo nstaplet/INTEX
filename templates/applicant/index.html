@@ -3,8 +3,26 @@
 {% block content%}
 
     <script>
-        
+        $(window).on("load", function() {
+            $(window).scroll(function() {
+                var windowBottom = $(this).scrollTop() + $(this).innerHeight();
+                $(".fade").each(function() {
+                    /* Check the location of each desired element */
+                    var objectBottom = $(this).offset().top + $(this).outerHeight();
 
+                    /* If the element is completely within bounds of the window, fade it in */
+                    if (objectBottom < windowBottom) { //object comes into view (scrolling down)
+                        if ($(this).css("opacity") == 0) {
+                            $(this).fadeTo(250, 1);
+                        }
+                    } else { //object goes out of view (scrolling up)
+                        if ($(this).css("opacity") == 1) {
+                            $(this).fadeTo(250, 0);
+                        }
+                    }
+                });
+            }).scroll(); //invoke scroll-handler on page-load
+        });
     </script>
 
     <style>
@@ -24,9 +42,11 @@
         }
         .title {
             text-align: center;
-            color: rgba(255,255,255,0.78);
+            color: rgba(0, 0, 0,0.99);
             margin-top: 200px;
-            
+            background-image: linear-gradient(90deg, rgba(0, 0, 0, 0.1) 5%, rgba(240, 240, 240, 1) 50%, rgba(0, 0, 0, 0.1) 95%);
+            padding-bottom: 40px;
+            padding-top: 40px;
         }
         .container {
             display: flex;
@@ -57,10 +77,15 @@
             width: 50%;
             margin-left: auto;
             margin-right: auto;
+            font-size: 25px;
+            color: rgba(0, 0, 0,0.99);
+        }
+        .mission-container {
             margin-top: 300px;
             margin-bottom: 500px;
-            font-size: 25px;
-            color: rgba(255,255,255,0.78);
+            background-image: linear-gradient(90deg, rgba(0, 0, 0, 0.1) 5%, rgba(240, 240, 240, 1) 50%, rgba(0, 0, 0, 0.1) 95%);
+            padding-bottom: 40px;
+            padding-top: 40px;
         }
     </style>
 
@@ -79,11 +104,13 @@
                 <a href="{% url 'organizationlogin' %}" class='link-btn'>I am looking to hire!</a>
             </div>
         </div>
-        <div class='mission fade'>
-            <h2 style='text-align:center;font-size:40px;'>Our Mission</h2>
-            <p>
-                The Black Cyber Recruiter (BCR) aims to assist African American individuals in becoming more integrated into the workforce.  Black individuals face barriers to entry that make it more difficult for them to receive job offers, internships, and other workplace opportunities.  The goal of the Black Cyber Recruiter is to create an environment where minorities - particularly Black - individuals can find meaningful job opportunities tailored to their needs and where organizations can go to find diverse talent and improve the racial equality of their teams.
-            </p>
+        <div class='mission-container fade'>
+            <div class='mission'>
+                <h2 style='text-align:center;font-size:40px;'>Our Mission</h2>
+                <p>
+                    The Black Cyber Recruiter (BCR) aims to assist African American individuals in becoming more integrated into the workforce.  Black individuals face barriers to entry that make it more difficult for them to receive job offers, internships, and other workplace opportunities.  The goal of the Black Cyber Recruiter is to create an environment where minorities - particularly Black - individuals can find meaningful job opportunities tailored to their needs and where organizations can go to find diverse talent and improve the racial equality of their teams.
+                </p>
+            </div>
         </div>
     </div>
 

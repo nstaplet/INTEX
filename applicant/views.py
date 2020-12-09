@@ -41,7 +41,8 @@ def indexPageView(request) :
     request.session['user'] = None
 
     context = {
-        'user': request.session['user']
+        'user': request.session['user'],
+        'title': 'Black Cyber Recruiter'
     }
 
     # print(request.session['user'])

@@ -88,17 +88,33 @@ def companyLogin(request):
 
     if user is not None:
         data = organization.objects.all().get(company_email=username)
+        request.session['currentUser'] = data.organization_id
+
+        print(request.session['currentUser'])
 
         request.session['currentUser'] = data.organization_id
         applicants_data = applicant.objects.all()
         listings_data = listing.objects.all().filter(organization_id__exact=request.session['currentUser']) 
+        skills_dict = {}
+
+        app_skills = applicant_skills.objects.all()
+
+        for app in app_skills:
+            if app.applicant_id in skills_dict:
+                skills_dict[app.applicant_id].append([app.skill_id, app.skill_value])
+
+
+        # applicants[applicant_id] = {
+        #     applicant: applicant,
+        #     skills: skills[],
+        # }
 
         try: 
             context = {
                 'applicants': applicants_data,
                 'listings': listings_data,
                 'title': 'Organization Homepage',
-                'user': request.session['username'],
+                'user': request.session['currentUser'],
             }
         except Exception:
             context = {
@@ -239,7 +255,7 @@ def viewApplicant(request, id):
 # mentor stuff
 def mentorAddPageView(request):
     # pass organization id, nothing else should be necessary
-    orgID = request.POST['orgID']
+    orgID = request.session['currentUser']
 
     context = {
         'orgID' : orgID
@@ -259,29 +275,70 @@ def createMentor(request):
     mentor.objects.create(organization=orgObject, first_name=fName, last_name=lName, industry=indName)
 
 
-    data = organization.objects.filter(organization_id__exact=orgID)
-    context = {'orgInfo': data}
+    data = organization.objects.all().filter(organization_id__exact=orgID)
+
+    request.session['currentUser'] = data.first().organization_id
+
+    print(request.session['currentUser'])
+
+    applicants_data = applicant.objects.all()
+    listings_data = listing.objects.all().filter(organization_id__exact=request.session['currentUser']) 
+    skills_dict = {}
+
+    app_skills = applicant_skills.objects.all()
+
+    for app in app_skills:
+        if app.applicant_id in skills_dict:
+            skills_dict[app.applicant_id].append([app.skill_id, app.skill_value])
+
+
+    # applicants[applicant_id] = {
+    #     applicant: applicant,
+    #     skills: skills[],
+    # }
+
+    try: 
+        context = {
+            'applicants': applicants_data,
+            'listings': listings_data,
+            'title': 'Organization Homepage',
+            'user': request.session['currentUser'],
+            'orgInfo': data
+        }
+    except Exception:
+        context = {
+            'applicants': applicants_data,
+            'listings': listings_data,
+            'title': 'Organization Homepage',
+            'user': 2,
+            'orgInfo': data
+        }
     return render(request, 'organization/organizationwelcome.html', context)
 
 def viewMentors(request):
-    orgID = request.POST['orgID']
-    
-    mentorData = mentor.objects.filter(organization=orgID)
-    context = {
-        'mentors' : mentorData,
-        'orgID' : orgID
-    }
-    return render(request, 'organization/viewmentors.html', context)
+    if request.session['currentUser']:
+        # orgID = request.POST['orgID']
+        org = organization.objects.all().get(organization_id__exact=request.session['currentUser'])
+        
+        mentorData = mentor.objects.filter(organization=org.organization_id)
+
+        context = {
+            'mentors' : mentorData,
+            'orgID' : org.organization_id,
+            'title': f'{org.company_name} Mentors'
+        }
+        return render(request, 'organization/viewmentors.html', context)
 
 
 def viewMessages(request):
     mentorID = request.POST['mentorID']
 
-    messagedata = message.objects.filter(mentor_id__exact=mentorID).order_by('-timesent')
+    messagedata = message.objects.all().filter(mentor_id__exact=mentorID).order_by('-timesent')
 
     context = {
         'mentorID' : mentorID,
-        'allMessages' : messagedata
+        'allMessages' : messagedata,
+        'title': 'Mentor Messages',
     }
 
     return render(request, 'organization/mentormessages.html', context)
@@ -308,20 +365,22 @@ def mentorCreateMessage(request):
 
         context = {
             'mentorID' : mentorID,
-            'allMessages' : messagedata
+            'allMessages' : messagedata,
+            'title': 'Mentor Messages',
         }
 
         return render(request, 'organization/mentormessages.html', context)
 
     else:
-        messages.info(request, 'Sorry, we have no record of that mentor. Please try again.')
+        messages.info(request, 'Sorry, we have no record of that applicant. Please try again.')
         # redirect to all messages page
         messagedata = message.objects.filter(mentor_id__exact=mentorID).order_by('-timesent')
         # refill message content with current content
 
         context = {
             'mentorID' : mentorID,
-            'allMessages' : messagedata
+            'allMessages' : messagedata,
+            'title': 'Mentor Messages',
         }
 
         return render(request, 'organization/mentormessages.html', context)
@@ -330,7 +389,12 @@ def mentorSingleMessageView(request):
     messageID = request.POST['message-id']
     messageID = int(messageID)
 
+    print(messageID)
+
     singleMessageData = message.objects.filter(message_id__exact=messageID)
+
+    print(singleMessageData)
+
     context = {
         'messageobject' : singleMessageData
     }
