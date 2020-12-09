@@ -58,6 +58,10 @@ class listing(models.Model):
     def __str__(self):
         return (f'{self.job_title} {self.compensation}')
 
+    # @property
+    # def re_listingID(self):
+    #     return self.listing_id
+
 class listing_skills(models.Model):
     skill_listing_id = models.AutoField(primary_key=True)
     skill_id = models.ForeignKey(skill, on_delete=models.CASCADE)
