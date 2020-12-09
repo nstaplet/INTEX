@@ -38,11 +38,15 @@ def indexPageView(request) :
     # }
 
     
-    request.session['user'] = 'tate'
+    request.session['user'] = None
+
+    context = {
+        'user': request.session['user']
+    }
 
     # print(request.session['user'])
 
-    return render(request, 'applicant/index.html')
+    return render(request, 'applicant/index.html', context)
 
 
 def viewlisting(request, org_id, list_id):
