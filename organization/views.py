@@ -386,17 +386,19 @@ def mentorCreateMessage(request):
         return render(request, 'organization/mentormessages.html', context)
 
 def mentorSingleMessageView(request):
-    messageID = request.POST['message-id']
-    messageID = int(messageID)
+    if request.session['currentUser']:
+        messageID = request.POST['message-id']
+        messageID = int(messageID)
 
-    print(messageID)
+        print(messageID)
 
-    singleMessageData = message.objects.filter(message_id__exact=messageID)
+        singleMessageData = message.objects.filter(message_id__exact=messageID)
 
-    print(singleMessageData)
+        print(singleMessageData)
 
-    context = {
-        'messageobject' : singleMessageData
-    }
+        context = {
+            'messageobject' : singleMessageData,
+            'title': f'Message to {singleMessageData.first().applicant.first_name} {singleMessageData.first().applicant.last_name}'
+        }
 
-    return render(request, 'organization/mentorsinglemessage.html', context)
+        return render(request, 'organization/mentorsinglemessage.html', context)
