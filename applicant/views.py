@@ -107,7 +107,7 @@ def applicantLogin(request) :
     user = authenticate(username = username, password = password)
 
     if user is not None:
-        data = applicant.objects.filter(username__exact=username)
+        data = applicant.objects.all().get(username__exact=username)
         
         appInfo = applicant.objects.filter(username__exact=username).values_list('applicant_id', flat=True)[0]
         skilldata = applicant_skills.objects.filter(applicant__exact=appInfo)
@@ -121,11 +121,16 @@ def applicantLogin(request) :
             skillname = skillname.capitalize()
             skillListNamesEdited.append(skillname)
 
-        request.session['currentUser'] = user.id
+        request.session['currentUser'] = data.applicant_id   
+
+        listings_data = listing.objects.all() 
 
         context = {
             'skills' : skillListNamesEdited,
-            'applicant' : data
+            'listings': listings_data,
+            'applicant' : data,
+            'title': f'{data.first_name} {data.last_name} Home Page',
+            'type': 'applicant',
         }
         return render(request, 'applicant/applicantwelcome.html', context)
 
@@ -135,22 +140,17 @@ def applicantLogin(request) :
 
 
 def applicant_dash(request):
-    print(request.session['user'])
-    try: 
-        print(request.user)
-    except Exception:
-        pass
-
-    if not request.session['user'] is None:
+    if request.session['currentUser']:
         top_skills = display_top_skills(request)
 
-        applicant_skills_list = get_applicant_skills(2)  # request.user.id
+        applicant_skills_list = get_applicant_skills(request.session['currentUser'])  # request.user.id
 
         for s in applicant_skills_list:
             if s in top_skills:
                 top_skills.remove(s)
 
         top_skills = top_skills[0:5]
+        curr_app = applicant.objects.all().get(applicant_id__exact=request.session['currentUser'])
 
         if not isinstance(top_skills[0], str):
             top_skills_strings = []
@@ -163,9 +163,11 @@ def applicant_dash(request):
             }
         else:
             context = {
-                'applicant': request.user,
+                'applicant': curr_app,
                 'top_skills': top_skills,
                 'applicant_skills': applicant_skills_list,
+                'title': f'{curr_app.first_name} {curr_app.last_name}',
+                'type': 'applicant',
             }
 
         return render(request, 'applicant/applicantdashboard.html', context)
@@ -207,19 +209,21 @@ def createApplicant(request):
         for skillitem in skilldata:
             skillListNames.append(skill.objects.filter(skill_id__exact=skillitem.skill).values_list('skill_name', flat=True)[0] )
 
-        request.session['currentUser'] = request.user.id # this could keep track of the users
+        request.session['currentUser'] = applicantdata.applicant.id # this could keep track of the users
 
         context = {
             'applicant' : applicantdata,
-            'skills' : skillListNames
+            'skills' : skillListNames,
+            'type': 'applicant',
         }
 
         return render(request, 'applicant/applicantwelcome.html', context)
 
 
 def updateSkillsPageView(request):
-    if not request.session['currentUser'] is None:
+    if request.session['currentUser']:
         appID = request.POST['applicant_id']
+        print(request.session['currentUser'])
 
         data = skill.objects.all().distinct('skill_name')
         editdata = []
@@ -227,40 +231,38 @@ def updateSkillsPageView(request):
             editdata.append(skill_name.skill_name[6:len(skill_name.skill_name)])
         context = {
             'skills' : editdata,
-            'appID' : int(appID)
+            'appID' : int(appID),
+            'type': 'applicant',
         }
 
         return render(request, 'applicant/updateskills.html', context)
 
 
 def updateSkills(request):
-    if not request.session['currentUser'] is None:
-        skills = request.POST['skillsinput']
-        appID = request.POST['applicant_id']
+    if request.session['currentUser']:
+        appID = request.session['currentUser']
 
-        skills = skills.split()
-        try:
-            for skillitem in skills:
-                skillitem = 'skill_' + skillitem
-                applicant_skills.objects.create(
-                    skill=skill.objects.get(skill_name__iexact=skillitem),
-                    applicant=applicant.objects.get(applicant_id__exact=appID)
-                )
-        # If the skill does not exist yet, reroute to the same page
-        except IndexError:
-            messages.info(request, 'That skill is not currently in use.')
-            data = skill.objects.all()
-            editdata = []
-            for skill_name in data:
-                editdata.append(skill_name.skill_name[6:len(skill_name.skill_name)])
-            context = {
-                'skills' : editdata
-            }
-            return render(request, 'applicant/updateskills.html', context)
+        for i in range(10):
+            if request.POST.get(f'skillsinput{i}'):
+                new_skill = applicant_skills()
 
+                skill_name = 'skill_' + request.POST.get(f'skillsinput{i}')
+
+                try: 
+                    skill_object = skill.objects.all().get(skill_name__exact=skill_name)
+                except Exception:
+                    newSkill = skill()
+                    newSkill.skill_name = skill_name
+                    newSkill.save()
+                    skill_object = skill.objects.all().get(skill_name__exact=skill_name)
+    
+                new_skill.skill_id = skill_object.skill_id
+                new_skill.applicant_id = appID
+                new_skill.skill_value = request.POST.get(f'skill_value{i}') 
+                new_skill.save()
 
     # applicantdataid = applicant.objects.filter(email__exact=email).values_list('applicant_id', flat=True)[0]
-        applicantdata = applicant.objects.filter(applicant_id__exact=appID)
+        applicantdata = applicant.objects.all().get(applicant_id__exact=appID)
         skilldata = applicant_skills.objects.filter(applicant__exact=appID)
         skillListNames = []
         skillListNamesEdited = []
@@ -272,9 +274,20 @@ def updateSkills(request):
             skillname = skillname.capitalize()
             skillListNamesEdited.append(skillname)
 
+        listings_data = listing.objects.all() 
+
+        # context = {
+        #     'skills' : skillListNamesEdited,
+        #     'applicant' : applicantdata,
+        #     'type': 'applicant',
+        # }
+
         context = {
             'skills' : skillListNamesEdited,
-            'applicant' : applicantdata
+            'listings': listings_data,
+            'applicant' : applicantdata,
+            'title': f'{applicantdata.first_name} {applicantdata.last_name} Home Page',
+            'type': 'applicant',
         }
 
         return render(request, 'applicant/applicantwelcome.html', context)
@@ -301,7 +314,8 @@ def messagesPageView(request):
 
     context = {
         'appID' : appID,
-        'allMessages' : messagedata
+        'allMessages' : messagedata,
+        'type': 'applicant',
     }
 
     return render(request, 'applicant/messages.html', context)
@@ -359,5 +373,36 @@ def createMessage(request):
 
 def applicantLogout(request):
     logout(request)
+    request.session['currentUser'] = None
     # messages.info(request, "You have logged out successfully!")
     return redirect("index")
+
+
+def applicantwelcome(request):
+    if request.session['currentUser']:
+        user = applicant.objects.all().get(applicant_id=request.session['currentUser'])
+
+        if user:
+            skilldata = applicant_skills.objects.filter(applicant__exact=user.applicant_id)
+            skillListNames = []
+            skillListNamesEdited = []
+
+            for skillitem in skilldata:
+                skillListNames.append( skill.objects.filter(skill_id__exact=skillitem.skill_id).values_list('skill_name', flat=True)[0] )
+            for skillname in skillListNames:
+                skillname = skillname[6:len(skillname)]
+                skillname = skillname.capitalize()
+                skillListNamesEdited.append(skillname)
+
+            request.session['currentUser'] = user.applicant_id   
+
+            listings_data = listing.objects.all() 
+
+            context = {
+                'skills' : skillListNamesEdited,
+                'listings': listings_data,
+                'applicant' : user,
+                'title': f'{user.first_name} {user.last_name} Home Page',
+                'type': 'applicant',
+            }
+            return render(request, 'applicant/applicantwelcome.html', context)

@@ -1,20 +1,235 @@
 {% extends 'base.html'%}
 {%load static%}
 {%block content%}
+
+<script>
+    let btnCounter = 0
+
+    const addAnotherSkill = () => {
+            $(`#skillinputdiv${btnCounter + 1}`).removeClass('hidden');
+            ++btnCounter;
+            if (btnCounter === 0)
+                    $('#btnRemoveSkill').hide()
+            else
+                    $('#btnRemoveSkill').show()
+
+            if (btnCounter > 9)
+                    btnCounter = 9;
+    }
+    const removeSkill = () => {
+            $(`#skillinputdiv${btnCounter}`).addClass('hidden');
+            --btnCounter;
+            if (btnCounter === 0)
+                    $('#btnRemoveSkill').hide()
+            else
+                    $('#btnRemoveSkill').show()
+
+            if (btnCounter < 0)
+                    btnCounter = 0;
+    }
+
+    const cancelListing = () => {
+            $("form#createListingForm :input").each(function(){
+                    var input = $(this); 
+                    input.val('');
+            });
+            $('#createListingForm').css({'opacity':0});
+            setTimeout(function() {
+                    $('#createListing').hide();
+                    $('#createListingForm').css({'opacity':1});
+            }, 300);
+    }
+
+    const createListing = () => {
+            $('#createListing').show();
+    }
+</script>
+
+<style>
+    .container-main {
+        margin-top: 120px;
+    }
+    .inputskill {
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+    label {
+        display: inline-block;
+        text-align: right;
+        margin-right: 10px;
+        width: 160px;
+        color: #777777;
+        font-size: 24px;    
+    }
+    input, select {
+        padding: 8px;
+        border: solid 1px rgba(240, 240, 240, 0.8);
+        border-radius: 30px;
+        font-size: 18px;
+        background-color: black;
+        transition: 0.2s;
+        color: rgba(240, 240, 240, 0.8);
+        width: 200px;
+    }
+    input:hover, select:hover {
+        box-shadow: 0 0 10px 1px rgba(135,206,250, 0.9);
+        border: solid 1px rgba(135,206,250, 0.9);
+    }
+    .fade-in {
+        animation: fadeIn ease 0.2s;
+        -webkit-animation: fadeIn ease 0.2s;
+        -moz-animation: fadeIn ease 0.2s;
+        -o-animation: fadeIn ease 0.2s;
+        -ms-animation: fadeIn ease 0.2s;
+    }
+    @keyframes fadeIn {
+        0% {opacity:0;}
+        100% {opacity:1;}
+    }
+
+    @-moz-keyframes fadeIn {
+        0% {opacity:0;}
+        100% {opacity:1;}
+    }
+
+    @-webkit-keyframes fadeIn {
+        0% {opacity:0;}
+        100% {opacity:1;}
+    }
+
+    @-o-keyframes fadeIn {
+        0% {opacity:0;}
+        100% {opacity:1;}
+    }
+
+    @-ms-keyframes fadeIn {
+        0% {opacity:0;}
+        100% {opacity:1;}
+    }
+    .hidden {
+        display: none;
+    }
+    .link-btn {
+        text-decoration: none;
+        border: solid 1px rgba(240, 240, 240, 0.7);
+        color: white;
+        font-size: 18px;
+        transition: 0.3s;
+        background-color: rgba(0, 0, 0, 0.7);
+        padding: 8px;
+        border-radius: 30px;
+    }
+    .link-btn:hover {
+        color: rgba(135,206,250, 0.9);
+        border: solid 1px rgba(135,206,250, 0.9);
+    }
+    .form-container {
+        width: 800px;
+        margin-right: auto;
+        margin-left: auto;
+    }
+    .title {
+        color: rgba(240,240,240,0.8);
+        font-size: 40px;
+        margin: 0px;
+        text-align: center;
+    }
+    .submitcancel-container {
+        text-align: center;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+    .addremove-container {
+        text-align: center;
+        margin-top: 50px;
+        margin-bottom: 20px;
+    }
+    button {
+        margin-right: 10px;
+        margin-left: 10px;
+        width: 170px;
+    }
+    #cancel:hover {
+        color: red;
+        border: solid 1px red;
+    }
+</style>
         
-    <form name="updateSkills" method="post" action="{% url 'updateskills' %}">
-        {% csrf_token %}
-        <label for='skillsinput'>Skills:</label>
-        <input list='applicantskills' name='skillsinput' id='skillsinput'>
-            <datalist id='applicantskills'>
-                {% for skillitem in skills %}
-                    <option value = {{skillitem}}>
+    <div class='container-main'>
+        <div class='form-container'>
+            <form name="updateSkills" method="post" action="{% url 'updateskills' %}">
+                <div class='title'>
+                    <h1>Enter New Skills</h1>
+                </div>
+                {% csrf_token %}
+                {% for i in '0123456789'|make_list %}
+                    {% if i != '0' %}
+                        <div class='hidden inputskill fade-in' id='skillinputdiv{{i}}'>
+                            <label for='skillsinput{{i}}'>Skills:</label>
+                            <input list='applicantskills' name='skillsinput{{i}}' id='skillsinput{{i}}'>
+                                <datalist id='applicantskills'>
+                                    {% for skillitem in skills %}
+                                        <option value = {{skillitem}}>
+                                    {% endfor %}
+                                </datalist>
+
+                            <input type='hidden' value={{appID}} name='applicant_id'>
+                            <label style='width:150px;' for="skill_value{{i}}">Skill Value:</label>
+                            <select style='width:230px;' name="skill_value{{i}}" id="skill_value{{i}}">
+                                    <option value="default" disabled selected>Select Skill Value 1-10</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="8">8</option>
+                                    <option value="9">9</option>
+                                    <option value="10">10</option>
+                            </select>
+                        </div>
+                    {% else %}
+                        <div class='inputskill fade-in' id='skillinputdiv{{i}}'>
+                            <label for='skillsinput{{i}}'>Skills:</label>
+                            <input list='applicantskills' name='skillsinput{{i}}' id='skillsinput{{i}}'>
+                                <datalist id='applicantskills'>
+                                    {% for skillitem in skills %}
+                                        <option value = {{skillitem}}>
+                                    {% endfor %}
+                                </datalist>
+
+                            <input type='hidden' value={{appID}} name='applicant_id'>
+                            <label style='width:150px;' for="skill_value{{i}}">Skill Value:</label>
+                            <select style='width:230px;' name="skill_value{{i}}" id="skill_value{{i}}">
+                                    <option value="default" disabled selected>Select Skill Value 1-10</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="8">8</option>
+                                    <option value="9">9</option>
+                                    <option value="10">10</option>
+                            </select>
+                        </div>
+                    {% endif %}
                 {% endfor %}
-            </datalist>
-
-        <input type='hidden' value={{appID}} name='applicant_id'>
-
-        <button type="submit">Update</button>
-    </form>
-        <br><br>
+                <div class='addremove-container'>
+                    <div class='addremove'>
+                        <button type='button' class='link-btn' onclick='addAnotherSkill()'>Add Another Skill</button>
+                        <button type='button' class='link-btn' onclick='removeSkill()'>Remove Skill</button>
+                    </div>
+                </div>
+                <div class='submitcancel-container'>
+                    <div class='submitcancel'>
+                        <button type="submit" class='link-btn'>Enter Skills</button>
+                        <button type='button' class='link-btn' id='cancel'>Cancel</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 {% endblock %}

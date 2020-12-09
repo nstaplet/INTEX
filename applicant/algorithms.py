@@ -57,7 +57,7 @@ def get_applicant_skills(userid):
 
     for skill_obj in list_skills:
         skill_name_ = skill.objects.all().get(skill_id=skill_obj.skill_id)
-        list_skills_.append(skill_name_.skill_name)
+        list_skills_.append([skill_name_.skill_name, skill_obj.skill_value])
 
     return list_skills_
 
