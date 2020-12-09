@@ -16,16 +16,20 @@ from .algorithms import recommend_users
 def organizationWelcomePageView(request) :
     # print(request.session['username'])
     # if request.session['username']:
-    applicants = applicant.objects.all()
+    applicants_data = applicant.objects.all()
+    listings_data = listing.objects.all().filter(organization_id__exact=4) # need a dynamic value here
+
     try: 
         context = {
-            'applicants': applicants,
+            'applicants': applicants_data,
+            'listings': listings_data,
             'title': 'Organization Homepage',
             'user': request.session['username'],
         }
     except Exception:
         context = {
-            'applicants': applicants,
+            'applicants': applicants_data,
+            'listings': listings_data,
             'title': 'Organization Homepage',
             'user': 2,
         }
@@ -163,7 +167,10 @@ def companyLogout(request):
 
 def viewApplicant(request, id):
     rec_applicants = []
-    print(request.session['username'])
+    try:
+        print(request.session['username'])
+    except Exception:
+        pass
         
     try:
         items = recommend_users(89, id)
