@@ -265,7 +265,7 @@
                                         <div id='skills_options'>
                                                 {% for i in '0123456789'|make_list %}
                                                         {% if i != '0' %}
-                                                        <div class='hidden inputskill' id='skillinputdiv{{i}}'>
+                                                        <div class='hidden inputskill fade-in' id='skillinputdiv{{i}}'>
                                                                 <label style='width:150px;' for="skillname{{i}}">Skill Name: </label>
                                                                 <input style='width:150px;' type="text" name="skillname{{i}}" id="skillname{{i}}">
                                                                 <label style='width:150px;' for="skill_value{{i}}">Skill Value:</label>
@@ -284,7 +284,7 @@
                                                                 </select>
                                                         </div>
                                                         {% else %}
-                                                        <div class='inputskill' id='skillinputdiv{{i}}'>
+                                                        <div class='inputskill fade-in' id='skillinputdiv{{i}}'>
                                                                 <label style='width:150px;' for=" skillname{{i}}">Skill Name: </label>
                                                                 <input style='width:150px;' type="text" name="skillname{{i}}" id="skillname{{i}}">
                                                                 <label style='width:150px;' for=" skill_value{{i}}">Skill Value:</label>

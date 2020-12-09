@@ -151,6 +151,8 @@
             <div class='brand-container'>
                 {% if user %}
                     <a class="brand" href="{% url 'organizationwelcome' %}">Black Cyber Recruiter</a>
+                {% else %}
+                    <a class="brand" href="{% url 'index' %}">Black Cyber Recruiter</a>
                 {% endif %}
             </div>
             <div class='nav-items'>
