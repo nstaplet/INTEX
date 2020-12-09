@@ -27,11 +27,15 @@ def organizationWelcomePageView(request) :
     return render(request, 'organization/organizationwelcome.html', context)
 
 
-def organizationlogin(request) :
-    return render(request, 'organization/organizationlogin.html')
+def organizationlogin(request):
+    context = {
+        'title': 'Organization Login',
+    }
+    return render(request, 'organization/organizationlogin.html', context)
 
 
-def organizationsignup(request) :
+def organizationsignup(request):
+
     return render(request, 'organization/organizationsignup.html')
 
 
@@ -68,12 +72,20 @@ def companyLogin(request):
 
     if user is not None:
         data = organization.objects.filter(company_email__exact=username)
-        context = {'orgInfo': data}
+        context = {
+            'orgInfo': data,
+            'title': 'Organization Login'    
+        }
         return render(request, 'organization/organizationwelcome.html', context)
     
     else:
+        context = {
+            'title': 'Organization Login',
+            'user': None
+        }
+
         messages.info(request, 'You username or password is incorrect, please try again!')
-        return render(request, 'organization/organizationlogin.html')
+        return render(request, 'organization/organizationlogin.html', context)
     
 
 def createJobListing(request):

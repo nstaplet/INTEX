@@ -85,7 +85,10 @@ def viewlisting(request, org_id, list_id):
 
 def applicantloginPageView(request) :
     # print(request.session['user'])
-    return render(request, 'applicant/applicantlogin.html')
+    context = {
+        'user': None
+    }
+    return render(request, 'applicant/applicantlogin.html', context)
 
 
 def applicantsignupPage(request) :
