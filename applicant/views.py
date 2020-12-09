@@ -91,8 +91,12 @@ def applicantloginPageView(request) :
     return render(request, 'applicant/applicantlogin.html', context)
 
 
-def applicantsignupPage(request) :
-    return render(request, 'applicant/applicantsignup.html')
+def applicantsignupPage(request):
+    context= {
+        'user': None,
+        'title': 'Applicant Sign Up'
+    }
+    return render(request, 'applicant/applicantsignup.html', context)
 
 
 def applicantLogin(request) :
