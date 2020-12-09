@@ -17,12 +17,18 @@ def organizationWelcomePageView(request) :
     # print(request.session['username'])
     # if request.session['username']:
     applicants = applicant.objects.all()
-
-    context = {
-        'applicants': applicants,
-        'title': 'Organization Homepage',
-        'user': request.session['username'],
-    }
+    try: 
+        context = {
+            'applicants': applicants,
+            'title': 'Organization Homepage',
+            'user': request.session['username'],
+        }
+    except Exception:
+        context = {
+            'applicants': applicants,
+            'title': 'Organization Homepage',
+            'user': 2,
+        }
 
     return render(request, 'organization/organizationwelcome.html', context)
 
@@ -30,13 +36,17 @@ def organizationWelcomePageView(request) :
 def organizationlogin(request):
     context = {
         'title': 'Organization Login',
+        'user': None
     }
     return render(request, 'organization/organizationlogin.html', context)
 
 
 def organizationsignup(request):
-
-    return render(request, 'organization/organizationsignup.html')
+    context = {
+        'user': None,
+        'title': 'Organization Sign Up'
+    }
+    return render(request, 'organization/organizationsignup.html', context)
 
 
 def createOrganization(request):

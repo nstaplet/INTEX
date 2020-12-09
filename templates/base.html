@@ -149,7 +149,9 @@
     <nav class="navbar">
         <div class="nav-container">
             <div class='brand-container'>
-                <a class="brand" href="{% url 'index' %}">Black Cyber Recruiter</a>
+                {% if user %}
+                    <a class="brand" href="{% url 'organizationwelcome' %}">Black Cyber Recruiter</a>
+                {% endif %}
             </div>
             <div class='nav-items'>
                 {% if user %}
