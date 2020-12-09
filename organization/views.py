@@ -77,50 +77,61 @@ def companyLogin(request):
     
 
 def createJobListing(request):
+
+    new_listing = listing()
+    
     try:
-        status = request.POST.get('status')
-        city = request.POST.get('city')
-        job_title = request.POST.get('job_title')
-        contracts = request.POST.get('contracts')
-        relocation = request.POST.get('relocation')
-        description = request.POST.get('description')
-        compensation = request.POST.get('compensation')
-        organization_int = request.POST.get('orgID')
-        organization_int = int(organization_int)
-        skillName = request.POST.get('skillname')
-        skill_value = request.POST.get('skill_value')   
+        new_listing.status = request.POST.get('status')
+        new_listing.city = request.POST.get('city')
+        new_listing.job_title = request.POST.get('job_title')
+        new_listing.contracts = request.POST.get('contracts')
+        new_listing.relocation = request.POST.get('relocation')
+        new_listing.description = request.POST.get('description')
+        new_listing.compensation = request.POST.get('compensation')
+        new_listing.organization_int = int(request.POST.get('orgID'))
     
     except Exception:
         print('error')
 
-    listing.objects.create(
-        status = status, 
-        city = city, 
-        job_title = job_title, 
-        contracts = contracts,
-        relocation = relocation,
-        compensation = compensation, 
-        description = description,
-        organization = organization.objects.get(organization_id__exact = organization_int)     
-    )
+    new_listing.save()    
     
-    if (skill.objects.filter(skill_name__iexact = skillname).exists()):
-        skillob = skill.objects.get(skill_name__iexact = skillname)
+    if (skill.objects.filter(skill_name__iexact = skillName).exists()):
+        skill_ob = skill.objects.all().get(skill_name__iexact = skillName)
+        skill_id = skill_ob.skill_id 
 
-        skill_id = skillob.skill_id 
+    try:
+        new_listing_skill.skillName = request.POST.get('skillname')
+        new_listing_skill.skill_value = request.POST.get('skill_value') 
+        new_listing_skill.listing_id = new_listing.listing_id
+    except Exception:
+        pass
+
+    for i in range(10):
+        if request.POST.get(f'skillname{i}'):
+            new_listing_skill = listing_skills()
+            try:
+                skill_name = request.POST.get(f'skillname{i}')
+                skill_object = skill.objects.all().get(skill_name__exact=skill_name)
+                new_listing_skill.skill_id = skill_object.skill_id
+                new_listing_skill.skill_value = request.POST.get(f'skill_value{i}') 
+                new_listing_skill.listing_id = new_listing.listing_id
+            except Exception:
+                pass
+            new_listing_skill.save()
     
     # PK from the listing object 
-    listing_id_FK = listing.listing_id
+    # listing_id_FK = new_listing.listing_id
 
-    listing_skills.objects.create(
-        skill_value = skill_value,
-        skill_id = skill_id,
-        listing_id = listing_id_FK
-    )
+    # listing_skills.objects.create(
+    #     skill_value = skill_value,
+    #     skill_id = skill_id,
+    #     listing_id = listing_id_FK
+    # )
 
     data = listing.objects.filter(organization__exact=organization_int)
     context = {'ListingInfo': data}
     return render(request, 'organization/organizationwelcome.html', context)
+
 
 def companyLogout(request):
     logout(request)

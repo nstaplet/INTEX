@@ -1,17 +1,33 @@
 {% extends 'base.html'%}
 {% load static %}
-{% block styles %}
-<link rel="stylesheet" href="{% static 'css/welcome.css' %}">
-<link rel="preconnect" href="https://fonts.gstatic.com">
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;400&display=swap" rel="stylesheet">
-{% endblock styles %}
-
 {% block content %}
 
-<body>
-        <main>
-                <a href="{% url 'companyLogout' %}">Logout</a>
-                <br><br><br>
+{% comment %} <link rel="stylesheet" href="{% static 'css/welcome.css' %}"> {% endcomment %}
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;400&display=swap" rel="stylesheet">
+
+<script>
+        const addAnotherSkill = (idval) => {
+                $(`#skillinputdiv${idval + 1}`).removeClass('hidden');
+                // document.getElementById()
+        }
+        const removeSkill = (idval) => {
+                $(`#skillinputdiv${idval}`).addClass('hidden');
+        }
+</script>
+
+<style>
+        .container-main {
+            margin-top: 120px;  
+            z-index: 10;
+        }
+        .hidden {
+                display: none;
+        }
+
+</style>
+
+        <div class='container-main'>
                 <section id="background">
                         <h2>
                                 <strong> You need to hire quality talent</strong>
@@ -34,8 +50,8 @@
                                 Sed inventore ab autem quidem hic aliquid, enim alias aliquam similique officia vero est
                                 assumenda amet, consequatur reiciendis! Quasi, ullam in accusantium omnis necessitatibus
                         </div>
-                        <br>
-                        <br>
+                        
+                        
 
                         <div class="btcontainer">
                                 <div class="center">
@@ -51,8 +67,7 @@
                                 <form name="organizationwelcome" method="POST" action="{% url 'createJobListing' %}">
                                         {% csrf_token %}
                                         <h3>Create a job listing</h3>
-                                        <hr>
-                                        <br>
+                                        
 
                                         # organization FK
                                         <input type="hidden" name='orgID' id='orgID' value="{% for x in orgInfo %}
@@ -61,16 +76,15 @@
                                                 ">
                                         <label for='status'>Job status:</label>
                                         <input type="text" name='status' id='status' required>
-                                        <br><br>
+                                        
                                         <label for='city'>City:</label>
                                         <input type="text" name='city' id='city' required>
-                                        <br><br>
+                                        
                                         <label for='job_title'>Job Title</label>
                                         <input type="text" name='job_title' id='job_title' required>
-                                        <br><br>
+                                        
                                         <label for='compensation'>Compensation: (Optional)</label>
                                         <input type="number" step="0.01" min="0" name='compensation' id='compensation'>
-                                        <br><br>
                                         <label for='contracts'>Contract type:</label>
                                         <select name="contracts" id="contracts">
                                                 <option value="default" disabled selected>Select one</option>
@@ -80,7 +94,6 @@
                                                 <option value="Part-Time">Part-Time</option>
                                                 <option value="Full-Time">Full-Time</option>
                                         </select>
-                                        <br><br>
 
                                         <div>
                                                 <span>Relocation: Y/N</span>
@@ -90,13 +103,13 @@
                                         <input type="radio" name='relocation' id='relocation' value="True">
                                         <label for='relocation'>No</label>
                                         <input type="radio" name='relocation' id='relocation' value="False">
-                                        <br><br>
+                                        
                                         <div>
                                                 <label for='description'>Job description:</label>
                                         </div>
                                         <textarea type="textarea" name='description' id='description' rows="15" ,
                                                 cols="60"></textarea>
-                                        <br><br>
+                                        
                                         <!-- 
                                          {% for item in ListingInfo%}
 
@@ -108,28 +121,51 @@
                                                                                     {% endfor%}
                                                                                     ">
                                                                                 </div>  -->
-                                        <label for=" skillname">Skill Name: </label>
-                                        <input type="text" name="skillname" id="skillname">
-
-                                        <label for=" skill_value">Skill Value:</label>
-                                        <select name="skill_value" id="skill_value">
-                                                <option value="default" disabled selected>Select Skill Value 1 ~
-                                                        10</option>
-                                                <option value="1">1</option>
-                                                <option value="2">2</option>
-                                                <option value="3">3</option>
-                                                <option value="4">4</option>
-                                                <option value="5">5</option>
-                                                <option value="6">6</option>
-                                                <option value="7">7</option>
-                                                <option value="8">8</option>
-                                                <option value="9">9</option>
-                                                <option value="10">10</option>
-                                        </select>
-                                        <!-- <span>
-                                                <button type="submit">Add Skill</button>
-                                        </span> -->
-                                        <br><br>
+                                        {% for i in '0123456789'|make_list %}
+                                                {% if i != '0' %}
+                                                <div class='hidden' id='skillinputdiv{{i}}'>
+                                                        <label for=" skillname{{i}}">Skill Name: </label>
+                                                        <input type="text" name="skillname{{i}}" id="skillname{{i}}">
+                                                        <label for=" skill_value{{i}}">Skill Value:</label>
+                                                        <select name="skill_value{{i}}" id="skill_value{{i}}">
+                                                                <option value="default" disabled selected>Select Skill Value 1-10</option>
+                                                                <option value="1">1</option>
+                                                                <option value="2">2</option>
+                                                                <option value="3">3</option>
+                                                                <option value="4">4</option>
+                                                                <option value="5">5</option>
+                                                                <option value="6">6</option>
+                                                                <option value="7">7</option>
+                                                                <option value="8">8</option>
+                                                                <option value="9">9</option>
+                                                                <option value="10">10</option>
+                                                        </select>
+                                                        <button type='button' onclick='addAnotherSkill({{i}})'>Add Another Skill</button>
+                                                        <button type='button' onclick='removeSkill({{i}})'>Remove Skill</button>
+                                                </div>
+                                                {% else %}
+                                                <div id='skillinputdiv{{i}}'>
+                                                        <label for=" skillname{{i}}">Skill Name: </label>
+                                                        <input type="text" name="skillname{{i}}" id="skillname{{i}}">
+                                                        <label for=" skill_value{{i}}">Skill Value:</label>
+                                                        <select name="skill_value{{I}}" id="skill_value{{i}}">
+                                                                <option value="default" disabled selected>Select Skill Value 1-10</option>
+                                                                <option value="1">1</option>
+                                                                <option value="2">2</option>
+                                                                <option value="3">3</option>
+                                                                <option value="4">4</option>
+                                                                <option value="5">5</option>
+                                                                <option value="6">6</option>
+                                                                <option value="7">7</option>
+                                                                <option value="8">8</option>
+                                                                <option value="9">9</option>
+                                                                <option value="10">10</option>
+                                                        </select>
+                                                        <button type='button' onclick='addAnotherSkill({{i}})'>Add Another Skill</button>
+                                                        <button type='button' onclick='removeSkill({{i}})'>Remove Skill</button>
+                                                </div>
+                                                {% endif %}
+                                        {% endfor %}                                        
                                         <button type=" submit">Register</button>
                                 </form>
                         </div>
@@ -189,6 +225,6 @@
                                 </form>
                         </div>
                 </div>
-        </main>
-</body>
+        </div>
+
 {% endblock content %}
