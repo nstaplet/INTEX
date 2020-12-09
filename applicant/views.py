@@ -90,8 +90,8 @@ def applicantsignupPage(request) :
 
 def applicantLogin(request) :
 
-    username = request.POST['username']
-    password = request.POST['password']
+    username = request.POST.get('username')
+    password = request.POST.get('password')
 
     user = authenticate(username = username, password = password)
 
@@ -119,18 +119,29 @@ def applicantLogin(request) :
         return render(request, 'applicant/applicantwelcome.html', context)
 
     else:
-       return render(request, 'applicant/applicantlogin.html')
+        print('nope')
+        return render(request, 'applicant/applicantlogin.html')
 
 
 def applicant_dash(request):
-    if not request.session['currentUser'] is None:
-        top_skills = display_top_skills()
+    print(request.session['username'])
+    try: 
+        print(request.user)
+    except Exception:
+        pass
+
+    if not request.session['username'] is None:
+        top_skills = display_top_skills(request)
 
         applicant_skills_list = get_applicant_skills(2)  # request.user.id
+        print('here1')
 
         for s in applicant_skills_list:
+            print('here2')
             if s in top_skills:
+                print('here3')
                 top_skills.remove(s)
+
 
         context = {
             'top_skills': top_skills[0:5],
