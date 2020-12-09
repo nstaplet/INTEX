@@ -9,7 +9,9 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
-
+import django_heroku
+import dj_database_url
+import django_heroku
 from pathlib import Path
 from getpass import getpass
 import os
@@ -22,12 +24,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'gsto@i!izjrdu^#wv%=#*jd9kzom63y#tbzpl3=a*6y+0c2i#-'
+SECRET_KEY = "gsto@i!izjrdu^#wv%=#*jd9kzom63y#tbzpl3=a*6y+0c2i#-"
+# SECRET_KEY = os.environ.get('SECRET_KEY')
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1', 'bcr212.herokuapp.com']
 
 
 # Application definition
@@ -42,6 +47,7 @@ INSTALLED_APPS = [
     'applicant.apps.ApplicantConfig',
     'organization.apps.OrganizationConfig',
     'person.apps.PersonConfig',
+    'whitenoise.runserver_nostatic',
     # 'compressor',
 ]
 
@@ -53,6 +59,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware', 
+
 ]
 
 ROOT_URLCONF = 'bcr.urls'
@@ -87,7 +95,9 @@ DATABASES = {
         'PASSWORD': getpass(),
         'HOST': 'localhost'
     }
-}     
+}
+db_from_env = dj_database_url.config(conn_max_age=600)
+DATABASES['default'].update(db_from_env)
 
 
 # Password validation
@@ -126,6 +136,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 STATIC_URL = '/static/'
@@ -143,3 +156,17 @@ STATICFILES_DIRS = [
 # COMPRESS_PRECOMPILERS = (
 #     ('text/x-scss', 'django_libsass.SassCompiler'),
 # )
+
+
+
+
+
+
+
+
+
+
+
+
+# leave this at the very bottom no matter what you do
+django_heroku.settings(locals())
