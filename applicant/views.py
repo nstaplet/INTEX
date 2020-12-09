@@ -90,8 +90,8 @@ def applicantsignupPage(request) :
 
 def applicantLogin(request) :
 
-    username = request.POST['username']
-    password = request.POST['password']
+    username = request.POST.get('username')
+    password = request.POST.get('password')
 
     user = authenticate(username = username, password = password)
 
@@ -119,7 +119,8 @@ def applicantLogin(request) :
         return render(request, 'applicant/applicantwelcome.html', context)
 
     else:
-       return render(request, 'applicant/applicantlogin.html')
+        print('nope')
+        return render(request, 'applicant/applicantlogin.html')
 
 
 def applicant_dash(request):
