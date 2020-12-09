@@ -1,0 +1,19 @@
+{% extends 'base.html'%}
+{%load static%}
+{%block content%}
+
+    {% for message in messageobject %}
+        <div>
+            <p>{{message.applicant.first_name}} {{message.applicant.last_name}} | {{message.timesent}} | 
+                    {% if message.sender_applicant == True %}
+                        Received
+                    {% else %}
+                        Sent
+                    {% endif %}</p>
+            <br>
+            <p>{{message.content}}</p>
+        </div>
+    {% endfor %}
+    
+
+{% endblock %}
