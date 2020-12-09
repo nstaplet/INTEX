@@ -1,5 +1,5 @@
 from django.db import models
-from organization.models import skill, mentor, organization
+from organization.models import skill, mentor, organization, listing
 from person.models import applicant
 
 # Create your models here.
@@ -33,3 +33,12 @@ class applicant_skills(models.Model):
 
     def __str__(self):
         return (f'{self.applicant} {self.skill}')
+
+
+class applicant_listing(models.Model):
+    id = models.AutoField(primary_key=True)
+    applicant = models.ForeignKey(applicant, on_delete=models.CASCADE)
+    listing = models.ForeignKey(listing, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.applicant} {self.listing}'

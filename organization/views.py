@@ -16,25 +16,27 @@ from .algorithms import recommend_users
 def organizationWelcomePageView(request) :
     # print(request.session['username'])
     # if request.session['username']:
-    applicants_data = applicant.objects.all()
-    listings_data = listing.objects.all().filter(organization_id__exact=4) # need a dynamic value here
+    if request.session['currentUser']:
 
-    try: 
-        context = {
-            'applicants': applicants_data,
-            'listings': listings_data,
-            'title': 'Organization Homepage',
-            'user': request.session['username'],
-        }
-    except Exception:
-        context = {
-            'applicants': applicants_data,
-            'listings': listings_data,
-            'title': 'Organization Homepage',
-            'user': 2,
-        }
+        applicants_data = applicant.objects.all()
+        listings_data = listing.objects.all().filter(organization_id__exact=request.session['currentUser']) # need a dynamic value here
 
-    return render(request, 'organization/organizationwelcome.html', context)
+        try: 
+            context = {
+                'applicants': applicants_data,
+                'listings': listings_data,
+                'title': 'Organization Homepage',
+                'user': request.session['username'],
+            }
+        except Exception:
+            context = {
+                'applicants': applicants_data,
+                'listings': listings_data,
+                'title': 'Organization Homepage',
+                'user': 2,
+            }
+
+        return render(request, 'organization/organizationwelcome.html', context)
 
 
 def organizationlogin(request):
@@ -85,11 +87,26 @@ def companyLogin(request):
     user = authenticate(username = username, password = password)
 
     if user is not None:
-        data = organization.objects.filter(company_email__exact=username)
-        context = {
-            'orgInfo': data,
-            'title': 'Organization Login'    
-        }
+        data = organization.objects.all().get(company_email=username)
+
+        request.session['currentUser'] = data.organization_id
+        applicants_data = applicant.objects.all()
+        listings_data = listing.objects.all().filter(organization_id__exact=request.session['currentUser']) 
+
+        try: 
+            context = {
+                'applicants': applicants_data,
+                'listings': listings_data,
+                'title': 'Organization Homepage',
+                'user': request.session['username'],
+            }
+        except Exception:
+            context = {
+                'applicants': applicants_data,
+                'listings': listings_data,
+                'title': 'Organization Homepage',
+                'user': 2,
+            }
         return render(request, 'organization/organizationwelcome.html', context)
     
     else:

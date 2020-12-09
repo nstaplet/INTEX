@@ -382,6 +382,25 @@
                                 </form>
                         </div>
                 </div>
+                <div class='job-listings'>
+                        <div>
+                                <p class='title' style='font-size: 30px;'>Current job listing: </p>
+                                {% for item in listings %}
+                                <div class="listing-item">
+                                        <p>{{ item.job_title}}</p>
+                                        <p>{{ item.city}}</p>
+                                        {% if item.compensation %}
+                                                <p>Compensation: {{ item.compensation}}</p>
+                                        {% else %}
+                                                <p>No Compensation data available</p>
+                                        {% endif %}
+                                </div>  
+                                {% endfor %}
+                                <div style='text-align:center;'>
+                                        <button type='button' class='link-btn' onclick='createListing()'>Create New Listing</button>
+                                </div>
+                        </div>
+                </div>
         </div>
 
 {% endblock content %}
