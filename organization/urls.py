@@ -18,5 +18,6 @@ urlpatterns = [
     path('viewapplicant/<int:id>', viewApplicant, name='viewapplicant'), 
     path('mentorAdd/', mentorAddPageView, name='mentoraddpageview'),
     path('mentorCreate', createMentor, name='creatementor'),
-    path('currentMentors/', viewMentors, name='viewmentors')
+    path('currentMentors/', viewMentors, name='viewmentors'),
+    path('viewmessages', viewMessages, name='viewmessages'),
 ]
