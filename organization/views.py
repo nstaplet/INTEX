@@ -3,7 +3,6 @@ from django.http import HttpResponse
 
 # models
 from django.contrib.auth import authenticate, login, logout
-# from django.contrib.auth.forms import UserCreationForm
 from .models import organization, skill, listing, listing_skills, mentor, offers_made
 from person.models import applicant
 from applicant.models import applicant_skills, message
@@ -88,6 +87,9 @@ def createJobListing(request):
         compensation = request.POST.get('compensation')
         organization_int = request.POST.get('orgID')
         organization_int = int(organization_int)
+        skillName = request.POST.get('skillname')
+        skill_value = request.POST.get('skill_value')   
+    
     except Exception:
         print('error')
 
@@ -101,37 +103,23 @@ def createJobListing(request):
         description = description,
         organization = organization.objects.get(organization_id__exact = organization_int)     
     )
+    
+    if (skill.objects.filter(skill_name__iexact = skillname).exists()):
+        skillob = skill.objects.get(skill_name__iexact = skillname)
+
+        skill_id = skillob.skill_id 
+    
+    # PK from the listing object 
+    listing_id_FK = listing.listing_id
+
+    listing_skills.objects.create(
+        skill_value = skill_value,
+        skill_id = skill_id,
+        listing_id = listing_id_FK
+    )
 
     data = listing.objects.filter(organization__exact=organization_int)
     context = {'ListingInfo': data}
-    return render(request, 'organization/organizationwelcome.html', context)
-
-def go_create_skills(request):
-    return render(request, 'organization/AddListingSkills.html')
-
-def create_skills(request):
-    skillname = request.POST['skillname']
-
-    if skill.objects.filter(skill_name__iexact = skillname).exists():
-        skillob = skill.objects.get(skill_name__iexact = skillname)
-        skill_id = skillob.skill_id 
-
-        # listingob = listing.objects.get(organization__iexact = organization, job_title__iexact = job_title)
-
-        ilstingob = listing.objects.get(organization__iexact = organization, job_title__iexact = job_title)
-
-    listing_id = listingob.listing_id
-    skill_value = request.POST['skill_value']
-
-    listing_skills.objects.create(
-        skill_id = skillob,
-        listing_id = listing_id,
-        skill_value = skill_value
-    )
-
-    data = listing_skills.objects.filter(skill_id__exact=skill_id, listing_id__exact=listing_id, skill_value__exact=skill_value)
-    context = {'listing_skills_Info': data}
-
     return render(request, 'organization/organizationwelcome.html', context)
 
 def companyLogout(request):
