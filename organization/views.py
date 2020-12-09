@@ -87,7 +87,7 @@ def createJobListing(request):
         compensation = request.POST.get('compensation')
         organization_int = request.POST.get('orgID')
         organization_int = int(organization_int)
-        skillName = request.POST.get('skillname')
+        # skillName = request.POST.get('skillname')
         skill_value = request.POST.get('skill_value')   
     
     except Exception:
