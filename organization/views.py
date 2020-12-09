@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from .models import organization, skill, listing, listing_skills, mentor, offers_made
 from person.models import applicant
-from applicant.models import applicant_skills, message
+from applicant.models import applicant_skills
 
 from django.contrib import messages
 from django.contrib.auth.models import User
@@ -185,7 +185,7 @@ def mentorAddPageView(request):
 
 def createMentor(request):
     # create mentor object, reroute to organizationwelcome and pass orgInfo
-    orgID = request.POST['org-ID']
+    orgID = request.POST['orgID']
     fName = request.POST['first-name']
     lName = request.POST['last-name']
     indName = request.POST['industry-name']
@@ -195,80 +195,11 @@ def createMentor(request):
     mentor.objects.create(organization=orgObject, first_name=fName, last_name=lName, industry=indName)
 
 
-    data = organization.objects.filter(organization_id__exact=orgID)
+    data = organization.objects.filter(company_id__exact=orgID)
     context = {'orgInfo': data}
     return render(request, 'organization/organizationwelcome.html', context)
 
 def viewMentors(request):
-    orgID = request.POST['orgID']
-    
-    mentorData = mentor.objects.filter(organization=orgID)
-    context = {
-        'mentors' : mentorData,
-        'orgID' : orgID
-    }
-    return render(request, 'organization/viewmentors.html', context)
+    pass
 
 
-def viewMessages(request):
-    mentorID = request.POST['mentorID']
-
-    messagedata = message.objects.filter(mentor_id__exact=mentorID).order_by('-timesent')
-
-    context = {
-        'mentorID' : mentorID,
-        'allMessages' : messagedata
-    }
-
-    return render(request, 'organization/mentormessages.html', context)
-
-
-def mentorCreateMessage(request):
-
-    mentorID = request.POST['mentorID']
-    mentorID = int(mentorID)
-    appSender = request.POST.get('sender')
-    recipient = request.POST['recipient']
-    msgContent = request.POST['content']
-
-    recipientNames = recipient.split()
-    
-
-    # If recipient doesn't exist, redirect to same page with a message saying so. Refill content field so that it doesn't have to be retyped
-    if applicant.objects.filter(first_name__iexact=recipientNames[0], last_name__iexact=recipientNames[1]).exists():
-        appObject = applicant.objects.get(first_name__iexact=recipientNames[0], last_name__iexact=recipientNames[1])
-        mentorObject = mentor.objects.get(mentor_id__exact=mentorID)
-        message.objects.create(mentor=mentorObject, applicant=appObject, content=msgContent, sender_applicant=appSender)
-
-        messagedata = message.objects.filter(mentor_id__exact=mentorID).order_by('-timesent')
-
-        context = {
-            'mentorID' : mentorID,
-            'allMessages' : messagedata
-        }
-
-        return render(request, 'organization/mentormessages.html', context)
-
-    else:
-        messages.info(request, 'Sorry, we have no record of that mentor. Please try again.')
-        # redirect to all messages page
-        messagedata = message.objects.filter(mentor_id__exact=mentorID).order_by('-timesent')
-        # refill message content with current content
-
-        context = {
-            'mentorID' : mentorID,
-            'allMessages' : messagedata
-        }
-
-        return render(request, 'organization/mentormessages.html', context)
-
-def mentorSingleMessageView(request):
-    messageID = request.POST['message-id']
-    messageID = int(messageID)
-
-    singleMessageData = message.objects.filter(message_id__exact=messageID)
-    context = {
-        'messageobject' : singleMessageData
-    }
-
-    return render(request, 'organization/mentorsinglemessage.html', context)
