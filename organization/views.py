@@ -222,3 +222,5 @@ def viewMentors(request):
     return render(request, 'organization/viewmentors.html', context)
 
 
+def viewMessages(request):
+    pass
