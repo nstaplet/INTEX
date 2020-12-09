@@ -38,9 +38,9 @@ def indexPageView(request) :
     # }
 
     
-    # request.session['username'] = 'tate'
+    request.session['user'] = 'tate'
 
-    # print(request.session['username'])
+    # print(request.session['user'])
 
     return render(request, 'applicant/index.html')
 
@@ -80,7 +80,7 @@ def viewlisting(request, org_id, list_id):
 
 
 def applicantloginPageView(request) :
-    # print(request.session['username'])
+    # print(request.session['user'])
     return render(request, 'applicant/applicantlogin.html')
 
 
@@ -124,29 +124,38 @@ def applicantLogin(request) :
 
 
 def applicant_dash(request):
-    print(request.session['username'])
+    print(request.session['user'])
     try: 
         print(request.user)
     except Exception:
         pass
 
-    if not request.session['username'] is None:
+    if not request.session['user'] is None:
         top_skills = display_top_skills(request)
 
         applicant_skills_list = get_applicant_skills(2)  # request.user.id
-        print('here1')
 
         for s in applicant_skills_list:
-            print('here2')
             if s in top_skills:
-                print('here3')
                 top_skills.remove(s)
 
+        top_skills = top_skills[0:5]
 
-        context = {
-            'top_skills': top_skills[0:5],
-            'applicant_skills': applicant_skills_list,
-        }
+        if not isinstance(top_skills[0], str):
+            top_skills_strings = []
+            for item in top_skills:
+                top_skills_strings.append(item.skill_name)
+
+            context = {
+                'top_skills': top_skills_strings,
+                'applicant_skills': applicant_skills_list,
+            }
+        else:
+            context = {
+                'applicant': request.user,
+                'top_skills': top_skills,
+                'applicant_skills': applicant_skills_list,
+            }
 
         return render(request, 'applicant/applicantdashboard.html', context)
     else:
