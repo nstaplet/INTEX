@@ -14,16 +14,17 @@ def recommend_users(organization, user):
 
     data =  {
 
-            "Inputs": {
+        "Inputs": {
 
-                    "input1":
-                    {
-                        "ColumnNames": ["organization_id", "user_id"],
-                        "Values": [ [ organization, user] ]
-                    },        },
-                "GlobalParameters": {
-    }
+            "input1":
+            {
+                "ColumnNames": ["organization_id", "user_id"],
+                "Values": [ [ organization, user] ]
+            },        
+        },
+        "GlobalParameters": {
         }
+    }
 
     body = str.encode(json.dumps(data))
 

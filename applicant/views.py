@@ -8,7 +8,7 @@ from .models import applicant_skills, message
 from person.models import applicant
 
 # get other fucntions
-from .algorithms import display_top_skills, get_applicant_skills
+from .algorithms import display_top_skills, get_applicant_skills, recommend_listings
 from django.contrib import messages
 from django.contrib.auth.models import User
 
@@ -43,6 +43,40 @@ def indexPageView(request) :
     # print(request.session['username'])
 
     return render(request, 'applicant/index.html')
+
+
+def viewlisting(request, org_id, list_id):
+    listings_list = []
+
+    try:
+        rec_listing_ids = recommend_listings(org_id, list_id)
+        for listingid in rec_listing_ids:
+            listings_list.append(listing.objects.all().get(listing_id=listingid))
+    except Exception:
+        print('Unable to retrieve recommendations')
+
+    # get the main listing
+    listing_main = listing.objects.all().get(listing_id=list_id)
+
+    # get the organization name
+    org_name = organization.objects.all().get(organization_id=listing_main.organization_id)
+
+    # get the associated skills
+    skills_values_objects = listing_skills.objects.all().filter(listing_id=listing_main.listing_id)
+    skill_set = []
+
+    # get the names of those skills and the value of the skill
+    for skill_object in skills_values_objects:
+        skill_set.append([skill.objects.all().get(skill_id=skill_object.skill_id), skill_object.skill_value])
+
+    context = {
+        'listings_rec': listings_list,
+        'listing': listing_main,
+        'skill_set': skill_set,
+        'org': org_name,
+    }
+
+    return render(request, 'applicant/viewlisting.html', context)
 
 
 def applicantloginPageView(request) :
