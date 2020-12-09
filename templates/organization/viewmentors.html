@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+    {% for mentor in mentors %}
+        <form name="viewmessage" method="post" action="{% url 'viewmessages' %}">
+        {% csrf_token %}
+            <input type='hidden' value={{mentor.mentor_id}} name='mentorID'>
+            <button type="submit">{{mentor.first_name}} {{mentor.last_name}}</button>
+        </form>
+        <br>
+    {% endfor %}
+
+
+{% endblock %}

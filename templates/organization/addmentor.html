@@ -6,9 +6,9 @@
 
     <form name="creatementor" method="post" action="{% url 'creatementor' %}">
         {% csrf_token %}
-        {% for org in orgID %}
-            <input type='hidden' value={{org.organization_id}} name='orgID'>
-        {% endfor %}
+        
+        <input type='hidden' value={{orgID}} name='org-ID'>
+        
 
         <label for='first-name'>First Name:</label>
         <input type='text' name='first-name' required>

@@ -12,10 +12,10 @@
     {% endfor %}
     {% endif %}
 
-    <form name="createmessage" method="post" action="{% url 'createmessage' %}">
+    <form name="mentorcreatemessage" method="post" action="{% url 'mentorcreatemessage' %}">
         {% csrf_token %}
-        <input type='hidden' value={{appID}} name='app-id'>
-        <input type='hidden' value=True name='sender'>
+        <input type='hidden' value={{mentorID}} name='mentorID'>
+        <input type='hidden' value=False name='sender'>
 
         <label for='recipient'>Recipient:</label>
         <input type='text' name='recipient' required>
@@ -30,25 +30,23 @@
     <table>
         <tr>
             <th></th>
-            <th>Mentor</th>
-            <th>Organization</th>
+            <th>Applicant</th>
             <th>Time Sent</th>
             <th>Status</th>
         </tr>
         {% for message in allMessages %}
         <tr>
             <td>
-                <form name="singlemessageview" method="post" action="{% url 'singlemessageview' %}">
+                <form name="mentorsinglemessageview" method="post" action="{% url 'mentorsinglemessageview' %}">
                     {% csrf_token %}
                     <input type='hidden' value={{message.message_id}} name='message-id'>
 
                     <button type="submit">View Message</button>
                 </form>
             </td>
-            <td>{{message.mentor.first_name}} {{message.mentor.last_name}}</td>
-            <td>{{message.mentor.organization.company_name}}</td>
+            <td>{{message.applicant.first_name}} {{message.applicant.last_name}}</td>
             <td>{{message.timesent}}</td>
-            {% if message.sender_applicant == True %}
+            {% if message.sender_applicant == False %}
             <td>Sent</td>
             {% else %}
             <td>Received</td>
