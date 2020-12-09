@@ -134,19 +134,27 @@ def applicant_dash(request):
         top_skills = display_top_skills(request)
 
         applicant_skills_list = get_applicant_skills(2)  # request.user.id
-        print('here1')
 
         for s in applicant_skills_list:
-            print('here2')
             if s in top_skills:
-                print('here3')
                 top_skills.remove(s)
 
+        top_skills = top_skills[0:5]
 
-        context = {
-            'top_skills': top_skills[0:5],
-            'applicant_skills': applicant_skills_list,
-        }
+        if not isinstance(top_skills[0], str):
+            top_skills_strings = []
+            for item in top_skills:
+                top_skills_strings.append(item.skill_name)
+
+            context = {
+                'top_skills': top_skills_strings,
+                'applicant_skills': applicant_skills_list,
+            }
+        else:
+            context = {
+                'top_skills': top_skills,
+                'applicant_skills': applicant_skills_list,
+            }
 
         return render(request, 'applicant/applicantdashboard.html', context)
     else:

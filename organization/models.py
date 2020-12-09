@@ -60,8 +60,8 @@ class listing(models.Model):
 
 class listing_skills(models.Model):
     skill_listing_id = models.AutoField(primary_key=True)
-    skill_id = models.ForeignKey(skill, on_delete=models.CASCADE)
-    listing_id = models.ForeignKey(listing, on_delete=models.CASCADE)
+    skill = models.ForeignKey(skill, on_delete=models.CASCADE)
+    listing = models.ForeignKey(listing, on_delete=models.CASCADE)
     skill_value = models.IntegerField(default=0)
 
     def __str__(self):
