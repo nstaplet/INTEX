@@ -1,0 +1,61 @@
+{% extends 'base.html'%}
+{%load static%}
+{%block content%}
+
+    {% if messages %}
+    {% for message in messages %}
+    {% if message.tags %}
+    <script>
+        alert("{{ message }}");
+    </script>
+    {% endif %}
+    {% endfor %}
+    {% endif %}
+
+    <form name="mentorcreatemessage" method="post" action="{% url 'mentorcreatemessage' %}">
+        {% csrf_token %}
+        <input type='hidden' value={{mentorID}} name='mentorID'>
+        <input type='hidden' value=False name='sender'>
+
+        <label for='recipient'>Recipient:</label>
+        <input type='text' name='recipient' required>
+        <br><br>
+        <label for='content'>Message:</label>
+        <textarea type='text' name='content' required style="width: 500px; height: 200px;"></textarea>
+        <br><br>
+        <button type="submit">Send Message</button>
+    </form>
+
+    <br>
+    <table>
+        <tr>
+            <th></th>
+            <th>Applicant</th>
+            <th>Time Sent</th>
+            <th>Status</th>
+        </tr>
+        {% for message in allMessages %}
+        <tr>
+            <td>
+                <form name="mentorsinglemessageview" method="post" action="{% url 'mentorsinglemessageview' %}">
+                    {% csrf_token %}
+                    <input type='hidden' value={{message.message_id}} name='message-id'>
+
+                    <button type="submit">View Message</button>
+                </form>
+            </td>
+            <td>{{message.applicant.first_name}} {{message.applicant.last_name}}</td>
+            <td>{{message.timesent}}</td>
+            {% if message.sender_applicant == False %}
+            <td>Sent</td>
+            {% else %}
+            <td>Received</td>
+            {% endif %}
+
+        </tr>
+        {% empty %}
+        <br>
+        <p>We're sorry, it looks like you haven't received any messages yet.</p>
+        {% endfor %}
+    </table
+{% endblock %}

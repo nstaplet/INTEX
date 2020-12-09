@@ -2,7 +2,7 @@ from django.urls import path
 from .views import organizationWelcomePageView
 from .views import organizationlogin
 from .views import organizationsignup, createOrganization, companyLogin, createJobListing, companyLogout, create_skills, go_create_skills
-from .views import organizationsignup, createOrganization, companyLogin, createJobListing, companyLogout, mentorAddPageView, createMentor, viewApplicant, viewMentors, viewMessages
+from .views import organizationsignup, createOrganization, companyLogin, createJobListing, companyLogout, mentorAddPageView, createMentor, viewApplicant, viewMentors, viewMessages, mentorCreateMessage, mentorSingleMessageView
 
 urlpatterns = [
     path('organizationwelcome', organizationWelcomePageView, name='organizationwelcome'),
@@ -20,4 +20,6 @@ urlpatterns = [
     path('mentorCreate', createMentor, name='creatementor'),
     path('currentMentors/', viewMentors, name='viewmentors'),
     path('viewmessages', viewMessages, name='viewmessages'),
+    path('createmessage', mentorCreateMessage, name='mentorcreatemessage'),
+    path('mentorsinglemessageview', mentorSingleMessageView, name='mentorsinglemessageview')
 ]

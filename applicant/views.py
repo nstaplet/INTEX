@@ -266,7 +266,7 @@ def offersPageView(request):
 def messagesPageView(request):
     appID = int(request.POST['applicant_id'])
     # pull all data from the messages table that has this applicant's ID
-    messagedata = message.objects.filter(applicant_id__exact=appID)
+    messagedata = message.objects.filter(applicant_id__exact=appID).order_by('-timesent')
 
     context = {
         'appID' : appID,
