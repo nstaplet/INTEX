@@ -16,6 +16,7 @@ main{
     margin: 0 auto; 
 }
 
+
 #background{
     max-width: 100%;
     height: 650px;
@@ -46,6 +47,11 @@ h2{
 
 .welcome_intro{
     color: thistle;
+}
+
+form{
+    color: #151b29;
+    right: none;
 }
 
 #btwrapper{
@@ -90,6 +96,7 @@ h2{
     text-transform: uppercase;
 }
 
+
 .type-select{
     padding:0;
 }
@@ -115,3 +122,4 @@ h2{
     background-color: wheat;
     cursor: pointer;
 }
+

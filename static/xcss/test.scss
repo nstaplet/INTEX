@@ -33,7 +33,7 @@ $textColor) {
         &::before {
             background-color: $colorLeft;
             top: -1rem;
-            left: 0rem;
+            left: -1rem;
         }
         &::after {
             background-color: $colorRight;

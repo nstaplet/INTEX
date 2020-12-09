@@ -1,25 +1,90 @@
 {% extends 'base.html'%}
-{% load static%}
+{% load static %}
 {% block content%}
 
-<div>
-    <h1>Welcome to the Black Cyber Recruiter!</h1>
-    <br><br>
-    <p>Providing individuals of diverse backgrounds with better opportunities.</p>
-    <br>
-    <p>
-        The Black Cyber Recruiter (BCR) aims to assist African American individuals in becoming more integrated into the workforce.  Black individuals face barriers to entry that make it more difficult for them to receive job offers, internships, and other workplace opportunities.  The goal of the Black Cyber Recruiter is to create an environment where minorities - particularly Black - individuals can find meaningful job opportunities tailored to their needs and where organizations can go to find diverse talent and improve the racial equality of their teams.
-    </p>
+    <script>
+        
 
-    <div>
-        <a href="{% url 'applicantlogin' %}">I am looking for a job!</a>
+    </script>
+
+    <style>
+        .container-main {
+            margin-top: 120px;  
+            z-index: 10;
+        }
+        .text {
+            font-size: 24px;
+        }
+
+        h1 {
+            font-size: 34px;
+        }
+        .large {
+            font-size: 72px;
+        }
+        .title {
+            text-align: center;
+            color: rgba(255,255,255,0.78);
+            margin-top: 200px;
+            
+        }
+        .container {
+            display: flex;
+            margin-top: 150px;
+            margin-bottom: 150px;
+            width: 100%;
+        }
+        .btn-container {
+            width: 100%;
+            text-align: center;
+            margin: 20px;
+        }
+        .link-btn {
+            text-decoration: none;
+            border: solid 1px rgba(0, 0, 0, 0);
+            color: white;
+            font-size: 24px;
+            transition: 0.3s;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 30px;
+        }
+        .link-btn:hover {
+            color: rgba(240, 240, 0, 0.79);
+            border: solid 1px rgba(240, 240, 0, 0.79);
+        }
+        .mission {
+            width: 50%;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 300px;
+            margin-bottom: 500px;
+            font-size: 25px;
+            color: rgba(255,255,255,0.78);
+        }
+    </style>
+
+    <div class='container-main'>
+        <div class='title'>
+            <h1>Welcome to<br><span class='large'>Black Cyber Recruiter!</span></h1>
+            <p class='text'>Providing individuals of diverse backgrounds with better opportunities.</p>
+        </div>
+
+        <div class='container'>
+            <div class='btn-container'>
+                <a href="{% url 'applicantlogin' %}" class='link-btn'>I am looking for a job!</a>
+            </div>
+
+            <div class='btn-container'>
+                <a href="{% url 'organizationlogin' %}" class='link-btn'>I am looking to hire!</a>
+            </div>
+        </div>
+        <div class='mission fade'>
+            <h2 style='text-align:center;font-size:40px;'>Our Mission</h2>
+            <p>
+                The Black Cyber Recruiter (BCR) aims to assist African American individuals in becoming more integrated into the workforce.  Black individuals face barriers to entry that make it more difficult for them to receive job offers, internships, and other workplace opportunities.  The goal of the Black Cyber Recruiter is to create an environment where minorities - particularly Black - individuals can find meaningful job opportunities tailored to their needs and where organizations can go to find diverse talent and improve the racial equality of their teams.
+            </p>
+        </div>
     </div>
 
-    <div>
-        <a href="{% url 'organizationlogin' %}">I am an organization looking to hire!</a>
-    </div>
-
-    {% comment %} <a href='#' class='btn'>Button</a> {% endcomment %}
-
-</div>
 {% endblock %}
