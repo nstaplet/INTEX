@@ -160,10 +160,17 @@ def viewApplicant(request, id):
     for item in skill_ids:
         skill_names.append([skill.objects.all().get(skill_id=item.skill_id), item.skill_value])
 
+    print(type(curr_applicant.city))
+
+    rec_applicants1 = rec_applicants[0:5]
+    rec_applicants2 = rec_applicants[5:10]
+
     context = {
-        'rec_users': rec_applicants,
+        'rec_users1': rec_applicants1,
+        'rec_users2': rec_applicants2,
         'applicant': curr_applicant,
         'skill_set': skill_names,
+        'title': f'Applicant: {curr_applicant.first_name} {curr_applicant.last_name}'
     }
     
     return render(request, 'organization/viewapplicant.html', context)
