@@ -38,9 +38,9 @@ def indexPageView(request) :
     # }
 
     
-    # request.session['username'] = 'tate'
+    request.session['user'] = 'tate'
 
-    # print(request.session['username'])
+    # print(request.session['user'])
 
     return render(request, 'applicant/index.html')
 
@@ -80,7 +80,7 @@ def viewlisting(request, org_id, list_id):
 
 
 def applicantloginPageView(request) :
-    # print(request.session['username'])
+    # print(request.session['user'])
     return render(request, 'applicant/applicantlogin.html')
 
 
@@ -124,13 +124,13 @@ def applicantLogin(request) :
 
 
 def applicant_dash(request):
-    print(request.session['username'])
+    print(request.session['user'])
     try: 
         print(request.user)
     except Exception:
         pass
 
-    if not request.session['username'] is None:
+    if not request.session['user'] is None:
         top_skills = display_top_skills(request)
 
         applicant_skills_list = get_applicant_skills(2)  # request.user.id
@@ -152,6 +152,7 @@ def applicant_dash(request):
             }
         else:
             context = {
+                'applicant': request.user,
                 'top_skills': top_skills,
                 'applicant_skills': applicant_skills_list,
             }

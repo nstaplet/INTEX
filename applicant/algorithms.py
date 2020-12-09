@@ -18,8 +18,6 @@ def display_top_skills(request):
 
         skills_listings = listing_skills.objects.all()
 
-        print(skills_listings[0]) # WHY IS THIS RETURNING A NAME???
-
         skills_occurances = {}
 
         for row in skills_listings:
@@ -36,13 +34,11 @@ def display_top_skills(request):
         # puts those skill names into a list since we only have the id
         try:
             for i, j in skills_occurances_sorted:
-                skill_row = skill.objects.all().get(skill_id=j)
+                skill_row = skill.objects.all().get(skill_id=i)
                 skills_names.append(skill_row.skill_name)
         except Exception:
             for i, j in skills_occurances_sorted:
                 skills_names.append(i)
-
-        # returns the skill names
         
         request.session['topskills'] = skills_names
 
