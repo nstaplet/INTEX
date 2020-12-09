@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 import django_heroku
 import dj_database_url
-import django_heroku
 from pathlib import Path
 from getpass import getpass
 import os
