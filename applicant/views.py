@@ -243,6 +243,7 @@ def updateSkillsPageView(request):
             'skills' : editdata,
             'appID' : int(appID),
             'type': 'applicant',
+            'title': 'Add Skills'
         }
 
         return render(request, 'applicant/updateskills.html', context)
