@@ -2,6 +2,7 @@
 {% load static %}
 {% block content %}
 {% load filters %}
+{% load humanize %}
 
 <style>
 .title {
@@ -51,7 +52,7 @@
         transition: 0.3s;
         background-color: rgba(0, 0, 0, 0.7);
         padding: 8px;
-        border-radius: 30px;
+        border-radius: 0px;
     }
     .link-btn:hover {
         color: rgba(135,206,250, 0.9);
@@ -70,9 +71,10 @@
     .recommender {
         position: fixed;
         top: 150;
-        right: 8%;
+        right: 5%;
         background-image: linear-gradient(180deg, rgba(240, 240, 240, 1), rgba(240, 240, 240, 0.7));
         padding: 20px;
+        height: 550px;
     }
     table {
         margin-top: 50px;
@@ -87,14 +89,30 @@
         text-align: center;
         font-size: 28px;
     }
+    .link-rec {
+        text-decoration: none;
+        color: rgba(0, 0, 0, 1);
+    }
+    .rec-container {
+        margin-bottom:20px;
+        border: solid 1px rgba(0, 0, 0, 0.7);
+        padding:10px;
+        transition: 0.2s;
+    }
+    .rec-container:hover {
+        border: solid 1px rgba(135,206,250, 0.9);
+    }
+    .container {
+        overflow-y: scroll;
+    }
 </style>
 
     <div class='recommender'>
-        <div>
-            <h2>You should also view:</h2>
+        <h2>You should also view:</h2>  
+        <div class='container'>
             {% for listing in listings_rec %}
-                <div style='margin-bottom:20px;'>
-                    <a href="{% url 'viewlisting' org_id=listing.organization_id list_id=listing.listing_id %}">{{listing.job_title|title}}</a>
+                <div class='rec-container'>
+                    <a class='link-rec' href="{% url 'viewlisting' org_id=listing.organization_id list_id=listing.listing_id %}">{{listing.job_title|title}}</a>
                     {% if listing.compensation != 'None' %}
                         <p style='margin:5px;'>No Compensation Data Available</p>
                     {% endif %}
@@ -127,10 +145,10 @@
                     <p><b>Contract:</b> {{listing.contracts}}</p>
                 </div>
                 <div>
-                    {% if listing.compensation == 'None' %}
+                    {% if listing.compensation == None %}
                         <p>No compensation data available</p>
                     {% else %}
-                        <p>{{listing.compensation}}</p>
+                        <p>${{listing.compensation|intcomma}}</p>
                     {% endif %}
                 </div>
                 <div>
@@ -159,8 +177,12 @@
                 <div>
                     <form method='POST' action="{% url 'applyforlisting' %}" id='applyform'>
                         {% csrf_token %}
-                        <input type='hidden' value={{listing.listing_id}} id='currlisting' name='currlisting'>
-                        <button type='submit' class='link-btn' style='width:250px;font-size:30px;'>Apply</button>
+                        {% if not applied %}
+                            <input type='hidden' value={{listing.listing_id}} id='currlisting' name='currlisting'>
+                            <button type='submit' class='link-btn' style='width:250px;font-size:30px;'>Apply</button>
+                        {% else %}
+                            <p style='color:red;font-size:20px;margin:20px;padding:10px;border: solid 1px red;width:200px;text-align:center;'><b>You have applied</b></p>
+                        {% endif %}
                     </form>
                 </div>
             </div>

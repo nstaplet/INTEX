@@ -20,12 +20,14 @@ def organizationWelcomePageView(request) :
 
         applicants_data = applicant.objects.all()
         listings_data = listing.objects.all().filter(organization_id__exact=request.session['currentUser']) # need a dynamic value here
+        skills_list = skill.objects.all()
 
         try: 
             context = {
                 'applicants': applicants_data,
                 'listings': listings_data,
                 'title': 'Organization Homepage',
+                'skills': skills_list,
                 'user': request.session['currentUser'],
             }
         except Exception:
@@ -33,6 +35,7 @@ def organizationWelcomePageView(request) :
                 'applicants': applicants_data,
                 'listings': listings_data,
                 'title': 'Organization Homepage',
+                'skills': skills_list,
                 'user': 2,
             }
 
@@ -80,10 +83,12 @@ def createOrganization(request):
 
         applicants_data = applicant.objects.all()
         listings_data = listing.objects.all().filter(organization_id__exact=request.session['currentUser']) # need a dynamic value here
+        skills_list = skill.objects.all()
 
         context = {
             'applicants': applicants_data,
             'listings': listings_data,
+            'skills': skills_list,
             'orgInfo': data,
             'title': 'Organization Homepage',
             'user': request.session['currentUser'],
@@ -116,6 +121,7 @@ def companyLogin(request):
             if app.applicant_id in skills_dict:
                 skills_dict[app.applicant_id].append([app.skill_id, app.skill_value])
 
+        skills_list = skill.objects.all()
 
         # applicants[applicant_id] = {
         #     applicant: applicant,
@@ -127,6 +133,7 @@ def companyLogin(request):
                 'applicants': applicants_data,
                 'listings': listings_data,
                 'title': 'Organization Homepage',
+                'skills': skills_list,
                 'user': request.session['currentUser'],
             }
         except Exception:
@@ -134,6 +141,7 @@ def companyLogin(request):
                 'applicants': applicants_data,
                 'listings': listings_data,
                 'title': 'Organization Homepage',
+                'skills': skills_list,
                 'user': 2,
             }
         
@@ -180,18 +188,18 @@ def createJobListing(request):
         
 
         for i in range(10):
-            if request.POST.get(f'skillname{i}'):
-                new_listing_skill = listing_skills()
-                try:
-                    skill_name = request.POST.get(f'skillname{i}')
-                    print(skill_name)
-                    skill_object = skill.objects.all().get(skill_name__exact=skill_name)
-                    new_listing_skill.skill_id = skill_object.skill_id
-                    new_listing_skill.skill_value = request.POST.get(f'skill_value{i}') 
-                    print(request.POST.get(f'skill_value{i}'))
-                    new_listing_skill.listing_id = new_listing.listing_id
-                except Exception:
-                    pass
+            new_listing_skill = listing_skills()
+            if request.POST.get(f'proficiency{i}'):
+                proficiency = request.POST.get(f'proficiency{i}')
+                skill_name = request.POST.get(f'skillname{i}')
+                print(skill_name)
+                skillid = skill.objects.all().filter(skill_name__contains=skill_name)
+                print(skillid)
+
+                new_listing_skill.skill_id = skillid.first().skill_id
+                new_listing_skill.skill_value = proficiency
+                new_listing_skill.listing_id = new_listing.listing_id
+
                 new_listing_skill.save()
         
         # PK from the listing object 

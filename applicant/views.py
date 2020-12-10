@@ -82,6 +82,9 @@ def viewlisting(request, org_id, list_id):
         'type': 'applicant',
     }
 
+    if applicant_listing.objects.all().filter(listing_id=list_id, applicant_id=request.session['currentUser']).exists():
+        context['applied'] = True   
+
     return render(request, 'applicant/viewlisting.html', context)
 
 
@@ -126,7 +129,7 @@ def applicantLogin(request) :
 
         request.session['currentUser'] = data.applicant_id   
 
-        listings_data = listing.objects.all() 
+        listings_data = listing.objects.all().order_by('-listing_id') 
 
         context = {
             'skills' : skillListNamesEdited,
@@ -282,7 +285,7 @@ def updateSkills(request):
             skillname = skillname.capitalize()
             skillListNamesEdited.append(skillname)
 
-        listings_data = listing.objects.all() 
+        listings_data = listing.objects.all().order_by('-listing_id') 
 
         # context = {
         #     'skills' : skillListNamesEdited,
@@ -408,7 +411,7 @@ def applicantwelcome(request):
 
             request.session['currentUser'] = user.applicant_id   
 
-            listings_data = listing.objects.all() 
+            listings_data = listing.objects.all().order_by('-listing_id') 
 
             context = {
                 'skills' : skillListNamesEdited,
@@ -424,8 +427,10 @@ def applyforlisting(request):
     if request.session['currentUser']:
         new_application = applicant_listing()
 
+        listingID = request.POST.get('currlisting')
+
         new_application.applicant_id = request.session['currentUser']
-        new_application.listing_id = request.POST.get('currlisting')
+        new_application.listing_id = listingID
 
         new_application.save()
 
@@ -462,5 +467,8 @@ def applyforlisting(request):
             'title': f'Apply for {curr_listing.job_title}',
             'type': 'applicant',
         }
+
+        if applicant_listing.objects.all().filter(listing_id=listingID, applicant_id=request.session['currentUser']).exists():
+            context['applied'] = True
 
         return render(request, 'applicant/viewlisting.html', context)
