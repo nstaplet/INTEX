@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 
 # get the models
 from organization.models import skill, offers_made, organization, mentor, listing_skills, listing
-from .models import applicant_skills, message
+from .models import applicant_skills, message, applicant_listing
 from person.models import applicant
 
 # get other fucntions
@@ -79,6 +79,7 @@ def viewlisting(request, org_id, list_id):
         'listing': listing_main,
         'skill_set': skill_set,
         'org': org_name,
+        'type': 'applicant',
     }
 
     return render(request, 'applicant/viewlisting.html', context)
@@ -87,7 +88,8 @@ def viewlisting(request, org_id, list_id):
 def applicantloginPageView(request) :
     # print(request.session['user'])
     context = {
-        'user': None
+        'user': None,
+        'title': 'Applicant Login'
     }
     return render(request, 'applicant/applicantlogin.html', context)
 
@@ -328,7 +330,8 @@ def singleMessageView(request):
 
     singleMessageData = message.objects.filter(message_id__exact=messageID)
     context = {
-        'messageobject' : singleMessageData
+        'messageobject' : singleMessageData,
+        'type': 'applicant',
     }
 
     return render(request, 'applicant/singlemessage.html', context)
@@ -354,7 +357,8 @@ def createMessage(request):
 
         context = {
             'appID' : appID,
-            'allMessages' : messagedata
+            'allMessages' : messagedata,
+            'type': 'applicant',
         }
 
         return render(request, 'applicant/messages.html', context)
@@ -367,7 +371,8 @@ def createMessage(request):
 
         context = {
             'appID' : appID,
-            'allMessages' : messagedata
+            'allMessages' : messagedata,
+            'type': 'applicant',
         }
 
         return render(request, 'applicant/messages.html', context)
@@ -407,3 +412,49 @@ def applicantwelcome(request):
                 'type': 'applicant',
             }
             return render(request, 'applicant/applicantwelcome.html', context)
+
+
+def applyforlisting(request):
+    if request.session['currentUser']:
+        new_application = applicant_listing()
+
+        new_application.applicant_id = request.session['currentUser']
+        new_application.listing_id = request.POST.get('currlisting')
+
+        new_application.save()
+
+        listings_list = []
+
+        curr_listing = listing.objects.all().get(listing_id=request.POST.get('currlisting'))
+        print(curr_listing.organization_id, curr_listing.listing_id)
+
+        try:
+            rec_listing_ids = recommend_listings(curr_listing.organization_id, curr_listing.listing_id)
+            for listingid in rec_listing_ids:
+                listings_list.append(listing.objects.all().get(listing_id=listingid))
+        except Exception:
+            print('Unable to retrieve recommendations')
+
+        # get the main listing
+
+        # get the organization name
+        org_name = organization.objects.all().get(organization_id=curr_listing.organization_id)
+
+        # get the associated skills
+        skills_values_objects = listing_skills.objects.all().filter(listing_id=curr_listing.listing_id)
+        skill_set = []
+
+        # get the names of those skills and the value of the skill
+        for skill_object in skills_values_objects:
+            skill_set.append([skill.objects.all().get(skill_id=skill_object.skill_id), skill_object.skill_value])
+
+        context = {
+            'listings_rec': listings_list,
+            'listing': curr_listing,
+            'skill_set': skill_set,
+            'org': org_name,
+            'title': f'Apply for {curr_listing.job_title}',
+            'type': 'applicant',
+        }
+
+        return render(request, 'applicant/viewlisting.html', context)
