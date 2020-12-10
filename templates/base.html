@@ -52,11 +52,16 @@
     </script>
 
     <style>
-        body {
+        html {
             font-family: Corbel, "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", "DejaVu Sans", "Bitstream Vera Sans", "Liberation Sans", Verdana, "Verdana Ref", sans-serif;
-            background-image: url({% static 'img/officebackground.jpg'%});
-            background-attachment: fixed;
-            z-index: -2;
+            background: url({% static 'img/bg.jpg'%}) no-repeat center center fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+        }
+        body {
+            z-indxex: -2;
         }
         .nav-fade {
             opacity: 0;
@@ -72,9 +77,9 @@
         }
         .navbar {
             height: 80px;
-            background-color: rgba(0, 0, 0, 0.7);
+            background-image: linear-gradient(90deg, rgba(0, 0, 0, 1) 10%, rgba(0, 0, 0, 0.7) 50%, rgba(0, 0, 0, 1) 90%);
             position: fixed;
-            top: 10;
+            top: 0;
             left: 0;
             width: 100%;
             transition: 0.2s;
@@ -151,7 +156,7 @@
     </div>
     <nav class="navbar">
         <div class="nav-container">
-            <img src={% static 'img/bcrlogo.jpg' %} style='height:80px;'>
+            <img src={% static 'img/bcrlogo.jpg' %} style='height:80px;opacity:0.9'>
             <div class='brand-container'>
                 {% if user %}
                     {% if type == 'applicant' %}
