@@ -23,8 +23,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "gsto@i!izjrdu^#wv%=#*jd9kzom63y#tbzpl3=a*6y+0c2i#-"
-# SECRET_KEY = os.environ.get('SECRET_KEY')
+# SECRET_KEY = "gsto@i!izjrdu^#wv%=#*jd9kzom63y#tbzpl3=a*6y+0c2i#-"
+SECRET_KEY = os.environ.get('SECRET_KEY')
 EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 
@@ -91,7 +91,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'bcrdb',
         'USER': 'postgres',
-        'PASSWORD': getpass(),
+        'PASSWORD' : 'tester1234',
+        # 'PASSWORD': getpass(),
         'HOST': 'localhost'
     }
 }
