@@ -26,7 +26,7 @@ def organizationWelcomePageView(request) :
                 'applicants': applicants_data,
                 'listings': listings_data,
                 'title': 'Organization Homepage',
-                'user': request.session['username'],
+                'user': request.session['currentUser'],
             }
         except Exception:
             context = {
@@ -75,7 +75,20 @@ def createOrganization(request):
         organization.objects.create(company_name = company_name, company_email = company_email, company_address = company_address, size=size, sectors = sectors)
         User.objects.create_user(username=company_email, password = company_password)
         data = organization.objects.filter(company_email__exact=company_email)
-        context = {'orgInfo': data}
+
+        request.session['currentUser'] = data.first().organization_id
+
+        applicants_data = applicant.objects.all()
+        listings_data = listing.objects.all().filter(organization_id__exact=request.session['currentUser']) # need a dynamic value here
+
+        context = {
+            'applicants': applicants_data,
+            'listings': listings_data,
+            'orgInfo': data,
+            'title': 'Organization Homepage',
+            'user': request.session['currentUser'],
+        }
+
         # messages.success(request, f'Account created for {company_name}!')
         return render(request, 'organization/organizationlogin.html', context)
 
@@ -123,8 +136,8 @@ def companyLogin(request):
                 'title': 'Organization Homepage',
                 'user': 2,
             }
+        
         return render(request, 'organization/organizationwelcome.html', context)
-    
     else:
         context = {
             'title': 'Organization Login',
@@ -136,106 +149,123 @@ def companyLogin(request):
     
 
 def createJobListing(request):
+    if request.session['currentUser']:
+        new_listing = listing()
+        
+        try:
+            new_listing.status = request.POST.get('status')
+            new_listing.city = request.POST.get('city')
+            new_listing.job_title = request.POST.get('job_title')
+            new_listing.contracts = request.POST.get('contracts')
+            new_listing.relocation = request.POST.get('relocation')
+            new_listing.description = request.POST.get('description')
+            new_listing.compensation = request.POST.get('compensation')
+            new_listing.organization_id = request.session['currentUser'] # int(request.POST.get('orgID'))
+        
+        except Exception:
+            print('error')
 
-    new_listing = listing()
-    
-    try:
-        new_listing.status = request.POST.get('status')
-        new_listing.city = request.POST.get('city')
-        new_listing.job_title = request.POST.get('job_title')
-        new_listing.contracts = request.POST.get('contracts')
-        new_listing.relocation = request.POST.get('relocation')
-        new_listing.description = request.POST.get('description')
-        new_listing.compensation = request.POST.get('compensation')
-        new_listing.organization_int = int(request.POST.get('orgID'))
-    
-    except Exception:
-        print('error')
+        new_listing.save()    
+        
+        # if (skill.objects.filter(skill_name__iexact=skillName).exists()):
+        #     skill_ob = skill.objects.all().get(skill_name__iexact=skillName)
+        #     skill_id = skill_ob.skill_id 
 
-    new_listing.save()    
-    
-    if (skill.objects.filter(skill_name__iexact = skillName).exists()):
-        skill_ob = skill.objects.all().get(skill_name__iexact = skillName)
-        skill_id = skill_ob.skill_id 
+        # try:
+        #     new_listing_skill.skillName = request.POST.get('skillname')
+        #     new_listing_skill.skill_value = request.POST.get('skill_value') 
+        #     new_listing_skill.listing_id = new_listing.listing_id
+        # except Exception:
+        #     pass
+        
 
-    try:
-        new_listing_skill.skillName = request.POST.get('skillname')
-        new_listing_skill.skill_value = request.POST.get('skill_value') 
-        new_listing_skill.listing_id = new_listing.listing_id
-    except Exception:
-        pass
+        for i in range(10):
+            if request.POST.get(f'skillname{i}'):
+                new_listing_skill = listing_skills()
+                try:
+                    skill_name = request.POST.get(f'skillname{i}')
+                    print(skill_name)
+                    skill_object = skill.objects.all().get(skill_name__exact=skill_name)
+                    new_listing_skill.skill_id = skill_object.skill_id
+                    new_listing_skill.skill_value = request.POST.get(f'skill_value{i}') 
+                    print(request.POST.get(f'skill_value{i}'))
+                    new_listing_skill.listing_id = new_listing.listing_id
+                except Exception:
+                    pass
+                new_listing_skill.save()
+        
+        # PK from the listing object 
+        # listing_id_FK = new_listing.listing_id
 
-    for i in range(10):
-        if request.POST.get(f'skillname{i}'):
-            new_listing_skill = listing_skills()
-            try:
-                skill_name = request.POST.get(f'skillname{i}')
-                skill_object = skill.objects.all().get(skill_name__exact=skill_name)
-                new_listing_skill.skill_id = skill_object.skill_id
-                new_listing_skill.skill_value = request.POST.get(f'skill_value{i}') 
-                new_listing_skill.listing_id = new_listing.listing_id
-            except Exception:
-                pass
-            new_listing_skill.save()
-    
-    # PK from the listing object 
-    # listing_id_FK = new_listing.listing_id
+        # listing_skills.objects.create(
+        #     skill_value = skill_value,
+        #     skill_id = skill_id,
+        #     listing_id = listing_id_FK
+        # )
 
-    # listing_skills.objects.create(
-    #     skill_value = skill_value,
-    #     skill_id = skill_id,
-    #     listing_id = listing_id_FK
-    # )
+        applicants_data = applicant.objects.all()
+        listings_data = listing.objects.all().filter(organization_id__exact=request.session['currentUser']) # need a dynamic value here
 
-    data = listing.objects.filter(organization__exact=organization_int)
-    context = {'ListingInfo': data}
-    return render(request, 'organization/organizationwelcome.html', context)
+        context = {
+            'applicants': applicants_data,
+            'listings': listings_data,
+            'title': 'Organization Homepage',
+            'user': request.session['currentUser'],
+        }
+
+        return render(request, 'organization/organizationwelcome.html', context)
+    else:
+        return redirect('organizationsignup')
 
 
 def companyLogout(request):
     logout(request)
     messages.info(request, "You have logged out successfully!")
+    request.session['currentUser'] = None
     return redirect("index")
 
 
 def viewApplicant(request, id):
-    rec_applicants = []
-    try:
-        print(request.session['username'])
-    except Exception:
-        pass
+    if request.session['currentUser']:
+        rec_applicants = []
+        try:
+            print(request.session['username'])
+        except Exception:
+            pass
+            
+        try:
+            items = recommend_users(89, id)
+            print(id)
+            for item in items:
+                print(item)
+                rec_applicants.append(applicant.objects.all().get(applicant_id=item))
+                # rec_applicants.append(applicant.objects.all().get(applicant_id=int(item))) if the above line needs a data conversion
+        except Exception:
+            print('Could not retrieve recommended users')
+
+        curr_applicant = applicant.objects.all().get(applicant_id=id)
+        skill_ids = applicant_skills.objects.all().filter(applicant_id=curr_applicant.applicant_id)
+        skill_names = []
+
+        for item in skill_ids:
+            skill_names.append([skill.objects.all().get(skill_id=item.skill_id), item.skill_value])
+
+        print(type(curr_applicant.city))
+
+        rec_applicants1 = rec_applicants[0:5]
+        rec_applicants2 = rec_applicants[5:10]
+
+        context = {
+            'rec_users1': rec_applicants1,
+            'rec_users2': rec_applicants2,
+            'applicant': curr_applicant,
+            'skill_set': skill_names,
+            'title': f'Applicant: {curr_applicant.first_name} {curr_applicant.last_name}'
+        }
         
-    try:
-        items = recommend_users(89, id)
-        print(id)
-        for item in items:
-            print(item)
-            rec_applicants.append(applicant.objects.all().get(applicant_id=item))
-            # rec_applicants.append(applicant.objects.all().get(applicant_id=int(item))) if the above line needs a data conversion
-    except Exception:
-        print('Could not retrieve recommended users')
-
-    curr_applicant = applicant.objects.all().get(applicant_id=id)
-    skill_ids = applicant_skills.objects.all().filter(applicant_id=curr_applicant.applicant_id)
-    skill_names = []
-
-    for item in skill_ids:
-        skill_names.append([skill.objects.all().get(skill_id=item.skill_id), item.skill_value])
-
-    print(type(curr_applicant.city))
-
-    rec_applicants1 = rec_applicants[0:5]
-    rec_applicants2 = rec_applicants[5:10]
-
-    context = {
-        'rec_users1': rec_applicants1,
-        'rec_users2': rec_applicants2,
-        'applicant': curr_applicant,
-        'skill_set': skill_names,
-        'title': f'Applicant: {curr_applicant.first_name} {curr_applicant.last_name}'
-    }
-    
-    return render(request, 'organization/viewapplicant.html', context)
+        return render(request, 'organization/viewapplicant.html', context)
+    else:
+        return redirect('organizationsignup')
 
 
 
@@ -255,65 +285,73 @@ def viewApplicant(request, id):
 # mentor stuff
 def mentorAddPageView(request):
     # pass organization id, nothing else should be necessary
-    orgID = request.session['currentUser']
+    if request.session['currentUser']:
+        orgID = request.session['currentUser']
 
-    context = {
-        'orgID' : orgID
-    }
+        context = {
+            'orgID' : orgID,
+            'title': 'Add Mentor'
+        }
 
-    return render(request, 'organization/addmentor.html', context)
+        return render(request, 'organization/addmentor.html', context)
+    else:
+        return redirect('organizationsignup')
 
 def createMentor(request):
     # create mentor object, reroute to organizationwelcome and pass orgInfo
-    orgID = request.POST['org-ID']
-    fName = request.POST['first-name']
-    lName = request.POST['last-name']
-    indName = request.POST['industry-name']
+    if request.session['currentUser']:
+        orgID = request.POST['org-ID']
+        fName = request.POST['first-name']
+        lName = request.POST['last-name']
+        indName = request.POST['industry-name']
 
-    orgObject = organization.objects.get(organization_id=orgID)
+        orgObject = organization.objects.get(organization_id=orgID)
 
-    mentor.objects.create(organization=orgObject, first_name=fName, last_name=lName, industry=indName)
-
-
-    data = organization.objects.all().filter(organization_id__exact=orgID)
-
-    request.session['currentUser'] = data.first().organization_id
-
-    print(request.session['currentUser'])
-
-    applicants_data = applicant.objects.all()
-    listings_data = listing.objects.all().filter(organization_id__exact=request.session['currentUser']) 
-    skills_dict = {}
-
-    app_skills = applicant_skills.objects.all()
-
-    for app in app_skills:
-        if app.applicant_id in skills_dict:
-            skills_dict[app.applicant_id].append([app.skill_id, app.skill_value])
+        mentor.objects.create(organization=orgObject, first_name=fName, last_name=lName, industry=indName)
 
 
-    # applicants[applicant_id] = {
-    #     applicant: applicant,
-    #     skills: skills[],
-    # }
+        data = organization.objects.all().filter(organization_id__exact=orgID)
 
-    try: 
-        context = {
-            'applicants': applicants_data,
-            'listings': listings_data,
-            'title': 'Organization Homepage',
-            'user': request.session['currentUser'],
-            'orgInfo': data
-        }
-    except Exception:
-        context = {
-            'applicants': applicants_data,
-            'listings': listings_data,
-            'title': 'Organization Homepage',
-            'user': 2,
-            'orgInfo': data
-        }
-    return render(request, 'organization/organizationwelcome.html', context)
+        request.session['currentUser'] = data.first().organization_id
+
+        print(request.session['currentUser'])
+
+        applicants_data = applicant.objects.all()
+        listings_data = listing.objects.all().filter(organization_id__exact=request.session['currentUser']) 
+        skills_dict = {}
+
+        app_skills = applicant_skills.objects.all()
+
+        for app in app_skills:
+            if app.applicant_id in skills_dict:
+                skills_dict[app.applicant_id].append([app.skill_id, app.skill_value])
+
+
+        # applicants[applicant_id] = {
+        #     applicant: applicant,
+        #     skills: skills[],
+        # }
+
+        try: 
+            context = {
+                'applicants': applicants_data,
+                'listings': listings_data,
+                'title': 'Organization Homepage',
+                'user': request.session['currentUser'],
+                'orgInfo': data
+            }
+        except Exception:
+            context = {
+                'applicants': applicants_data,
+                'listings': listings_data,
+                'title': 'Organization Homepage',
+                'user': 2,
+                'orgInfo': data
+            }
+        return render(request, 'organization/organizationwelcome.html', context)
+    else:
+        return redirect('organizationsignup')
+
 
 def viewMentors(request):
     if request.session['currentUser']:
@@ -331,59 +369,64 @@ def viewMentors(request):
 
 
 def viewMessages(request):
-    mentorID = request.POST['mentorID']
+    if request.session['currentUser']:
+        mentorID = request.POST['mentorID']
 
-    messagedata = message.objects.all().filter(mentor_id__exact=mentorID).order_by('-timesent')
+        messagedata = message.objects.all().filter(mentor_id__exact=mentorID).order_by('-timesent')
 
-    context = {
-        'mentorID' : mentorID,
-        'allMessages' : messagedata,
-        'title': 'Mentor Messages',
-    }
+        context = {
+            'mentorID' : mentorID,
+            'allMessages' : messagedata,
+            'title': 'Mentor Messages',
+        }
 
-    return render(request, 'organization/mentormessages.html', context)
+        return render(request, 'organization/mentormessages.html', context)
+    else: 
+        return redirect('organizationsignup')
 
 
 def mentorCreateMessage(request):
+    if request.session['currentUser']:
+        mentorID = request.POST['mentorID']
+        mentorID = int(mentorID)
+        appSender = request.POST.get('sender')
+        recipient = request.POST['recipient']
+        msgContent = request.POST['content']
 
-    mentorID = request.POST['mentorID']
-    mentorID = int(mentorID)
-    appSender = request.POST.get('sender')
-    recipient = request.POST['recipient']
-    msgContent = request.POST['content']
+        recipientNames = recipient.split()
 
-    recipientNames = recipient.split()
-    
+        # If recipient doesn't exist, redirect to same page with a message saying so. Refill content field so that it doesn't have to be retyped
+        if applicant.objects.filter(first_name__iexact=recipientNames[0], last_name__iexact=recipientNames[1]).exists():
+            appObject = applicant.objects.all().filter(first_name__iexact=recipientNames[0], last_name__iexact=recipientNames[1])
+            mentorObject = mentor.objects.get(mentor_id__exact=mentorID)
+            message.objects.create(mentor=mentorObject, applicant=appObject.first(), content=msgContent, sender_applicant=appSender)
 
-    # If recipient doesn't exist, redirect to same page with a message saying so. Refill content field so that it doesn't have to be retyped
-    if applicant.objects.filter(first_name__iexact=recipientNames[0], last_name__iexact=recipientNames[1]).exists():
-        appObject = applicant.objects.get(first_name__iexact=recipientNames[0], last_name__iexact=recipientNames[1])
-        mentorObject = mentor.objects.get(mentor_id__exact=mentorID)
-        message.objects.create(mentor=mentorObject, applicant=appObject, content=msgContent, sender_applicant=appSender)
+            messagedata = message.objects.filter(mentor_id__exact=mentorID).order_by('-timesent')
 
-        messagedata = message.objects.filter(mentor_id__exact=mentorID).order_by('-timesent')
+            context = {
+                'mentorID' : mentorID,
+                'allMessages' : messagedata,
+                'title': 'Mentor Messages',
+            }
 
-        context = {
-            'mentorID' : mentorID,
-            'allMessages' : messagedata,
-            'title': 'Mentor Messages',
-        }
+            return render(request, 'organization/mentormessages.html', context)
 
-        return render(request, 'organization/mentormessages.html', context)
+        else:
+            messages.info(request, 'Sorry, we have no record of that applicant. Please try again.')
+            # redirect to all messages page
+            messagedata = message.objects.filter(mentor_id__exact=mentorID).order_by('-timesent')
+            # refill message content with current content
 
+            context = {
+                'mentorID' : mentorID,
+                'allMessages' : messagedata,
+                'title': 'Mentor Messages',
+            }
+
+            return render(request, 'organization/mentormessages.html', context)
     else:
-        messages.info(request, 'Sorry, we have no record of that applicant. Please try again.')
-        # redirect to all messages page
-        messagedata = message.objects.filter(mentor_id__exact=mentorID).order_by('-timesent')
-        # refill message content with current content
+        return redirect('organizationsignup')
 
-        context = {
-            'mentorID' : mentorID,
-            'allMessages' : messagedata,
-            'title': 'Mentor Messages',
-        }
-
-        return render(request, 'organization/mentormessages.html', context)
 
 def mentorSingleMessageView(request):
     if request.session['currentUser']:
@@ -402,3 +445,5 @@ def mentorSingleMessageView(request):
         }
 
         return render(request, 'organization/mentorsinglemessage.html', context)
+    else:
+        return redirect('organizationsignup')

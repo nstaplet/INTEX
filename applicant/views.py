@@ -212,11 +212,16 @@ def createApplicant(request):
         for skillitem in skilldata:
             skillListNames.append(skill.objects.filter(skill_id__exact=skillitem.skill).values_list('skill_name', flat=True)[0] )
 
-        request.session['currentUser'] = applicantdata.applicant.id # this could keep track of the users
+        request.session['currentUser'] = applicantdata.first().applicant_id # this could keep track of the users
+
+        listings = listing.objects.all()
+
+        print(applicantdata)
 
         context = {
-            'applicant' : applicantdata,
+            'applicant' : applicantdata.first(),
             'skills' : skillListNames,
+            'listings': listings,
             'type': 'applicant',
         }
 

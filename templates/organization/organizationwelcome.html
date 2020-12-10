@@ -198,6 +198,7 @@
         .job-listings {
                 position: fixed;
                 right: 10%;
+                width: 250px;
         }
         .app-link {
                 text-decoration: none;
@@ -218,9 +219,12 @@
         }
         .listing-item {
                 margin-bottom: 30px;
-                height: 100px;
                 background-image: linear-gradient(180deg, rgba(240, 240, 240, 1), rgba(240, 240, 240, 0.7));
                 padding: 20px;
+        }
+        .current_listings {
+                overflow-y: scroll;
+                height: 600px;
         }
         .listing-item p {
                 color: rgba(0, 0, 0, 1);
@@ -233,6 +237,9 @@
                 position: fixed;
                 left: 10%;
                 top: 150px;
+        }
+        .item {
+                border-bottom: solid 1px rgba(0, 0, 0, 0.5);
         }
 
 
@@ -297,16 +304,16 @@
                                                                 <label style='width:150px;' for="skill_value{{i}}">Skill Value:</label>
                                                                 <select style='width:230px;' name="skill_value{{i}}" id="skill_value{{i}}">
                                                                         <option value="default" disabled selected>Select Skill Value 1-10</option>
-                                                                        <option value="1">1</option>
-                                                                        <option value="2">2</option>
-                                                                        <option value="3">3</option>
-                                                                        <option value="4">4</option>
-                                                                        <option value="5">5</option>
-                                                                        <option value="6">6</option>
-                                                                        <option value="7">7</option>
-                                                                        <option value="8">8</option>
-                                                                        <option value="9">9</option>
-                                                                        <option value="10">10</option>
+                                                                        <option value=1>1</option>
+                                                                        <option value=2>2</option>
+                                                                        <option value=3>3</option>
+                                                                        <option value=4>4</option>
+                                                                        <option value=5>5</option>
+                                                                        <option value=6>6</option>
+                                                                        <option value=7>7</option>
+                                                                        <option value=8>8</option>
+                                                                        <option value=9>9</option>
+                                                                        <option value=10>10</option>
                                                                 </select>
                                                         </div>
                                                         {% else %}
@@ -314,18 +321,18 @@
                                                                 <label style='width:150px;' for=" skillname{{i}}">Skill Name: </label>
                                                                 <input style='width:150px;' type="text" name="skillname{{i}}" id="skillname{{i}}">
                                                                 <label style='width:150px;' for=" skill_value{{i}}">Skill Value:</label>
-                                                                <select style='width:230px;' name="skill_value{{I}}" id="skill_value{{i}}">
+                                                                <select style='width:230px;' name="skill_value{{i}}" id="skill_value{{i}}">
                                                                         <option value="default" disabled selected>Select Skill Value 1-10</option>
-                                                                        <option value="1">1</option>
-                                                                        <option value="2">2</option>
-                                                                        <option value="3">3</option>
-                                                                        <option value="4">4</option>
-                                                                        <option value="5">5</option>
-                                                                        <option value="6">6</option>
-                                                                        <option value="7">7</option>
-                                                                        <option value="8">8</option>
-                                                                        <option value="9">9</option>
-                                                                        <option value="10">10</option>
+                                                                        <option value=1>1</option>
+                                                                        <option value=2>2</option>
+                                                                        <option value=3>3</option>
+                                                                        <option value=4>4</option>
+                                                                        <option value=5>5</option>
+                                                                        <option value=6>6</option>
+                                                                        <option value=7>7</option>
+                                                                        <option value=8>8</option>
+                                                                        <option value=9>9</option>
+                                                                        <option value=10>10</option>
                                                                 </select>
                                                         </div>
                                                         {% endif %}
@@ -352,15 +359,18 @@
         </div> {% endcomment %}
         <div class='container-main'>
                 <div class='job-listings'>
-                        <p class='title-light' style='font-size: 30px;'>Current job listing: </p>
-                        <div class='listing-item' style='height:auto'>
+                        <p class='title-light' style='font-size: 30px;margin-bottom:10px;'>Current job listing: </p>
+                        <div style='text-align:center;'>
+                                <button type='button' class='link-btn' style='margin-bottom:10px;' onclick='createListing()'>Create New Listing</button>
+                        </div>
+                        <div class='listing-item current_listings'>
                                 {% if listings %}
                                         {% for item in listings %}
-                                        <div class="">
+                                        <div class="item">
                                                 <p>{{ item.job_title}}</p>
                                                 <p>{{ item.city}}</p>
                                                 {% if item.compensation %}
-                                                        <p>Compensation: {{ item.compensation}}</p>
+                                                        <p>Compensation: ${{ item.compensation}}</p>
                                                 {% else %}
                                                         <p>No Compensation data available</p>
                                                 {% endif %}
@@ -371,9 +381,6 @@
                                                 <p style='text-align:center;'>No listings posted yet</p>
                                         </div>
                                 {% endif %}
-                                <div style='text-align:center;'>
-                                        <button type='button' class='link-btn' onclick='createListing()'>Create New Listing</button>
-                                </div>
                         </div>
                 </div>
                 <div class='applicant_list'>

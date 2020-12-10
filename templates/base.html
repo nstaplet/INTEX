@@ -63,6 +63,33 @@
         body {
             z-indxex: -2;
         }
+        /*
+        *  STYLE 13
+        */
+
+        #style-13::-webkit-scrollbar-track
+        {
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.9);
+        border-radius: 10px;
+        background-color: #CCCCCC;
+        }
+
+        #style-13::-webkit-scrollbar
+        {
+        width: 12px;
+        background-color: #F5F5F5;
+        }
+
+        #style-13::-webkit-scrollbar-thumb
+        {
+        border-radius: 10px;
+        background-color: #D62929;
+        background-image: -webkit-linear-gradient(90deg,
+                                transparent,
+                                rgba(0, 0, 0, 0.4) 50%,
+                                transparent,
+                                transparent)
+        }
         .nav-fade {
             opacity: 0;
             transform: translate(0, -30px);
@@ -139,7 +166,7 @@
             height: 100%;
             top: 0;
             left: 0;
-            background-color: rgba(0, 0, 20, 0.4);
+            background-color: rgba(20, 20, 30, 0.7);
             z-index: -1;
         }
         {% comment %} .brand-container {
