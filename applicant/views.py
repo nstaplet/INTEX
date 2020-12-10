@@ -121,10 +121,8 @@ def applicantLogin(request) :
         skillListNamesEdited = []
 
         for skillitem in skilldata:
-            skillListNames.append( skill.objects.filter(skill_id__exact=skillitem.skill_id).values_list('skill_name', flat=True)[0] )
+            skillListNames.append(skill.objects.filter(skill_id__exact=skillitem.skill_id).values_list('skill_name', flat=True)[0] )
         for skillname in skillListNames:
-            skillname = skillname[6:len(skillname)]
-            skillname = skillname.capitalize()
             skillListNamesEdited.append(skillname)
 
         request.session['currentUser'] = data.applicant_id   
@@ -150,8 +148,9 @@ def applicant_dash(request):
         top_skills = display_top_skills(request)
 
         applicant_skills_list = get_applicant_skills(request.session['currentUser'])  # request.user.id
+        print(applicant_skills_list)
 
-        for s in applicant_skills_list:
+        for s, v in applicant_skills_list:
             if s in top_skills:
                 top_skills.remove(s)
 
@@ -254,20 +253,20 @@ def updateSkills(request):
         appID = request.session['currentUser']
 
         for i in range(10):
+            new_skill = applicant_skills()
             if request.POST.get(f'skillsinput{i}'):
-                new_skill = applicant_skills()
-
                 skill_name = 'skill_' + request.POST.get(f'skillsinput{i}')
+                print(skill_name)
 
                 try: 
-                    skill_object = skill.objects.all().get(skill_name__exact=skill_name)
+                    skill_object = skill.objects.all().filter(skill_name__contains=skill_name)
                 except Exception:
                     newSkill = skill()
                     newSkill.skill_name = skill_name
                     newSkill.save()
-                    skill_object = skill.objects.all().get(skill_name__exact=skill_name)
+                    skill_object = skill.objects.all().get(skill_name__contains=skill_name)
     
-                new_skill.skill_id = skill_object.skill_id
+                new_skill.skill_id = skill_object.first().skill_id
                 new_skill.applicant_id = appID
                 new_skill.skill_value = request.POST.get(f'skill_value{i}') 
                 new_skill.save()
@@ -281,8 +280,6 @@ def updateSkills(request):
         for skillitem in skilldata:
             skillListNames.append( skill.objects.filter(skill_id__exact=skillitem.skill_id).values_list('skill_name', flat=True)[0] )
         for skillname in skillListNames:
-            skillname = skillname[6:len(skillname)]
-            skillname = skillname.capitalize()
             skillListNamesEdited.append(skillname)
 
         listings_data = listing.objects.all().order_by('-listing_id') 
@@ -405,8 +402,6 @@ def applicantwelcome(request):
             for skillitem in skilldata:
                 skillListNames.append( skill.objects.filter(skill_id__exact=skillitem.skill_id).values_list('skill_name', flat=True)[0] )
             for skillname in skillListNames:
-                skillname = skillname[6:len(skillname)]
-                skillname = skillname.capitalize()
                 skillListNamesEdited.append(skillname)
 
             request.session['currentUser'] = user.applicant_id   

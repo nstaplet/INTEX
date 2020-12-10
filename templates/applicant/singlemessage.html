@@ -2,18 +2,149 @@
 {%load static%}
 {%block content%}
 
-    {% for message in messageobject %}
-        <div>
-            <p>{{message.mentor.first_name}} {{message.mentor.last_name}} | {{message.timesent}} | 
+<style>
+.title {
+        color: rgba(0, 0, 0, 0.99);
+        margin: 0px;
+    }
+
+    .title-light {
+        color: rgba(240,240,240,0.99)
+        text-align: center;
+    }
+
+    .container-main {
+        color: rgba(240, 240, 240, 0.8);
+        margin-top: 140px;
+    }
+
+
+    .personal-details {
+        position: fixed;
+        right: 10%;
+        top: 150;
+        background-image: linear-gradient(180deg, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.3));
+        padding: 20px;
+        color: rgba(240,240,240,0.7);
+    }
+    .container-inner {
+        width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 80px;
+        background-image: linear-gradient(180deg, rgba(240, 240, 240, 1), rgba(240, 240, 240, .7));
+        padding: 20px;
+        color: rgba(0, 0, 0, 0.9);
+    }
+
+    .info-container {
+        display: flex;
+    }
+    .link-btn {
+        text-decoration: none;
+        border: solid 1px rgba(240, 240, 240, 0.7);
+        color: white;
+        font-size: 22px;
+        transition: 0.3s;
+        background-color: rgba(0, 0, 0, 0.7);
+        padding: 14px;
+        border-radius: 30px;
+    }
+    .link-btn:hover {
+        color: rgba(135,206,250, 0.9);
+        border: solid 1px rgba(135,206,250, 0.9);
+    }
+    .details {
+        width: 70%;
+    }
+    .link {
+        width: 30%;
+        margin-top: 50px;
+    }
+    .form-personal {
+        margin: 20px;
+    }
+    .flex {
+        display: flex;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        text-align: left;
+        padding: 20px;
+        background-image: linear-gradient(180deg, rgba(240, 240, 240, 1), rgba(240, 240, 240, 0.7));
+        color: rgba(0, 0, 0, 0.99);
+    }
+    .form-container {
+        display: inline-block;
+    }
+    .form-messages {
+        vertical-align: middle;
+        margin-top: 20px;
+        justify-content: right;
+    }
+    .info, form-container {
+        width: 50%;
+    }
+    input, textarea {
+        padding: 8px;
+        border: solid 1px rgba(240, 240, 240, 0.8);
+        border-radius: 30px;
+        font-size: 18px;
+        background-color: rgba(0, 0, 0, 0.8);
+        transition: 0.2s;
+        color: rgba(240, 240, 240, 0.8);
+        width: 200px;
+        font-family: Corbel, "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", "DejaVu Sans", "Bitstream Vera Sans", "Liberation Sans", Verdana, "Verdana Ref", sans-serif;
+    }
+    textarea {
+        padding: 12px;
+    }
+    input:hover, textarea:hover {
+        box-shadow: 0 0 10px 1px rgba(135,206,250, 0.9);
+        border: solid 1px rgba(135,206,250, 0.9);
+    }
+    .recipient {
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+    label {
+        display: inline-block;
+        text-align: right;
+        margin-right: 10px;
+        width: 20px;
+        color: rgba(0, 0, 0, 0.8);
+        font-size: 24px;    
+    }
+    table {
+        text-align: center;
+    }
+    td {
+        width: 200px;
+        font-size: 26px;
+        color: rgba(0, 0, 0, 0.8);
+    }
+    th {
+        width: 200px;
+        font-size: 20px;
+        color: rgba(0, 0, 0, 0.8);
+    }
+</style>
+
+<div class='container-main'>
+    <div class='container-inner'>
+        <h1 class='title'>Message Contents</h1> 
+        {% for message in messageobject %}
+            <div>
+                <p>{{message.mentor.first_name}} {{message.mentor.last_name}} | {{message.timesent}} | 
                     {% if message.sender_applicant == True %}
                         Sent
                     {% else %}
                         Received
                     {% endif %}</p>
-            <br>
-            <p>{{message.content}}</p>
-        </div>
-    {% endfor %}
+                <p>{{message.content}}</p>
+            </div>
+        {% endfor %}
+    </div>
+</div>
     
 
 {% endblock %}

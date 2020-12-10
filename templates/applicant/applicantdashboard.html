@@ -90,6 +90,23 @@
         .recommended-skills {
             width: 30%;        
         }
+        .table-container {
+            text-align: center;
+            margin-top: 40px;
+        }
+        table {
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        th {
+            font-size: 30px;
+            border-bottom: solid 1px rgba(240,240,240,0.9);
+            width: 200px;
+        }
+        td {
+            font-size: 24px;
+        }
 
     </style>
 
@@ -106,10 +123,33 @@
                     </div>
                     <div class='appskills'>
                         <h2>Your Skills</h2>
-                        {% if applicant_skils %}
-                            {% for skill in applicant_skills %} 
-                                <p>{{skill|skill}}</p>
-                            {% endfor %}
+                        {% if applicant_skills %}
+                            <div class='table-container'>
+                                <table>
+                                    <tr>
+                                        <th>Skill</th>
+                                        <th>Proficiency</th>
+                                    </tr>
+                                    {% for skill in applicant_skills %} 
+                                        {% if skill.1 <= 3 %}
+                                            <tr>
+                                                <td>{{skill.0|skill}}</td>
+                                                <td>Novice</td>
+                                            </tr>
+                                        {% elif skill.1 > 3 and skill.1 < 6%}
+                                            <tr>
+                                                <td>{{skill.0|skill}}</td>
+                                                <td>Proficient</td>
+                                            </tr>
+                                        {% else %}
+                                            <tr>
+                                                <td>{{skill.0|skill}}</td>
+                                                <td>Expert</td>
+                                            </tr>
+                                        {% endif %}
+                                    {% endfor %}
+                                </table>
+                            </div>
                         {% else %}
                             <p>No skills added</p>
                         {% endif %}

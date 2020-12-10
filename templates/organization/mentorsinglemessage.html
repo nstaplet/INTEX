@@ -135,11 +135,11 @@
             {% for message in messageobject %}
                 <div>
                     <p>{{message.applicant.first_name}} {{message.applicant.last_name}} | {{message.timesent}} | 
-                            {% if message.sender_applicant == True %}
-                                Received
-                            {% else %}
-                                Sent
-                            {% endif %}</p>
+                        {% if message.sender_applicant == True %}
+                            Received
+                        {% else %}
+                            Sent
+                        {% endif %}</p>
                     <p>{{message.content}}</p>
                 </div>
             {% endfor %}
