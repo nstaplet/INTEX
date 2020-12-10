@@ -303,7 +303,8 @@ def offersPageView(request):
     offers_madedata = offers_made.objects.filter(applicant__exact=appID)
     context = {
         'allOffers' : offers_madedata,
-        'allOrganizations' : organizationdata
+        'allOrganizations' : organizationdata,
+        'type': 'applicant',
     }
 
     # context needs to be all offers_made objects that have this applicants primary key as a foreign key
