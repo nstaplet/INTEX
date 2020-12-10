@@ -9,8 +9,9 @@
     }
 
     .container-main {
-        color: rgba(240, 240, 240, 0.8);
+        color: rgba(20, 0, 0, 0.99);
         margin-top: 120px;
+        margin-bottom: 200px;
     }
 
     .personal-details {
@@ -25,6 +26,8 @@
         width: 800px;
         margin-left: auto;
         margin-right: auto;
+        background-image: linear-gradient(180deg, rgba(240, 240, 240, 1), rgba(240, 240, 240, 0.7));
+        padding: 20px
     }
     .listing-link {
         text-decoration: none;
@@ -64,61 +67,102 @@
     .form-personal {
         margin: 20px;
     }
+    .recommender {
+        position: fixed;
+        top: 150;
+        right: 8%;
+        background-image: linear-gradient(180deg, rgba(240, 240, 240, 1), rgba(240, 240, 240, 0.7));
+        padding: 20px;
+    }
+    table {
+        margin-top: 50px;
+        margin-bottom: 50px;
+    }
+    th {
+        width: 200px;
+        font-size: 24px;
+    }
+    td {
+        width: 200px;
+        text-align: center;
+        font-size: 28px;
+    }
 </style>
 
-    <div class='container'>
-        <div class='info-listing'>
-            <div>
-                <h2>{{listing.job_title}}</h2>
-            </div>
-            <div>
-                <p>{{org.company_name}}</p>
-            </div>
-            <div>
-                {% if listing.city %}
-                    <p>Based in {{listing.city}}</p>
-                {% else %}
-                    <p>Residence Unavailable</p>
-                {% endif %}
-                <p>{{listing.relocation}}</p>
-            </div>
-            <div>
-                <p>Contract: {{listing.contracts}}</p>
-            </div>
-            <div>
-                <p>{{listing.compensation}}</p>
-            </div>
-            <div>
-                <p>{{listing.description}}</p>
-            </div>
-            <div>
-                <table>
-                    <tr>
-                        <th>Needed Skills</th>
-                        <th>Experience</th>
-                    </tr>
-                    {% for skill in skill_set %}
-                        <tr>
-                        {% if skill.1 < 3 %}
-                            <td>{{skill.0|skill}}</td><td>Novice</td>
-                        {% elif skill.1 >= 3 and skill.1 < 6 %}
-                            <td>{{skill.0|skill}}</td><td>Proficient</td>
-                        {% else %}
-                            <td>{{skill.0|skill}}</td><td>Expert</td>
-                        {% endif %}
-                        </tr>
-                    {% endfor %}
-                </table>
-            </div>
+    <div class='recommender'>
+        <div>
+            <h2>You should also view:</h2>
+            {% for listing in listings_rec %}
+                <div style='margin-bottom:20px;'>
+                    <a href="{% url 'viewlisting' org_id=listing.organization_id list_id=listing.listing_id %}">{{listing.job_title|title}}</a>
+                    {% if listing.compensation != 'None' %}
+                        <p style='margin:5px;'>No Compensation Data Available</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
         </div>
-        <div class='recommender'>
-            <div>
-                <h2>You should also view:</h2>
-                {% for listing in listings_rec %}
-                    <div>
-                        <a href="{% url 'viewlisting' org_id=listing.organization_id list_id=listing.listing_id %}">{{listing.job_title}} {{listing.compensation}}</a>
-                    </div>
-                {% endfor %}
+    </div>
+    <div class='container-main'>
+        <div class='container-inner'>
+            <div class='info-listing'>
+                <div>
+                    <h2>{{listing.job_title}}</h2>
+                </div>
+                <div>
+                    <p>{{org.company_name}}</p>
+                </div>
+                <div>
+                    {% if listing.city %}
+                        <p><b>Based in</b> {{listing.city}}</p>
+                    {% else %}
+                        <p>Residence Unavailable</p>
+                    {% endif %}
+                    {% if listing.relocation == 'False' %}
+                        <p>No Relocation Required</p>
+                    {% else %}
+                        <p>Relocation Required</p>
+                    {% endif %}
+                </div>
+                <div>
+                    <p><b>Contract:</b> {{listing.contracts}}</p>
+                </div>
+                <div>
+                    {% if listing.compensation == 'None' %}
+                        <p>No compensation data available</p>
+                    {% else %}
+                        <p>{{listing.compensation}}</p>
+                    {% endif %}
+                </div>
+                <div>
+                    <h2>Description</h2>
+                    <p>{{listing.description}}</p>
+                </div>
+                <div>
+                    <table>
+                        <tr>
+                            <th>Needed Skills</th>
+                            <th>Experience</th>
+                        </tr>
+                        {% for skill in skill_set %}
+                            <tr>
+                            {% if skill.1 < 3 %}
+                                <td>{{skill.0|skill}}</td><td>Novice</td>
+                            {% elif skill.1 >= 3 and skill.1 < 6 %}
+                                <td>{{skill.0|skill}}</td><td>Proficient</td>
+                            {% else %}
+                                <td>{{skill.0|skill}}</td><td>Expert</td>
+                            {% endif %}
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+                <div>
+                    <form method='POST' action="{% url 'applyforlisting' %}" id='applyform'>
+                        {% csrf_token %}
+                        <input type='hidden' value={{listing.listing_id}} id='currlisting' name='currlisting'>
+                        <button type='submit' class='link-btn' style='width:250px;font-size:30px;'>Apply</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
